@@ -239,7 +239,7 @@
       if (b2.getAttribute('aria-pressed') === 'true') setze();
       b2.addEventListener('click', function () {
         $$('[data-reihe="' + r + '"]', g).filter(meins).forEach(function (o) { o.setAttribute('aria-pressed', o === b2 ? 'true' : 'false'); });
-        setze(); stand(); merke('Baustein angetippt: ' + b2.textContent.trim());
+        setze(); stand(); if (!window.__auto) merke('Baustein angetippt: ' + b2.textContent.trim());
       });
     });
     stand();
@@ -264,20 +264,51 @@
     }
     st.textContent = text; st.parentNode.classList.toggle('auf', auf2);
   });
-  /* Kundenarten: eine kleine Vorschau der Seite folgt dem Mauszeiger */
+  /* Kundenarten: Ein Bild der jeweiligen Seite folgt dem Mauszeiger, weich nachlaufend und leicht geneigt */
   var blick = $('.weg-blick');
-  if (blick) $$('.wege a').forEach(function (a) {
-    a.addEventListener('pointerenter', function (e) {
-      if (e.pointerType !== 'mouse' || still()) return;
-      blick.setAttribute('data-stil', a.getAttribute('data-stil'));
-      $('span', blick).textContent = $('b', a).textContent; $('b', blick).textContent = a.getAttribute('data-blick');
-      blick.classList.add('da');
+  if (blick) {
+    var bx = 0, by = 0, zx = 0, zy = 0, blickAn = false, groesse = .6, bImg = $('img', blick);
+    $$('.wege a').forEach(function (a) {
+      new Image().src = '/assets/img/blick-' + a.getAttribute('data-stil') + '.webp';
+      a.addEventListener('pointerenter', function (e) {
+        if (e.pointerType !== 'mouse' || still()) return;
+        bImg.src = '/assets/img/blick-' + a.getAttribute('data-stil') + '.webp';
+        zx = e.clientX; zy = e.clientY;
+        if (!blickAn) { bx = zx; by = zy; }
+        blickAn = true; blick.classList.add('da');
+      });
+      a.addEventListener('pointerleave', function () { blickAn = false; blick.classList.remove('da'); });
+      a.addEventListener('pointermove', function (e) { zx = e.clientX; zy = e.clientY; });
     });
-    a.addEventListener('pointerleave', function () { blick.classList.remove('da'); });
-    a.addEventListener('pointermove', function (e) {
-      blick.style.setProperty('--bx', Math.min(e.clientX + 30, window.innerWidth - 300) + 'px');
-      blick.style.setProperty('--by', Math.max(10, e.clientY - 170) + 'px');
-    });
+    (function nach() {
+      var dx = zx - bx, dy = zy - by;
+      bx += dx * .13; by += dy * .13; groesse += ((blickAn ? 1 : .6) - groesse) * .16;
+      var x = Math.min(bx + 36, window.innerWidth - blick.offsetWidth - 16), y = Math.max(12, Math.min(by - blick.offsetHeight * .62, window.innerHeight - blick.offsetHeight - 16));
+      blick.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + Math.max(-9, Math.min(9, dx * .07)).toFixed(2) + 'deg) scale(' + groesse.toFixed(3) + ')';
+      requestAnimationFrame(nach);
+    })();
+  }
+  /* Bausteine: laufen von selbst durch, bis jemand hineingreift; das Gerät neigt sich leicht zur Maus */
+  $$('.bau').forEach(function (b) {
+    var tabs = $$('.bau-wahl .pille', b), aus = false, buehne = $('.bau-buehne', b);
+    function halt() { clearTimeout(b._zeit); tabs.forEach(function (t2) { t2.classList.remove('laeuft'); }); }
+    function los() {
+      halt();
+      if (aus || still() || tabs.length < 2) return;
+      var akt = tabs.filter(function (t2) { return t2.getAttribute('aria-pressed') === 'true'; })[0] || tabs[0];
+      void akt.offsetWidth; akt.classList.add('laeuft');
+      b._zeit = setTimeout(function () { window.__auto = true; tabs[(tabs.indexOf(akt) + 1) % tabs.length].click(); window.__auto = false; los(); }, 6000);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting) los(); else halt(); }, { threshold: .35 }).observe(b);
+    ['pointerdown', 'keydown'].forEach(function (ev) { b.addEventListener(ev, function () { if (!window.__auto) { aus = true; halt(); } }, true); });
+    if (buehne) {
+      buehne.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || still()) return;
+        var d = $('.bau-feld:not([hidden]) .bau-demo', b), r = buehne.getBoundingClientRect();
+        if (d) { d.style.setProperty('--tx', (((e.clientX - r.left) / r.width - .5) * 2).toFixed(3)); d.style.setProperty('--ty', (((e.clientY - r.top) / r.height - .5) * 2).toFixed(3)); }
+      });
+      buehne.addEventListener('pointerleave', function () { $$('.bau-demo', b).forEach(function (d) { d.style.setProperty('--tx', 0); d.style.setProperty('--ty', 0); }); });
+    }
   });
   /* Die Anfrage ist von überall erreichbar */
   if (schnellKnopf && schnell) {

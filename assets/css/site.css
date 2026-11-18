@@ -717,3 +717,41 @@ html.gross-schrift .pflege{grid-template-columns:1fr}
 .held-bild{width:min(93vw,calc(93svh*1.777));height:auto}
 @media (max-width:860px){.held-bild{width:auto;height:50svh}}
 html.gross-schrift .held-bild{width:auto;height:44svh}
+
+/* ================= Fassung 4: weniger Vorführung, mehr Bühne ================= */
+/* Bausteine: dunkle Bühne im Ton der Seite, das Beispiel als Gerät, mehr Luft im Text */
+.bau-buehne{background:radial-gradient(70% 90% at 20% 28%,color-mix(in srgb,var(--accent) 38%,#0e1014),#0e1014 72%);border-radius:2rem;padding:clamp(1.8rem,5vw,5rem);color:#f2f0eb;overflow:hidden}
+.bau-feld{grid-template-columns:minmax(0,24rem) minmax(0,1fr);gap:2.5rem clamp(2.5rem,7vw,7rem)}
+.bau-demo{border-radius:2.3rem;padding:3.3rem 1.8rem 2rem;font-size:1.07rem;line-height:1.5;gap:1.3rem;box-shadow:0 0 0 .55rem #16181c,0 0 0 .62rem #3d4047,0 3rem 5rem -1.5rem rgba(0,0,0,.75);transform:perspective(1400px) rotateX(calc(var(--ty,0)*-3deg)) rotateY(calc(var(--tx,0)*4deg));transition:transform .4s ease-out,font-size .3s}
+.bau-demo:before{content:"";position:absolute;top:1.05rem;left:50%;width:5.4rem;height:.42rem;margin-left:-2.7rem;border-radius:1rem;background:#16181c;opacity:.85}
+.bau-marke{display:none}
+.bau-satz{color:#f2f0eb;font-size:clamp(1.6rem,3vw,2.7rem);line-height:1.12}
+.bau-satz:before{content:"";display:block;width:3rem;height:3px;margin-bottom:1.4rem;background:color-mix(in srgb,var(--accent) 55%,#fff)}
+.bau-demo [data-gruppe],.bau-demo [data-wenn]{gap:1.2rem}
+.d-liste li{padding:1.05rem .2rem}
+.d-zeiten th,.d-zeiten td{padding:.75rem .6rem}
+.d-hinweis{padding:1.2rem 1.25rem;gap:.5rem}
+.d-knopf{padding:.9em 1.6em}
+.chips{gap:.6rem}
+.bau-wahl .pille{position:relative;overflow:hidden}
+.bau-wahl .pille.laeuft:after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--bg);opacity:.85;transform-origin:left;animation:fortlauf 6s linear}
+@keyframes fortlauf{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (max-width:860px){.bau-feld{grid-template-columns:1fr}.bau-demo{width:100%;max-width:24rem;justify-self:center}.bau-buehne{padding:2rem 1.3rem 2.2rem}}
+html.gross-schrift .bau-feld{grid-template-columns:1fr}
+:is(html.ruhig,html.gross-schrift) .bau-demo{transform:none}
+
+/* Vorschau am Mauszeiger: ein echtes Bild der Seite im Rahmen */
+.weg-blick{display:block;width:25rem;aspect-ratio:16/10;padding:0;border-radius:1rem;overflow:hidden;background:#16181c;box-shadow:0 0 0 .4rem #16181c,0 2.5rem 5rem -1.5rem rgba(0,0,0,.65);transition:opacity .28s;transform-origin:0 60%}
+.weg-blick.da{opacity:1}
+.weg-blick img{width:100%;height:100%;object-fit:cover;object-position:top}
+
+/* Bühne bleibt gleich hoch: alle Beispiele liegen übereinander, das gewählte blendet weich ein */
+.bau-buehne{display:grid}
+.bau-buehne>.bau-feld{grid-area:1/1;transition:opacity .5s,transform .6s cubic-bezier(.2,.7,.2,1),visibility 0s}
+.bau-buehne>.bau-feld[hidden]{display:grid;visibility:hidden;opacity:0;transform:translateY(1.2rem);pointer-events:none;transition:opacity .25s,transform 0s .25s,visibility 0s .25s}
+html.js .bau-buehne>.bau-feld{animation:none}
+html.ruhig .bau-buehne>.bau-feld{transition:none;transform:none}
+/* Im Gerät immer die gut lesbare Schrift, auch auf Seiten mit Schmuckschrift */
+.bau-demo .gross{font-family:var(--sans);letter-spacing:0;line-height:1.35}
+.bau-demo .d-liste.gross li{font-size:1.02rem;font-weight:600}
+.d-zeiten td span{display:block;white-space:nowrap}
