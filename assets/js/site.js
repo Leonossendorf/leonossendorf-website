@@ -400,7 +400,7 @@
       }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, b: b }; }); })
         .then(function (x) {
           if (!x.ok || x.b.state !== 'accepted') throw new Error('nicht bestätigt');
-          /* Platz für die Messung der Werbung (Google Ads): hier die Anfrage zählen. */
+          /* Gezählt wird die Anfrage über den Aufruf der Danke-Seite (siehe Messung unten). */
           location.href = danke;
         }).catch(function () { laeuft = false; status.textContent = form.getAttribute('data-f-fehler'); });
     });
@@ -411,5 +411,58 @@
     var pre = $('pre', el), t = '';
     try { t = sessionStorage.getItem('letzte-anfrage') || ''; } catch (e) {}
     if (pre && t) pre.textContent = t;
+  });
+  /* Messung der Anzeigen (Google Ads). Der Baustein von Google wird erst nach Zustimmung geladen, vorher nicht.
+     Die Auswahl steht im Speicher des Browsers, gilt 180 Tage und lässt sich über „Cookie-Auswahl“ im Fuß ändern.
+     Gezählt wird bei Google der Aufruf der Danke-Seite, zum Beispiel /angebot/danke/. */
+  var ADS = 'AW-18574688930', mGeladen = false, mFrage = null;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+  window.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+  function mStand() {
+    try { var m = JSON.parse(localStorage.getItem('messung') || 'null'); if (m && Date.now() - m.t < 180 * 864e5) return m.w; } catch (e) {}
+    return '';
+  }
+  function mLaden() {
+    window.gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted' });
+    if (mGeladen || !LIVE) return;
+    mGeladen = true;
+    window.gtag('js', new Date());
+    var sk = document.createElement('script'); sk.async = true; sk.src = 'https://www.googletagmanager.com/gtm.js?id=' + ADS;
+    document.head.appendChild(sk);
+  }
+  function mAus() {
+    window.gtag('consent', 'update', { ad_storage: 'denied', ad_user_data: 'denied' });
+    document.cookie.split(';').forEach(function (c) {
+      var n = c.split('=')[0].trim();
+      if (/^_gcl_|^_gac_/.test(n)) ['', '; domain=.leonossendorf.de', '; domain=leonossendorf.de'].forEach(function (d) { document.cookie = n + '=; Max-Age=0; path=/' + d; });
+    });
+  }
+  function mSetzen(w) {
+    try { localStorage.setItem('messung', JSON.stringify({ w: w, t: Date.now() })); } catch (e) {}
+    if (w === 'ja') mLaden(); else mAus();
+    if (mFrage) { mFrage.remove(); mFrage = null; }
+  }
+  function mFragen(zeigeStand) {
+    if (mFrage) { $('button', mFrage).focus(); return; }
+    var du = !!$('[data-anrede="du"]'), stand = zeigeStand ? mStand() : '';
+    mFrage = document.createElement('section');
+    mFrage.className = 'mess'; mFrage.setAttribute('aria-labelledby', 'mess-titel');
+    mFrage.innerHTML = '<p class="mess-titel" id="mess-titel">Darf Google mitzählen?</p>'
+      + '<p>Ich schalte Anzeigen bei Google. Mit ' + (du ? 'deiner' : 'Ihrer') + ' Zustimmung misst Google mit Cookies, ob eine Anzeige zu einer Anfrage geführt hat. <a href="/datenschutz/#messung">Mehr dazu</a></p>'
+      + (stand ? '<p class="mess-stand">Bisher: ' + (stand === 'ja' ? 'zugestimmt' : 'abgelehnt') + '.</p>' : '')
+      + '<div class="mess-wahl"><button type="button" data-m="nein">Ablehnen</button><button type="button" data-m="ja">Zustimmen</button></div>';
+    document.body.insertBefore(mFrage, document.body.firstChild);
+    $$('button', mFrage).forEach(function (b) { b.addEventListener('click', function () { mSetzen(b.getAttribute('data-m')); }); });
+    if (zeigeStand) $('button', mFrage).focus();
+  }
+  if (mStand() === 'ja') mLaden();
+  else if (!mStand() && location.pathname.indexOf('/angebot') === 0) mFragen(false);
+  $$('[data-messung]').forEach(function (b) { b.addEventListener('click', function () { mFragen(true); }); });
+  /* Auf den Angebotsseiten: Klicks auf WhatsApp und Telefon als eigene Ereignisse merken */
+  if (location.pathname.indexOf('/angebot') === 0) document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null, h = a ? a.getAttribute('href') : '';
+    if (/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(h)) window.gtag('event', 'whatsapp_klick', { seite: location.pathname });
+    else if (/^tel:/.test(h)) window.gtag('event', 'telefon_klick', { seite: location.pathname });
   });
 })();

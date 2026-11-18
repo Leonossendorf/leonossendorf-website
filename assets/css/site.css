@@ -755,3 +755,18 @@ html.ruhig .bau-buehne>.bau-feld{transition:none;transform:none}
 .bau-demo .gross{font-family:var(--sans);letter-spacing:0;line-height:1.35}
 .bau-demo .d-liste.gross li{font-size:1.02rem;font-weight:600}
 .d-zeiten td span{display:block;white-space:nowrap}
+
+/* Frage nach der Messung: kleine Karte unten links, beide Antworten gleich groß und gleich gestaltet */
+.mess{position:fixed;right:var(--rand);bottom:1.2rem;z-index:70;width:min(27rem,calc(100vw - 1.6rem));background:#fff;color:#16202e;border-radius:1.2rem;padding:1.3rem 1.4rem 1.25rem;box-shadow:0 1.5rem 4rem -1rem rgba(0,0,0,.5),0 0 0 1px rgba(16,33,58,.12);font:400 .95rem/1.5 var(--sans);display:grid;gap:.6rem}
+html.js:not(.ruhig) .mess{animation:auf .5s cubic-bezier(.2,.7,.2,1)}
+.mess-titel{font-weight:650;font-size:1.08rem}
+.mess a{color:inherit;text-underline-offset:.2em}
+.mess-stand{color:#56637a}
+.mess-wahl{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.3rem}
+.mess-wahl button{font:600 1rem/1 var(--sans);padding:.95em 1em;border-radius:99px;border:2px solid #16202e;background:#16202e;color:#fff;cursor:pointer;transition:background .2s,color .2s}
+.mess-wahl button:hover{background:#fff;color:#16202e}
+.mess-wahl button:focus-visible{outline:3px solid #1a56c4;outline-offset:2px}
+@media (max-width:640px){.mess{left:.6rem;right:.6rem;bottom:.6rem;width:auto;padding:1rem 1.1rem;gap:.45rem;font-size:.92rem}.mess-wahl button{padding:.85em 1em}}
+html.gross-schrift .mess{font-size:1.15rem;width:min(36rem,calc(100vw - 1.6rem))}
+.fuss-wahl{font:inherit;color:inherit;background:none;border:0;padding:.25rem 0;cursor:pointer;text-decoration:underline;text-underline-offset:.2em}
+@media print{.mess{display:none}}
