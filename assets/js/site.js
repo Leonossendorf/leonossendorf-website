@@ -412,25 +412,17 @@
     try { t = sessionStorage.getItem('letzte-anfrage') || ''; } catch (e) {}
     if (pre && t) pre.textContent = t;
   });
-  /* Messung der Anzeigen (Google Ads). Der Baustein von Google wird erst nach Zustimmung geladen, vorher nicht.
-     Die Auswahl steht im Speicher des Browsers, gilt 180 Tage und lässt sich über „Cookie-Auswahl“ im Fuß ändern.
-     Gezählt wird bei Google der Aufruf der Danke-Seite, zum Beispiel /angebot/danke/. */
-  var ADS = 'AW-18574688930', mGeladen = false, mFrage = null;
+  /* Messung der Anzeigen (Google Ads) im Einwilligungsmodus. Das Google-Tag steht im Kopf jeder Seite und lädt sofort,
+     setzt und liest aber erst nach Zustimmung Cookies. Die Auswahl steht im Speicher des Browsers, gilt 180 Tage
+     und lässt sich über „Cookie-Auswahl“ im Fuß ändern. Gezählt wird bei Google der Aufruf der Danke-Seite. */
+  var mFrage = null;
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
-  window.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
   function mStand() {
     try { var m = JSON.parse(localStorage.getItem('messung') || 'null'); if (m && Date.now() - m.t < 180 * 864e5) return m.w; } catch (e) {}
     return '';
   }
-  function mLaden() {
-    window.gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted' });
-    if (mGeladen || !LIVE) return;
-    mGeladen = true;
-    window.gtag('js', new Date());
-    var sk = document.createElement('script'); sk.async = true; sk.src = 'https://www.googletagmanager.com/gtm.js?id=' + ADS;
-    document.head.appendChild(sk);
-  }
+  function mLaden() { window.gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted' }); }
   function mAus() {
     window.gtag('consent', 'update', { ad_storage: 'denied', ad_user_data: 'denied' });
     document.cookie.split(';').forEach(function (c) {
@@ -448,16 +440,15 @@
     var du = !!$('[data-anrede="du"]'), stand = zeigeStand ? mStand() : '';
     mFrage = document.createElement('section');
     mFrage.className = 'mess'; mFrage.setAttribute('aria-labelledby', 'mess-titel');
-    mFrage.innerHTML = '<p class="mess-titel" id="mess-titel">Darf Google mitzählen?</p>'
-      + '<p>Ich schalte Anzeigen bei Google. Mit ' + (du ? 'deiner' : 'Ihrer') + ' Zustimmung misst Google mit Cookies, ob eine Anzeige zu einer Anfrage geführt hat. <a href="/datenschutz/#messung">Mehr dazu</a></p>'
+    mFrage.innerHTML = '<p class="mess-titel" id="mess-titel">Darf Google Cookies setzen?</p>'
+      + '<p>Ich schalte Anzeigen bei Google. Mit ' + (du ? 'deiner' : 'Ihrer') + ' Zustimmung misst Google mit Cookies genau, ob eine Anzeige zu einer Anfrage geführt hat. Ohne Zustimmung zählt Google nur grob und ohne Cookies mit. <a href="/datenschutz/#messung">Mehr dazu</a></p>'
       + (stand ? '<p class="mess-stand">Bisher: ' + (stand === 'ja' ? 'zugestimmt' : 'abgelehnt') + '.</p>' : '')
       + '<div class="mess-wahl"><button type="button" data-m="nein">Ablehnen</button><button type="button" data-m="ja">Zustimmen</button></div>';
     document.body.insertBefore(mFrage, document.body.firstChild);
     $$('button', mFrage).forEach(function (b) { b.addEventListener('click', function () { mSetzen(b.getAttribute('data-m')); }); });
     if (zeigeStand) $('button', mFrage).focus();
   }
-  if (mStand() === 'ja') mLaden();
-  else if (!mStand() && location.pathname.indexOf('/angebot') === 0) mFragen(false);
+  if (!mStand() && location.pathname.indexOf('/angebot') === 0) mFragen(false);
   $$('[data-messung]').forEach(function (b) { b.addEventListener('click', function () { mFragen(true); }); });
   /* Auf den Angebotsseiten: Klicks auf WhatsApp und Telefon als eigene Ereignisse merken */
   if (location.pathname.indexOf('/angebot') === 0) document.addEventListener('click', function (e) {
