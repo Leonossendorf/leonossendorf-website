@@ -7,7 +7,9 @@
   var klemme = function (x) { return Math.max(0, Math.min(1, x)); };
   var weich = function (x) { return 1 - Math.pow(1 - x, 3); };
   var zwei = function (n) { return (n < 10 ? '0' : '') + n; };
-  var LIVE = ['leonossendorf.de', 'www.leonossendorf.de'].indexOf(location.hostname) > -1;
+  var LIVE = ['leonossendorf.de', 'www.leonossendorf.de', 'neu.leonossendorf.de'].indexOf(location.hostname) > -1;
+  /* Der Mailversand läuft als eigener kleiner Dienst bei Cloudflare und schickt über Resend */
+  var MAIL = 'https://leonossendorf-kontakt.leon-ossendorf.workers.dev/api/contact';
   var still = function () { return html.classList.contains('ruhig') || html.classList.contains('gross-schrift'); };
 
   /* ---------- Die Spur des Besuchs: nur im Tab gemerkt, geht erst mit einer Anfrage an Leon ---------- */
@@ -361,7 +363,7 @@
       try { sessionStorage.setItem('letzte-anfrage', text); } catch (e2) {}
       if (!LIVE) { location.href = danke; return; }
       laeuft = true; status.textContent = form.getAttribute('data-f-senden');
-      fetch('/api/contact', {
+      fetch(MAIL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: el.name.value.trim(), reply: el.email.value.trim(), message: text, company: el.company.value, requestId: kennung, anrede: form.getAttribute('data-anrede') })
       }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, b: b }; }); })
