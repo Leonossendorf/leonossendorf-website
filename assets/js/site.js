@@ -326,7 +326,7 @@
   };
   $$('form[data-anfrage]').forEach(function (form) {
     var status = $('.form-status', form), schritte = $$('.schritt', form), laeuft = false;
-    var kennung = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+    var kennung = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
     if (!LIVE) { var hin = $('.vorschau-hinweis', form); if (hin) hin.hidden = false; }
     function fehler(feld, text) {
       var f = form.elements[feld], ziel = document.getElementById(form.id + '-' + feld + '-fehler');
