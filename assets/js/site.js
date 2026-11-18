@@ -448,10 +448,11 @@
     $$('button', mFrage).forEach(function (b) { b.addEventListener('click', function () { mSetzen(b.getAttribute('data-m')); }); });
     if (zeigeStand) $('button', mFrage).focus();
   }
-  if (!mStand() && location.pathname.indexOf('/angebot') === 0) mFragen(false);
+  /* Gefragt wird auf den Angebotsseiten und überall, wenn jemand in diesem Besuch über eine Anzeige gekommen ist */
+  if (!mStand() && (location.pathname.indexOf('/angebot') === 0 || spur.anzeige)) mFragen(false);
   $$('[data-messung]').forEach(function (b) { b.addEventListener('click', function () { mFragen(true); }); });
-  /* Auf den Angebotsseiten: Klicks auf WhatsApp und Telefon als eigene Ereignisse merken */
-  if (location.pathname.indexOf('/angebot') === 0) document.addEventListener('click', function (e) {
+  /* Klicks auf WhatsApp und Telefon als eigene Ereignisse merken, mit der Seite, auf der geklickt wurde */
+  document.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a[href]') : null, h = a ? a.getAttribute('href') : '';
     if (/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(h)) window.gtag('event', 'whatsapp_klick', { seite: location.pathname });
     else if (/^tel:/.test(h)) window.gtag('event', 'telefon_klick', { seite: location.pathname });
