@@ -823,3 +823,15 @@ html.gross-schrift .gastro-band{white-space:normal}
 @media (max-width:520px){.drin{grid-template-columns:1fr}.drin li{padding-bottom:1.6rem}}
 html.gross-schrift .drin{grid-template-columns:1fr}
 html.gross-schrift .bon{transform:none}
+
+/* Formular auf einer Seite: Zusatzangaben dezent zum Ausklappen */
+.mehr summary{cursor:pointer;list-style:none;display:inline-flex;align-items:baseline;gap:.5rem;font-size:.98rem;color:var(--muted);padding:.2rem 0}
+.mehr summary::-webkit-details-marker{display:none}
+.mehr summary:before{content:"+";font-weight:600;width:.9em;display:inline-block;text-align:center}
+.mehr[open] summary:before{content:"–"}
+.mehr summary:hover{color:var(--ink)}
+.mehr summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:.3rem}
+.mehr-innen{display:grid;gap:1.2rem;margin-top:1.1rem}
+.mehr .feld textarea{min-height:5rem}
+/* Preiszeile: „Optional“ steht über der Zahl, nicht im Leistungstext */
+.wahl-marke{display:block;font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}

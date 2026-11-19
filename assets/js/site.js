@@ -156,6 +156,8 @@
     rollt.forEach(function (el) { el.style.setProperty('--roll', roll); });
     if (leiste) {
       var imForm = formAb && formAb.getBoundingClientRect().top < vh * .75;
+      /* Solange das Formular oben auf der Seite zu sehen ist, bleibt die Leiste weg */
+      var oben = $('#entwurf'); if (oben) { var ro = oben.getBoundingClientRect(); if (ro.bottom > vh * .25 && ro.top < vh) imForm = true; }
       leiste.classList.toggle('da', window.scrollY > vh * .8 && !imForm && !html.classList.contains('abgelaufen'));
     }
   }
@@ -388,7 +390,7 @@
       if (!pruefen()) { if (schritte.length > 1) { schritte[1].hidden = true; schritte[0].hidden = false; } return; }
       var el = form.elements, zeilen = [];
       var dazu = function (titel, name) { var f = el[name]; var v = f && f.value ? String(f.value).trim() : ''; if (v) zeilen.push(titel + ': ' + v); };
-      dazu('Telefon', 'telefon'); dazu('Möchte', 'anliegen'); dazu('Nachricht', 'nachricht'); dazu('Betrieb', 'betrieb'); dazu('Ort', 'ort'); dazu('Jetzige Website', 'website'); dazu('Gewünschter Kontaktweg', 'weg'); dazu('Kundenart der Seite', 'wer');
+      dazu('Telefon', 'telefon'); dazu('Möchte', 'anliegen'); dazu('Nachricht', 'nachricht'); dazu('Betrieb', 'betrieb'); dazu('Ort', 'ort'); dazu('Jetzige Website', 'website'); dazu('Vorstellung von der Website', 'vorstellung'); dazu('Sonst noch wichtig', 'wichtig'); dazu('Gewünschter Kontaktweg', 'weg'); dazu('Kundenart der Seite', 'wer');
       zeilen.push('', zusammenhang());
       var text = zeilen.join('\n').slice(0, 3900), danke = form.getAttribute('data-danke') || '/danke/';
       try { sessionStorage.setItem('letzte-anfrage', text); } catch (e2) {}
