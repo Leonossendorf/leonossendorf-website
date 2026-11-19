@@ -173,7 +173,7 @@
       akt = i; var d = daten[i];
       tabs.forEach(function (t2, n) { t2.setAttribute('aria-pressed', n === i ? 'true' : 'false'); });
       img.src = '/assets/img/schau-' + d.k + '-pc.webp'; img.alt = 'Website ' + d.name;
-      adr.textContent = d.adr; tit.textContent = d.name + ', ' + d.ort; txt.textContent = d.text;
+      adr.textContent = d.adr; tit.textContent = d.ort ? d.name + ', ' + d.ort : d.name; txt.textContent = d.text;
       schirm.scrollTop = 0; schirm._y = 0; schirm._d = 1;
       if (vomNutzer) merke('Referenz angesehen: ' + d.name);
     }
@@ -448,13 +448,17 @@
     $$('button', mFrage).forEach(function (b) { b.addEventListener('click', function () { mSetzen(b.getAttribute('data-m')); }); });
     if (zeigeStand) $('button', mFrage).focus();
   }
-  /* Gefragt wird auf den Angebotsseiten und überall, wenn jemand in diesem Besuch über eine Anzeige gekommen ist */
-  if (!mStand() && (location.pathname.indexOf('/angebot') === 0 || spur.anzeige)) mFragen(false);
+  /* Gefragt wird auf den Kampagnenseiten (/angebot/, /gastro/…) und überall, wenn jemand in diesem Besuch über eine Anzeige gekommen ist */
+  if (!mStand() && (html.hasAttribute('data-angebot') || spur.anzeige)) mFragen(false);
   $$('[data-messung]').forEach(function (b) { b.addEventListener('click', function () { mFragen(true); }); });
   /* Klicks auf WhatsApp und Telefon als eigene Ereignisse merken, mit der Seite, auf der geklickt wurde */
   document.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a[href]') : null, h = a ? a.getAttribute('href') : '';
-    if (/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(h)) window.gtag('event', 'whatsapp_klick', { seite: location.pathname });
+    if (/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(h)) {
+      window.gtag('event', 'whatsapp_klick', { seite: location.pathname });
+      /* Google-Ads-Conversion „Kontakt“: Klick auf einen WhatsApp-Link */
+      window.gtag('event', 'conversion', { send_to: 'AW-18574688930/FB-iCNvYp7sdEKKFjZlF', value: 1.0, currency: 'EUR' });
+    }
     else if (/^tel:/.test(h)) window.gtag('event', 'telefon_klick', { seite: location.pathname });
   });
 })();
