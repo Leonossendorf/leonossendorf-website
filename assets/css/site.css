@@ -864,3 +864,88 @@ html[data-kampagne="praxis"] .leiste .knopf{background:#fff;border-color:#fff;co
   .d-zeiten th,.d-zeiten td{padding-left:.4rem}
   .bau-satz{overflow-wrap:break-word}
 }
+
+/* ================= Fassung 5 (20.11.): Du, Kontakt leicht gemacht, „So arbeite ich“ groß, Leistungsbeispiele Praxis ================= */
+/* Formular: Name plus E-Mail oder Telefon, eins genügt */
+.kontaktweg legend{margin-bottom:.55rem}
+.zwei-felder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.zwei-felder label{display:block;font-weight:500;font-size:.92rem;margin-bottom:.3rem;color:var(--muted)}
+@media (max-width:420px){.zwei-felder{grid-template-columns:1fr}}
+html.gross-schrift .zwei-felder{grid-template-columns:1fr}
+/* Alle Wege zu mir, gleich oben auf Werbeseiten */
+.kontaktwege{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .6rem;margin-top:1.4rem;font-size:.95rem}
+.kontaktwege>span{color:var(--muted);margin-right:.2rem}
+.kontaktwege a{display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;font-weight:600;border:1.5px solid var(--line);border-radius:99rem;padding:.55em 1em;background:color-mix(in srgb,var(--bg) 70%,#fff);transition:border-color .2s,transform .2s}
+.kontaktwege a:hover{border-color:var(--ink);transform:translateY(-1px)}
+.kontaktwege svg{width:1.1rem;height:1.1rem}
+/* „So arbeite ich“: groß, lebendig, einladend */
+.zg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) auto;align-items:center;gap:1.5rem clamp(1.5rem,4vw,4rem);margin-top:clamp(3rem,7vw,5.5rem);padding:clamp(1.6rem,3.5vw,3rem) clamp(1.6rem,4vw,3.5rem);border-radius:2rem;text-decoration:none;color:#f3f5f8;
+  background:radial-gradient(80% 140% at 0% 0%,color-mix(in srgb,var(--accent) 55%,#0d1830),#0d1830 70%);box-shadow:0 2.5rem 5rem -2.5rem rgba(13,24,48,.6);position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.zg:hover{transform:translateY(-4px);box-shadow:0 3.2rem 6rem -2.5rem rgba(13,24,48,.7)}
+.zg:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.zg-szene{width:100%;max-width:22rem;height:auto;overflow:visible}
+.zg-szene rect,.zg-szene circle:not(.zg-punkt),.zg-szene path{fill:none;stroke:#f3f5f8;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.zg-szene .zg-1 circle{fill:#f3f5f8;stroke:none}
+.zg-linie{stroke-dasharray:6 8;opacity:.45}
+.zg-punkt{fill:#ffb18f}
+.zg-text small{display:block;font:600 .78rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#aebcd6;margin-bottom:.5rem}
+.zg-text b{display:block;font:400 clamp(2.6rem,5.4vw,4.8rem)/1 var(--serif);letter-spacing:-.02em}
+.zg-satz{display:block;margin-top:.8rem;font-size:clamp(1.02rem,1.4vw,1.18rem);line-height:1.5;color:#d3dbe9;max-width:30rem}
+.zg-los{display:inline-flex;align-items:center;gap:.6em;background:#fff;color:#0d1830;border-radius:99rem;padding:1em 1.6em;font-weight:650;white-space:nowrap;transition:gap .25s}
+.zg:hover .zg-los{gap:1em}
+html.js:not(.ruhig) .zg-punkt{animation:zg-fahrt 6s cubic-bezier(.6,0,.3,1) infinite}
+html.js:not(.ruhig) .zg-1,html.js:not(.ruhig) .zg-2,html.js:not(.ruhig) .zg-3{transform-box:fill-box;transform-origin:center;animation:zg-puls 6s ease-in-out infinite}
+html.js:not(.ruhig) .zg-2{animation-delay:2s}
+html.js:not(.ruhig) .zg-3{animation-delay:4s}
+@keyframes zg-fahrt{0%,8%{transform:translateX(0)}40%,48%{transform:translateX(120px)}80%,100%{transform:translateX(240px)}}
+@keyframes zg-puls{0%,100%{opacity:.45;transform:scale(.94)}12%,26%{opacity:1;transform:scale(1.06)}40%{opacity:.45;transform:scale(.94)}}
+@media (max-width:860px){.zg{grid-template-columns:1fr;gap:1.2rem}.zg-szene{max-width:16rem}.zg-los{justify-self:start}}
+html[data-stil="praxis"] .zg-text b,html[data-stil="handwerk"] .zg-text b{font-family:var(--kopf);font-weight:var(--kopf-fett);letter-spacing:var(--kopf-sperre)}
+/* Leistungsbeispiele Praxis: echte Bildschirmfotos aus einer Demo-Praxis */
+.kasten-wahl{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.4rem}
+.kasten-buehne{display:grid;background:linear-gradient(160deg,var(--soft),color-mix(in srgb,var(--soft) 40%,#fff));border:1px solid var(--line);border-radius:2rem;padding:clamp(1.6rem,4vw,3.6rem);overflow:hidden}
+.kasten-feld{grid-area:1/1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:2rem clamp(2rem,5vw,5rem);align-items:center;transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.2,1)}
+.kasten-feld[hidden]{display:grid;visibility:hidden;opacity:0;transform:translateY(1rem);pointer-events:none}
+.kasten-text h3{font:var(--kopf-fett) clamp(1.7rem,2.8vw,2.5rem)/1.1 var(--kopf);letter-spacing:var(--kopf-sperre);margin-bottom:1rem}
+.kasten-text p{font-size:clamp(1.05rem,1.4vw,1.2rem);line-height:1.55;color:var(--muted);max-width:28rem}
+.kasten-bild{display:grid;justify-items:center}
+.handy{margin:0;width:min(100%,16.5rem);aspect-ratio:390/844;border-radius:2.4rem;padding:.55rem;background:#11141a;box-shadow:0 0 0 1px #2c313b,0 2.5rem 4rem -2rem rgba(15,36,64,.55);position:relative}
+.handy img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:1.9rem;display:block;background:#fff}
+.laptop{margin:0;width:100%;border-radius:1rem 1rem .4rem .4rem;padding:.6rem .6rem 1.4rem;background:#11141a;box-shadow:0 2.5rem 4rem -2rem rgba(15,36,64,.5);position:relative}
+.laptop img{width:100%;display:block;border-radius:.4rem;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.geraete{position:relative;display:grid;width:100%;justify-items:start}
+.geraete .laptop{width:88%}
+.geraete .handy.vorn{position:absolute;right:0;bottom:-1.5rem;width:min(34%,11rem)}
+.geraete.paar{grid-template-columns:1fr 1fr;justify-items:center;gap:1.2rem}
+.geraete.paar .handy{width:min(100%,14rem)}
+.handy.gross{transform:translateY(1.2rem)}
+.schrittfolge{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.6rem;align-items:center;width:100%}
+.schrittfolge .handy img{position:absolute;inset:.55rem;width:calc(100% - 1.1rem);height:calc(100% - 1.1rem);opacity:0;transition:opacity .5s}
+.schrittfolge .handy img.an{opacity:1}
+.schritt-liste{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.schritt-liste button{display:flex;align-items:center;gap:.8rem;width:100%;text-align:left;font:600 1.02rem var(--sans);color:var(--muted);background:none;border:0;border-radius:1rem;padding:.7rem .8rem;cursor:pointer;transition:background .25s,color .25s}
+.schritt-liste b{display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:1.5px solid currentColor;font-size:.9rem;flex:none}
+.schritt-liste button.an{background:#fff;color:var(--ink);box-shadow:0 .8rem 1.6rem -1rem rgba(15,36,64,.35)}
+.schritt-liste button.an b{background:var(--accent);border-color:var(--accent);color:#fff}
+.schritt-liste button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:860px){
+  .kasten-feld{grid-template-columns:1fr}
+  .geraete .laptop{width:100%}.geraete .handy.vorn{width:32%;bottom:-1rem;right:-.3rem}
+  .schrittfolge{grid-template-columns:1fr;justify-items:center}.schritt-liste{width:100%}
+}
+html.gross-schrift .kasten-feld{grid-template-columns:1fr}
+html.ruhig .kasten-feld{transition:none}
+/* Fassung 5, Nachbesserung */
+.kasten-feld{align-self:start}
+.schrittfolge{grid-template-columns:16.5rem minmax(0,1fr)}
+.schrittfolge .handy{width:16.5rem}
+.zg-szene g rect,.zg-szene g circle:not(.zg-punkt){fill:#13213f}
+.zg-szene .zg-1 circle{fill:#f3f5f8}
+@media (max-width:860px){
+  .schrittfolge{grid-template-columns:1fr}.schrittfolge .handy{width:min(100%,15rem)}
+  .kasten-wahl{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(-1*var(--rand));padding:0 var(--rand) .3rem;scrollbar-width:none}
+  .kasten-wahl::-webkit-scrollbar{display:none}
+  .kasten-wahl .pille{flex:none}
+  .kasten-buehne{padding:1.4rem 1.1rem 2rem}
+}
+.zg-szene .zg-1 circle:not(.zg-punkt){fill:#f3f5f8;stroke:none}

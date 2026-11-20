@@ -366,12 +366,20 @@
       if (ziel) ziel.textContent = text;
       if (f && f.setAttribute) f.setAttribute('aria-invalid', text ? 'true' : 'false');
     }
+    /* Pflicht: Name und ein Weg zurück (E-Mail oder Telefon). Alles andere ist freiwillig. */
+    function kontaktFehler(text, feld) {
+      var ziel = document.getElementById(form.id + '-kontakt-fehler');
+      if (ziel) ziel.textContent = text;
+      ['email', 'telefon'].forEach(function (n) { var f = form.elements[n]; if (f) f.setAttribute('aria-invalid', text && (feld === n || feld === 'beide') ? 'true' : 'false'); });
+    }
     function pruefen() {
-      fehler('name', ''); fehler('email', ''); fehler('telefon', '');
+      fehler('name', ''); kontaktFehler('');
       if (!form.elements.name.value.trim()) fehler('name', form.getAttribute('data-f-name'));
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) fehler('email', form.getAttribute('data-f-email'));
-      var tel = form.elements.telefon.value.trim(), zif = tel.replace(/\D/g, '').length;
-      if (!/^\+?[\d\s().\/-]+$/.test(tel) || zif < 7 || zif > 15) fehler('telefon', form.getAttribute('data-f-telefon'));
+      var m = form.elements.email.value.trim(), t = form.elements.telefon.value.trim(), zif = t.replace(/\D/g, '').length;
+      var mOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m), tOk = /^\+?[\d\s().\/-]+$/.test(t) && zif >= 7 && zif <= 15;
+      if (m && !mOk) kontaktFehler(form.getAttribute('data-f-email'), 'email');
+      else if (t && !tOk) kontaktFehler(form.getAttribute('data-f-telefon'), 'telefon');
+      else if (!mOk && !tOk) kontaktFehler(form.getAttribute('data-f-kontakt'), 'beide');
       var falsch = $('[aria-invalid="true"]', form);
       if (falsch) { falsch.focus(); return false; }
       return true;
@@ -390,7 +398,7 @@
       if (!pruefen()) { if (schritte.length > 1) { schritte[1].hidden = true; schritte[0].hidden = false; } return; }
       var el = form.elements, zeilen = [];
       var dazu = function (titel, name) { var f = el[name]; var v = f && f.value ? String(f.value).trim() : ''; if (v) zeilen.push(titel + ': ' + v); };
-      dazu('Telefon', 'telefon'); dazu('Möchte', 'anliegen'); dazu('Nachricht', 'nachricht'); dazu('Betrieb', 'betrieb'); dazu('Ort', 'ort'); dazu('Jetzige Website', 'website'); dazu('Vorstellung von der Website', 'vorstellung'); dazu('Sonst noch wichtig', 'wichtig'); dazu('Gewünschter Kontaktweg', 'weg'); dazu('Kundenart der Seite', 'wer');
+      dazu('Möchte', 'anliegen'); dazu('Nachricht', 'nachricht'); dazu('Betrieb', 'betrieb'); dazu('Ort', 'ort'); dazu('Jetzige Website', 'website'); dazu('Vorstellung von der Website', 'vorstellung'); dazu('Sonst noch wichtig', 'wichtig'); dazu('Gewünschter Kontaktweg', 'weg'); dazu('Kundenart der Seite', 'wer');
       zeilen.push('', zusammenhang());
       var text = zeilen.join('\n').slice(0, 3900), danke = form.getAttribute('data-danke') || '/danke/';
       try { sessionStorage.setItem('letzte-anfrage', text); } catch (e2) {}
@@ -398,7 +406,7 @@
       laeuft = true; status.textContent = form.getAttribute('data-f-senden');
       fetch(MAIL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: el.name.value.trim(), reply: el.email.value.trim(), message: text, company: el.company.value, requestId: kennung, anrede: form.getAttribute('data-anrede') })
+        body: JSON.stringify({ name: el.name.value.trim(), reply: el.email.value.trim(), telefon: el.telefon.value.trim(), message: text, company: el.company.value, requestId: kennung, anrede: form.getAttribute('data-anrede') })
       }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, b: b }; }); })
         .then(function (x) {
           if (!x.ok || x.b.state !== 'accepted') throw new Error('nicht bestätigt');
@@ -406,6 +414,14 @@
           location.href = danke;
         }).catch(function () { laeuft = false; status.textContent = form.getAttribute('data-f-fehler'); });
     });
+  });
+  /* Anleitung in Schritten: wechselt von selbst, bis jemand einen Schritt antippt */
+  $$('[data-schritte]').forEach(function (box) {
+    var bilder = $$('.handy img', box), knoepfe = $$('.schritt-liste button', box), i = 0, uhr = null;
+    function zeige(n) { i = n; bilder.forEach(function (b, k) { b.classList.toggle('an', k === n); }); knoepfe.forEach(function (b, k) { b.classList.toggle('an', k === n); b.setAttribute('aria-pressed', k === n ? 'true' : 'false'); }); }
+    function lauf() { clearInterval(uhr); if (still()) return; uhr = setInterval(function () { if (!document.hidden) zeige((i + 1) % bilder.length); }, 2800); }
+    knoepfe.forEach(function (b, k) { b.addEventListener('click', function () { zeige(k); clearInterval(uhr); setTimeout(lauf, 9000); merke('Anleitung: Schritt ' + (k + 1) + ' angesehen'); }); });
+    zeige(0); lauf();
   });
   /* In der Vorschau zeigt die Danke-Seite, was Leon bekommen hätte */
   $$('[data-nur-vorschau]').forEach(function (el) {
@@ -443,7 +459,7 @@
     mFrage = document.createElement('section');
     mFrage.className = 'mess'; mFrage.setAttribute('aria-labelledby', 'mess-titel');
     mFrage.innerHTML = '<p class="mess-titel" id="mess-titel">Darf Google Cookies setzen?</p>'
-      + '<p>Ich schalte Anzeigen bei Google. Mit ' + (du ? 'deiner' : 'Ihrer') + ' Zustimmung misst Google mit Cookies genau, ob eine Anzeige zu einer Anfrage geführt hat. Ohne Zustimmung zählt Google nur grob und ohne Cookies mit. <a href="/datenschutz/#messung">Mehr dazu</a></p>'
+      + '<p>Ich schalte Anzeigen bei Google. Mit Zustimmung misst Google mit Cookies genau, ob eine Anzeige zu einer Anfrage geführt hat. Ohne Zustimmung zählt Google nur grob und ohne Cookies mit. <a href="/datenschutz/#messung">Mehr dazu</a></p>'
       + (stand ? '<p class="mess-stand">Bisher: ' + (stand === 'ja' ? 'zugestimmt' : 'abgelehnt') + '.</p>' : '')
       + '<div class="mess-wahl"><button type="button" data-m="nein">Ablehnen</button><button type="button" data-m="ja">Zustimmen</button></div>';
     document.body.insertBefore(mFrage, document.body.firstChild);
@@ -462,5 +478,6 @@
       window.gtag('event', 'conversion', { send_to: 'AW-18574688930/FB-iCNvYp7sdEKKFjZlF', value: 1.0, currency: 'EUR' });
     }
     else if (/^tel:/.test(h)) window.gtag('event', 'telefon_klick', { seite: location.pathname });
+    else if (/^mailto:/.test(h)) window.gtag('event', 'mail_klick', { seite: location.pathname });
   });
 })();
