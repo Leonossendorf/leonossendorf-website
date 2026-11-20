@@ -451,7 +451,7 @@
     if (zeigeStand) $('button', mFrage).focus();
   }
   /* Gefragt wird auf den Kampagnenseiten (/angebot/, /gastro/…) und überall, wenn jemand in diesem Besuch über eine Anzeige gekommen ist */
-  if (!mStand() && (html.hasAttribute('data-angebot') || spur.anzeige)) mFragen(false);
+  if (!mStand() && (html.hasAttribute('data-angebot') || html.hasAttribute('data-kampagne') || spur.anzeige)) mFragen(false);
   $$('[data-messung]').forEach(function (b) { b.addEventListener('click', function () { mFragen(true); }); });
   /* Klicks auf WhatsApp und Telefon als eigene Ereignisse merken, mit der Seite, auf der geklickt wurde */
   document.addEventListener('click', function (e) {
