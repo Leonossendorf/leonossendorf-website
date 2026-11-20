@@ -835,3 +835,32 @@ html.gross-schrift .bon{transform:none}
 .mehr .feld textarea{min-height:5rem}
 /* Preiszeile: „Optional“ steht über der Zahl, nicht im Leistungstext */
 .wahl-marke{display:block;font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}
+
+/* Praxis-Landingpage: ruhig, sachlich, viel Weiß */
+.praxis-auftakt h1{font-size:clamp(2.3rem,4.3vw,4.1rem);max-width:15ch}
+html[data-stil="praxis"] .gastro-form{border:1px solid var(--line);box-shadow:0 2rem 4rem -2.6rem rgba(15,36,64,.35);--ink:#0f2440;--muted:#475a73;--line:#d3deee;--accent:#1a56c4}
+html[data-stil="praxis"] .gastro-auftakt{border-bottom:1px solid var(--line)}
+.drin.regeln{grid-template-columns:repeat(2,minmax(0,1fr))}
+html[data-stil="praxis"] .drin li:before{color:var(--accent)}
+.fragen{display:grid;border-top:1px solid var(--ink)}
+.frage{border-bottom:1px solid var(--line)}
+.frage summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:1.5rem;padding:1.15rem 0;font-weight:600;font-size:clamp(1.08rem,1.5vw,1.22rem)}
+.frage summary::-webkit-details-marker{display:none}
+.frage summary:after{content:"+";font-weight:400;font-size:1.6rem;line-height:1;color:var(--accent);transition:transform .25s}
+.frage[open] summary:after{transform:rotate(45deg)}
+.frage summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:.3rem}
+.frage p{padding:0 0 1.3rem;max-width:40rem;font-size:1.08rem;line-height:1.55;color:var(--muted)}
+@media (max-width:860px){.drin.regeln{grid-template-columns:1fr}}
+/* Praxis-Landingpage: auch der Schluss bleibt sachlich und blau */
+html[data-kampagne="praxis"] .finale h2{font-family:var(--kopf);font-weight:var(--kopf-fett);letter-spacing:var(--kopf-sperre);line-height:1.08}
+html[data-kampagne="praxis"] .finale-form{--accent:#1a56c4}
+html[data-kampagne="praxis"] .finale .haken li:before{color:#8fb3f2}
+html[data-kampagne="praxis"] .leiste .knopf{background:#fff;border-color:#fff;color:#0f2440}
+/* Schmale Handys: das Beispiel-Gerät darf schrumpfen, nichts wird rechts abgeschnitten */
+@media (max-width:520px){
+  .bau-feld{grid-template-columns:minmax(0,1fr)}
+  .bau-demo{padding:3rem 1.1rem 1.6rem;font-size:1rem;min-width:0}
+  .d-zeiten th{width:auto;padding-right:.3rem}
+  .d-zeiten th,.d-zeiten td{padding-left:.4rem}
+  .bau-satz{overflow-wrap:break-word}
+}
