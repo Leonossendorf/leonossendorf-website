@@ -477,7 +477,11 @@
       /* Google-Ads-Conversion „Kontakt“: Klick auf einen WhatsApp-Link */
       window.gtag('event', 'conversion', { send_to: 'AW-18574688930/FB-iCNvYp7sdEKKFjZlF', value: 1.0, currency: 'EUR' });
     }
-    else if (/^tel:/.test(h)) window.gtag('event', 'telefon_klick', { seite: location.pathname });
+    else if (/^tel:/.test(h)) {
+      window.gtag('event', 'telefon_klick', { seite: location.pathname });
+      /* Google-Ads-Conversion „Kontakt“: Klick auf die Telefonnummer */
+      window.gtag('event', 'conversion', { send_to: 'AW-18574688930/FB-iCNvYp7sdEKKFjZlF' });
+    }
     else if (/^mailto:/.test(h)) window.gtag('event', 'mail_klick', { seite: location.pathname });
   });
 })();

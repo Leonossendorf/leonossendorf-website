@@ -949,3 +949,21 @@ html.ruhig .kasten-feld{transition:none}
   .kasten-buehne{padding:1.4rem 1.1rem 2rem}
 }
 .zg-szene .zg-1 circle:not(.zg-punkt){fill:#f3f5f8;stroke:none}
+
+/* Landingpage Psychotherapie und Fokus Anmeldung (21.11.) */
+.praxis-auftakt h1{max-width:17ch}
+.patienten-hinweis{display:inline-block;margin-top:1rem;padding:.6rem .95rem;border-radius:.8rem;background:var(--soft);color:var(--muted);font-size:.95rem;line-height:1.4}
+.patienten-hinweis a{color:var(--ink);font-weight:650;text-underline-offset:.2em}
+.patienten-hinweis+.unter{margin-top:1.1rem}
+.drin.vier{grid-template-columns:repeat(4,minmax(0,1fr))}
+.drin.vier b{color:var(--accent)}
+@media (max-width:1000px){.drin.vier{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.drin.vier{grid-template-columns:1fr}}
+html.gross-schrift .drin.vier{grid-template-columns:1fr}
+html[data-kampagne="psychotherapie"] .finale h2{font-family:var(--kopf);font-weight:var(--kopf-fett);letter-spacing:var(--kopf-sperre);line-height:1.08}
+html[data-kampagne="psychotherapie"] .finale-form{--accent:#1a56c4}
+html[data-kampagne="psychotherapie"] .finale .haken li:before{color:#8fb3f2}
+html[data-kampagne="psychotherapie"] .leiste .knopf{background:#fff;border-color:#fff;color:#0f2440}
+.gastro-auftakt>div{min-width:0}
+.praxis-auftakt h1.lang{hyphens:manual;overflow-wrap:break-word}
+@media (max-width:860px){.praxis-auftakt h1.lang{font-size:min(3rem,7.8vw)}}
