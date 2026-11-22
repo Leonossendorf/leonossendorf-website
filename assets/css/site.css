@@ -1037,3 +1037,17 @@ html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bez
   .geraete .laptop,.kasten-feld.breit .geraete .laptop{width:100%}
   .schritt-liste{padding-inline:calc(var(--rand) - .5rem)}
 }
+/* ===== Askel: Arztpraxis-Seiten /praxis/ und /praxis/entwurf/ ===== */
+@media (max-width:860px){
+  /* Handy: in jedem Reiter erst Überschrift und Text, dann das Bild (vorher je nach Reiter unterschiedlich) */
+  .px-kasten .kasten-feld{grid-template-columns:1fr}
+  .px-kasten .kasten-feld .kasten-text{order:-1}
+  /* Terminbuchung: die vier Schritte stehen über dem Handy, damit man beim Antippen sieht, wie das Bild wechselt */
+  .px-kasten .schritt-liste{order:-1;grid-template-columns:1fr 1fr;gap:.4rem;width:100%}
+  .px-kasten .schritt-liste button{font-size:.95rem;padding:.55rem .6rem;gap:.55rem;line-height:1.2}
+  .px-kasten .schritt-liste b{width:1.9rem;height:1.9rem;font-size:.85rem}
+}
+@media (max-width:600px){
+  /* Das Computer-Bild ist auf dem Handy-Bildschirm nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
+  .px-kasten .geraete .laptop{display:none}
+}
