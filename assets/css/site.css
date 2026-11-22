@@ -967,3 +967,47 @@ html[data-kampagne="psychotherapie"] .leiste .knopf{background:#fff;border-color
 .gastro-auftakt>div{min-width:0}
 .praxis-auftakt h1.lang{hyphens:manual;overflow-wrap:break-word}
 @media (max-width:860px){.praxis-auftakt h1.lang{font-size:min(3rem,7.8vw)}}
+
+/* ================= Runde 22.11. ================= */
+/* Leistungsbeispiele größer und lesbar */
+.handy{width:min(100%,21rem)}
+.geraete.paar .handy{width:min(100%,18.5rem)}
+.kasten-feld.breit{grid-template-columns:1fr;gap:2rem}
+.kasten-feld.breit .kasten-text{order:-1;max-width:46rem}
+.kasten-feld.breit .kasten-text p{max-width:none}
+.kasten-feld.breit .geraete .laptop{width:84%}
+.kasten-feld.breit .geraete .handy.vorn{width:min(26%,15.5rem);bottom:-2rem}
+.kasten-feld.breit .schrittfolge{grid-template-columns:25rem minmax(0,1fr);justify-content:center;gap:3rem}
+.kasten-feld.breit .schrittfolge .handy{width:25rem}
+.schritt-liste button{font-size:1.15rem;padding:.9rem 1rem}
+.schritt-liste b{width:2.3rem;height:2.3rem;font-size:1rem}
+@media (max-width:860px){
+  .handy{width:min(100%,20rem)}
+  .kasten-feld.breit .schrittfolge{grid-template-columns:1fr}.kasten-feld.breit .schrittfolge .handy{width:min(100%,21rem)}
+  .kasten-feld.breit .geraete .laptop{width:100%}.kasten-feld.breit .geraete .handy.vorn{width:34%;bottom:-1rem}
+  .geraete.paar{grid-template-columns:1fr}.handy.gross{transform:none}
+}
+/* Kontaktwege stehen unter dem Namen */
+.wer+.kontaktwege{margin-top:1rem}
+/* Danke-Seite ohne Bild */
+.danke{padding:clamp(8rem,16vw,12rem) 0 clamp(4rem,10vw,8rem);max-width:44rem}
+.danke h1{font-size:var(--h1);margin-bottom:1.2rem}
+.danke p{font-size:1.15rem}
+/* Pfeil, der zum Scrollen einlädt */
+.kap .rollen{display:grid;justify-items:start;gap:.6rem;opacity:0;margin-top:3rem}
+.kap.mitte .rollen{justify-items:center}
+.rollen svg{width:1.6rem;height:2.7rem}
+html.js .kap .rollen{animation:rollen-rein 1s ease-out 1.4s forwards}
+html.js:not(.ruhig) .rollen svg{animation:rollen-pfeil 2.2s ease-in-out 2.4s infinite}
+@keyframes rollen-rein{from{opacity:0;transform:translateY(-.6rem)}to{opacity:.8;transform:none}}
+@keyframes rollen-pfeil{0%,100%{transform:translateY(0)}50%{transform:translateY(.7rem)}}
+html:not(.js) .kap .rollen{opacity:.8}
+/* Neue Kundenart auf der Startseite */
+.weg-psychotherapie{--wf:#4b5f8f}
+.weg-blick[data-stil="psychotherapie"]{--bg:#fff;--ink:#0f2440;--accent:#4b5f8f}
+.auftakt .patienten-hinweis{margin-top:1rem}
+/* Große Schrift: Hero zeigt das Gesicht, Kopfzeile verdeckt nichts */
+html.gross-schrift .held{padding-top:6.2rem}
+html.gross-schrift .held-bild{height:56svh}
+html.gross-schrift .held-bild img{object-position:62% 16%}
+@media (max-width:860px){html.gross-schrift .held{padding-top:5.6rem}html.gross-schrift .held-bild{height:46svh}html.gross-schrift .held-bild img{object-position:50% 10%}}
