@@ -1011,3 +1011,29 @@ html.gross-schrift .held{padding-top:6.2rem}
 html.gross-schrift .held-bild{height:56svh}
 html.gross-schrift .held-bild img{object-position:62% 16%}
 @media (max-width:860px){html.gross-schrift .held{padding-top:5.6rem}html.gross-schrift .held-bild{height:46svh}html.gross-schrift .held-bild img{object-position:50% 10%}}
+
+/* ================= Runde 23.11. ================= */
+/* Startseite: Hervorhebung im Hero */
+.held .hervor{font-weight:700;color:var(--ink,#10213a)}
+/* Handy: Das Foto beginnt unter der Kopfzeile, der Name steht nicht mehr auf den Haaren */
+@media (max-width:860px){
+  html:not(.gross-schrift) .held-bild{box-sizing:border-box;height:calc(50svh + 4.8rem);padding-top:4.8rem;background:linear-gradient(90deg,#bcc9d9,#b9cce0 50%,#a7bfda)}
+  html:not(.gross-schrift) .held-bild img{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%)}
+}
+/* Leistungsbeispiele: Ausgeblendete Reiter nehmen keinen Platz mehr ein (kein leerer Block) */
+.kasten-feld[hidden]{display:none}
+html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes feld-rein{from{opacity:0;transform:translateY(1rem)}to{opacity:1;transform:none}}
+/* Handy: Bilder fast so groß wie ein echtes Handy, damit man sie lesen kann */
+@media (max-width:860px){
+  .kasten-buehne{margin-inline:calc(-1*var(--rand));border-radius:0;border-inline:0;padding:1.6rem .5rem 2.4rem}
+  .kasten-text{padding-inline:calc(var(--rand) - .5rem)}
+  .kasten-bild,.kasten-feld .handy,.geraete.paar .handy,.kasten-feld.breit .schrittfolge .handy{width:100%;max-width:26rem;justify-self:center}
+  .kasten-feld .handy{padding:.4rem;border-radius:2.2rem}
+  .kasten-feld .handy img{border-radius:1.85rem}
+  .schrittfolge .handy img{inset:.4rem;width:calc(100% - .8rem);height:calc(100% - .8rem)}
+  .geraete{justify-items:center;gap:1.6rem}
+  .geraete .handy.vorn,.kasten-feld.breit .geraete .handy.vorn{position:relative;right:auto;bottom:auto;width:100%;order:-1}
+  .geraete .laptop,.kasten-feld.breit .geraete .laptop{width:100%}
+  .schritt-liste{padding-inline:calc(var(--rand) - .5rem)}
+}
