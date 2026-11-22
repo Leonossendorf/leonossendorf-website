@@ -1051,3 +1051,32 @@ html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bez
   /* Das Computer-Bild ist auf dem Handy-Bildschirm nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
   .px-kasten .geraete .laptop{display:none}
 }
+/* ===== Psyche: Psychotherapie-Seiten /psychotherapie/ und /psychotherapie/entwurf/ ===== */
+.psy-demo{display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;margin-top:1.6rem;padding:1.4rem 1.6rem;border:1px solid var(--line);border-radius:1.4rem;background:var(--soft)}
+.psy-demo b{display:block;font:var(--kopf-fett) clamp(1.25rem,1.8vw,1.55rem)/1.2 var(--kopf);letter-spacing:var(--kopf-sperre);margin-bottom:.35rem}
+.psy-demo div>span{display:block;color:var(--muted);max-width:40rem}
+.psy-demo .knopf{flex:none}
+@media (max-width:860px){
+  .psy-kasten .kasten-feld{grid-template-columns:1fr}
+  .psy-kasten .kasten-feld .kasten-text{order:-1}
+  .psy-demo{flex-direction:column;align-items:stretch;padding:1.2rem}
+  .psy-demo .knopf{justify-content:center}
+}
+@media (max-width:600px){
+  /* Das Computer-Bild ist am Handy nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
+  .psy-kasten .geraete .laptop{display:none}
+}
+/* Knopf zur klickbaren Demo-Praxis unter der Einleitung der Leistungsbeispiele */
+.px-kasten .px-probe{margin:0}
+@media (min-width:861px){.px-kasten .px-probe{grid-column:2}}
+.px-kasten .kasten-text p a{color:var(--accent);font-weight:600}
+/* Handy: Listen „Was Patienten suchen“ und „Worauf ich achte“ kompakt, Nummer neben der Überschrift */
+@media (max-width:520px){
+  html:not(.gross-schrift) .px-liste li{display:grid;grid-template-columns:2.1rem minmax(0,1fr);align-items:baseline;padding:.85rem 0 1rem}
+  html:not(.gross-schrift) .px-liste li:before{grid-row:1}
+  html:not(.gross-schrift) .px-liste b{grid-column:2;font-size:1.3rem;margin:0 0 .25rem}
+  html:not(.gross-schrift) .px-liste span{grid-column:2;font-size:.98rem;line-height:1.45}
+}
+
+/* Danke-Seiten: kein schwebender Anfrage-Knopf mehr (Hinweis von Askel, 22.11.) */
+body:has(.danke) .schnell-knopf{display:none}
