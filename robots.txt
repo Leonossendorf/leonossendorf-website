@@ -1,0 +1,5 @@
+# leonossendorf.de: Suchmaschinen und KI-Assistenten sind willkommen.
+User-agent: *
+Allow: /
+
+Sitemap: https://leonossendorf.de/sitemap.xml
