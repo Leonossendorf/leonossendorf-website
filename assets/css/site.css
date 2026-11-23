@@ -1061,6 +1061,10 @@ html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bez
   .psy-kasten .kasten-feld .kasten-text{order:-1}
   .psy-demo{flex-direction:column;align-items:stretch;padding:1.2rem}
   .psy-demo .knopf{justify-content:center}
+  /* Sprechstunde buchen: die vier Schritte stehen über dem Handy, damit man sieht, wie das Bild wechselt (wie bei Askel) */
+  .psy-kasten .schritt-liste{order:-1;grid-template-columns:1fr 1fr;gap:.4rem;width:100%}
+  .psy-kasten .schritt-liste button{font-size:.95rem;padding:.55rem .6rem;gap:.55rem;line-height:1.2}
+  .psy-kasten .schritt-liste b{width:1.9rem;height:1.9rem;font-size:.85rem}
 }
 @media (max-width:600px){
   /* Das Computer-Bild ist am Handy nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
