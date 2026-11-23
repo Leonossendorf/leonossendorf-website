@@ -34,6 +34,14 @@
   function rollen() { kopf.classList.toggle('unten', window.scrollY > 8); }
   window.addEventListener('scroll', rollen, { passive: true }); rollen();
 
+  /* ---------- Handy: Die Leiste unten erscheint erst, wenn die Knöpfe im Einstieg aus dem Bild sind ---------- */
+  (function () {
+    var l = $('.aktion-leiste'), k = $('.auftakt .knopfzeile');
+    if (!l || !k || !('IntersectionObserver' in window)) return;
+    l.classList.add('oben');
+    new IntersectionObserver(function (es) { l.classList.toggle('oben', es[0].isIntersecting); }).observe(k);
+  })();
+
   /* ---------- Demo-Schalter: keine freien Plätze ---------- */
   h.classList.toggle('voll', q.get('plaetze') === 'voll' || (q.get('plaetze') !== 'frei' && lies('demo-voll')));
   function schalterText() { $$('[data-plaetze]').forEach(function (b) { b.textContent = h.classList.contains('voll') ? 'Ansicht: Plätze frei' : 'Ansicht: Keine Plätze frei'; }); }
@@ -55,11 +63,11 @@
   (function telefonStatus() {
     var el = $$('[data-telefon]'); if (!el.length) return;
     var t = TELEFON[jetzt.getDay()], m = jetzt.getHours() * 60 + jetzt.getMinutes(), text, an = false;
-    if (t && m >= minuten(t[0]) && m < minuten(t[1])) { text = 'Jetzt telefonisch erreichbar, bis ' + t[1] + ' Uhr'; an = true; }
+    if (t && m >= minuten(t[0]) && m < minuten(t[1])) { text = 'Jetzt erreichbar, bis ' + t[1] + ' Uhr'; an = true; }
     else {
       for (var i = 0; i < 8; i++) {
         var d = (jetzt.getDay() + i) % 7, z = TELEFON[d];
-        if (z && (i > 0 || m < minuten(z[0]))) { text = 'Nächste Telefonzeit: ' + (i === 0 ? 'heute' : i === 1 ? 'morgen' : TAGE[d]) + ', ' + z[0] + ' Uhr'; break; }
+        if (z && (i > 0 || m < minuten(z[0]))) { text = (i === 0 ? 'Heute' : i === 1 ? 'Morgen' : TAGE[d]) + ' ab ' + z[0] + ' Uhr'; break; }
       }
     }
     el.forEach(function (e) { e.querySelector('b').textContent = text; e.classList.toggle('aus', !an); });
@@ -80,7 +88,7 @@
   function lang(d) { return d.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }); }
   function naechsterTermin() {
     var t = tage().filter(function (x) { return x.zeiten.length; })[0];
-    $$('[data-naechster]').forEach(function (e) { e.textContent = h.classList.contains('voll') ? 'Zurzeit keine freien Sprechstunden' : lang(t.datum) + ', ' + t.zeiten[0] + ' Uhr'; });
+    $$('[data-naechster]').forEach(function (e) { e.textContent = h.classList.contains('voll') ? 'Zurzeit keine freien Termine' : lang(t.datum) + ', ' + t.zeiten[0] + ' Uhr'; });
   }
   naechsterTermin();
 
@@ -95,7 +103,7 @@
     kal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
     schloss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
     klammer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5l-8.2 8.2a5 5 0 0 1-7.1-7.1l8.6-8.6a3.4 3.4 0 0 1 4.8 4.8l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>',
-    haken: '<svg viewBox="0 0 24 24" fill="none" stroke="#2d7a4d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    haken: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
     uhr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>'
   };
 
@@ -111,7 +119,7 @@
   }
   function kurzDetails() {
     var t = lauf.details().filter(function (d) { return !d[1] && !d[2]; }).map(function (d) { return esc(d[0]); });
-    return t.length ? '<p class="details-kurz">' + t.join(' · ') + '</p>' : '';
+    return t.length ? '<p class="details-kurz">' + t.join(', ') + '</p>' : '';
   }
   var kontaktFelder = function () {
     return '<div class="felder">' + feld('name', 'Vor- und Nachname', 'text', '', ' autocomplete="name"')
@@ -135,7 +143,7 @@
       titel: 'Sprechstunde buchen', unter: 'Praxis am Stadtgarten', kasten: 'Ihr Termin',
       details: function () {
         return [[!wahl.neu ? 'Neu oder schon in Behandlung' : wahl.neu.indexOf('Nein') === 0 ? 'Neu in der Praxis' : 'Schon in Behandlung', !wahl.neu], [wahl.versicherung || 'Versicherung', !wahl.versicherung], [wahl.art || 'Terminart', !wahl.art],
-          [wahl.zeit ? lang(wahl.tag) + ', ' + wahl.zeit + ' Uhr' : 'Datum und Uhrzeit', !wahl.zeit], ['Stadtgarten 7, 12345 Musterstadt', false, true]];
+          [wahl.zeit ? lang(wahl.tag) + ', ' + wahl.zeit + ' Uhr' : 'Datum und Uhrzeit', !wahl.zeit], ['Stadtgarten 22, 12345 Musterstadt', false, true]];
       },
       schritte: [
         function () {
@@ -149,9 +157,9 @@
         function () {
           var neu = wahl.neu !== 'Ja, ich war schon in Behandlung';
           return '<h2>Welche Terminart?</h2><p class="leise">' + (neu ? 'Der erste Schritt ist die Sprechstunde, zum Kennenlernen und um Fragen zu klären.' : 'Für Patientinnen und Patienten der Praxis.') + '</p>'
-            + (neu ? '<p class="gruppe-titel">Erster Termin</p>' + wahlListe('art', [['Psychotherapeutische Sprechstunde', '50 Minuten · vor Ort, 2. Etage mit Aufzug']])
+            + (neu ? '<p class="gruppe-titel">Erster Termin</p>' + wahlListe('art', [['Psychotherapeutische Sprechstunde', '50 Minuten, vor Ort']])
               + '<p class="klein" style="margin-top:1rem">Einen Therapieplatz vergibt die Praxis nach der Sprechstunde. <a href="#warteliste" data-flow="warteliste">Zur Warteliste</a></p>'
-              : '<p class="gruppe-titel">Folgetermine</p>' + wahlListe('art', [['Einzelsitzung', '50 Minuten · vor Ort'], ['Einzelsitzung per Video', '50 Minuten · zertifizierter Videodienst']]));
+              : '<p class="gruppe-titel">Folgetermine</p>' + wahlListe('art', [['Einzelsitzung', '50 Minuten, vor Ort'], ['Einzelsitzung per Video', '50 Minuten, per Video']]));
         },
         function () {
           if (h.classList.contains('voll')) {
@@ -165,18 +173,18 @@
             return '<button type="button" class="tag' + (x.zeiten.length ? '' : ' leer') + '" data-tag="' + i + '" aria-pressed="' + (i === wahl.tagIndex) + '"' + (x.zeiten.length ? '' : ' disabled') + '><small>' + kurz(x.datum) + '</small><b>' + x.datum.getDate() + '.' + (x.datum.getMonth() + 1) + '.</b><em>' + (x.zeiten.length ? x.zeiten.length + ' frei' : 'belegt') + '</em></button>';
           }).join('');
           var zeitenHtml = akt.zeiten.map(function (z, i) { return '<button type="button" class="zeit" style="animation-delay:' + (i * 40) + 'ms" data-zeit="' + z + '" aria-pressed="' + (wahl.zeit === z && !!wahl.tag && wahl.tag.toDateString() === akt.datum.toDateString()) + '">' + z + '</button>'; }).join('');
-          return '<h2>Wählen Sie einen Termin</h2><p class="leise">' + esc(wahl.art || 'Sprechstunde') + ' · 50 Minuten</p>' + kurzDetails()
+          return '<h2>Wählen Sie einen Termin</h2><p class="leise">' + esc(wahl.art || 'Sprechstunde') + ', 50 Minuten</p>' + kurzDetails()
             + '<div class="tage" role="group" aria-label="Tag wählen">' + tageHtml + '</div>'
             + '<p class="gruppe-titel" style="margin-top:.8rem">' + lang(akt.datum) + '</p><div class="zeiten" role="group" aria-label="Uhrzeit wählen">' + zeitenHtml + '</div>';
         },
         function () {
           return '<h2>Ihre Angaben</h2><p class="leise">Für die Terminbestätigung. Angaben zum Anliegen sind nicht nötig.</p>' + kurzDetails() + kontaktFelder()
             + '<p class="sicher">' + IC.schloss + '<span>Verschlüsselt übertragen. Die Daten sieht nur die Praxis.</span></p>'
-            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Termin verbindlich buchen ' + IC.pfeil + '</button></div>';
+            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Termin verbindlich buchen</button></div>';
         },
         function () {
           return '<div class="erfolg"><div class="haken">' + IC.haken + '</div><h2>Ihr Termin ist gebucht.</h2><p class="leise">Eine Bestätigung geht an ' + esc(wahl.email || wahl.telefon) + '.</p>'
-            + '<div class="zusammen"><p><span>Termin</span><b>' + esc(wahl.art) + '</b></p><p><span>Wann</span><b>' + lang(wahl.tag) + ', ' + wahl.zeit + ' Uhr</b></p><p><span>Wo</span><b>Stadtgarten 7, 2. Etage</b></p><p><span>Mitbringen</span><b>Versichertenkarte</b></p></div>'
+            + '<div class="zusammen"><p><span>Termin</span><b>' + esc(wahl.art) + '</b></p><p><span>Wann</span><b>' + lang(wahl.tag) + ', ' + wahl.zeit + ' Uhr</b></p><p><span>Wo</span><b>Stadtgarten 22, 2. Etage</b></p><p><span>Mitbringen</span><b>Versichertenkarte</b></p></div>'
             + '<div class="knopfzeile"><button class="knopf hell" type="button" data-kalender>' + IC.kal + ' In den Kalender</button><button class="knopf" type="button" data-schliessen>Fertig</button></div>'
             + '<p class="demo-hinweis">Demo: Es wurde nichts gebucht.</p></div>';
         }
@@ -202,12 +210,12 @@
           var chip = function (liste, gruppe) { return '<div class="chips">' + liste.map(function (x) { return '<button type="button" class="chip" data-chip="' + gruppe + '" aria-pressed="' + (wahl[gruppe].indexOf(x) > -1) + '">' + x + '</button>'; }).join('') + '</div>'; };
           return '<h2>Wann passen Termine?</h2><p class="leise">Damit ein freier Platz schnell zugeordnet werden kann. Mehrfachauswahl möglich.</p>' + kurzDetails()
             + '<p class="gruppe-titel">Tage</p>' + chip(t, 'tage') + '<p class="gruppe-titel">Tageszeit</p>' + chip(z, 'tageszeit')
-            + '<div class="schritt-fuss"><button class="knopf" type="button" data-weiter>Weiter ' + IC.pfeil + '</button></div>';
+            + '<div class="schritt-fuss"><button class="knopf" type="button" data-weiter>Weiter</button></div>';
         },
         function () {
           return '<h2>Wie erreicht die Praxis Sie?</h2><p class="leise">Für die Rückmeldung, sobald ein Platz frei ist. Angaben zum Anliegen sind nicht nötig.</p>' + kurzDetails() + kontaktFelder()
             + '<p class="sicher">' + IC.schloss + '<span>Verschlüsselt übertragen. Die Daten sieht nur die Praxis.</span></p>'
-            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Auf die Warteliste ' + IC.pfeil + '</button></div>';
+            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Auf die Warteliste</button></div>';
         },
         function () {
           return '<div class="erfolg"><div class="haken">' + IC.haken + '</div><h2>Sie stehen auf der Warteliste.</h2><p class="leise" style="max-width:26rem;margin:0 auto">Die Praxis meldet sich, sobald ein Platz frei ist. Bis dahin ist nichts weiter zu tun.</p>'
@@ -228,7 +236,7 @@
           return '<h2>Ihre Nachricht</h2><p class="leise">Persönliches besprechen Sie am besten in der Sitzung.</p>' + kurzDetails() + '<div class="felder" style="margin-bottom:1rem">' + feld('text', 'Nachricht', 'textarea', '', ' rows="5"') + '</div>' + kontaktFelder()
             + '<label class="datei" style="margin-top:1rem">' + IC.klammer + '<input type="file" id="anhang"> Datei anhängen <span>(freiwillig, z. B. Formular als PDF)</span></label>'
             + '<p class="sicher">' + IC.schloss + '<span>Verschlüsselt übertragen. Die Nachricht liest nur die Praxis.</span></p>'
-            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Nachricht senden ' + IC.pfeil + '</button></div>';
+            + '<div class="schritt-fuss"><button class="knopf" type="button" data-senden>Nachricht senden</button></div>';
         },
         function () {
           return '<div class="erfolg"><div class="haken">' + IC.haken + '</div><h2>Nachricht gesendet.</h2><p class="leise" style="max-width:26rem;margin:0 auto">Die Praxis antwortet in der Regel innerhalb von zwei Werktagen, per ' + (wahl.email ? 'E-Mail' : 'Rückruf') + '.</p>'
@@ -240,7 +248,7 @@
 
   function detailsZeichnen() {
     var d = lauf.details();
-    details.innerHTML = '<h4>' + lauf.kasten + '</h4><div class="details-praxis"><span class="marke-zeichen" aria-hidden="true">S</span><span><b>Praxis am Stadtgarten</b><small>Dipl.-Psych. Jona Albers</small></span></div>'
+    details.innerHTML = '<h4>' + lauf.kasten + '</h4><div class="details-praxis"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#blatt"/></svg><span><b>Praxis am Stadtgarten</b><small>Psychotherapie, Jona Albers</small></span></div>'
       + '<ul class="details-liste">' + d.map(function (x) { return '<li' + (x[1] ? ' class="offen"' : '') + '>' + esc(x[0]) + '</li>'; }).join('') + '</ul>';
   }
 
@@ -336,7 +344,7 @@
     var d = new Date(wahl.tag), p = wahl.zeit.split(':'); d.setHours(+p[0], +p[1], 0, 0);
     var e = new Date(d.getTime() + 50 * 6e4), f = function (x) { return x.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, ''); };
     var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Demo//Praxis am Stadtgarten//DE', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@demo', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(d), 'DTEND:' + f(e),
-      'SUMMARY:' + wahl.art + ' (Demo)', 'LOCATION:Stadtgarten 7\\, 12345 Musterstadt', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+      'SUMMARY:' + wahl.art + ' (Demo)', 'LOCATION:Stadtgarten 22\\, 12345 Musterstadt', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'termin-praxis-am-stadtgarten.ics';
     document.body.appendChild(a); a.click(); a.remove(); meldung('Kalendereintrag erstellt (Demo)');
   }
