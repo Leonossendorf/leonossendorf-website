@@ -58,6 +58,7 @@ h1:focus,h2:focus{outline:none}
 .demo-cta{background:#fff;color:#0f1c2e!important;border-radius:99px;padding:7px 13px}
 @media (max-width:560px){.demo .lang{display:none}}
 html.foto .demo{display:none}
+html.rahmen{scrollbar-width:none}html.rahmen::-webkit-scrollbar{display:none}
 
 /* ---------- Knöpfe ---------- */
 .knopf{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:3.5rem;padding:.85rem 1.7rem;border-radius:999px;border:2px solid var(--cta);background:var(--cta);color:var(--tanne);font:650 1.06rem/1.2 var(--text);text-decoration:none;white-space:nowrap;transition:background .25s,border-color .25s,transform .25s var(--ease),box-shadow .25s}
@@ -459,6 +460,11 @@ var WT=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag
 var MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 var PARAM=new URLSearchParams(location.search);
 if(PARAM.get('foto')==='1')document.documentElement.classList.add('foto');
+/* Einbett-Ansicht (?rahmen=1&ab=termin): die Demo läuft im Handy-Rahmen auf Leons Seiten. Ohne Leons Leiste, ohne Adresswechsel
+   (sonst zieht der Browser die Seite drumherum mit), und sie nimmt der Seite drumherum nicht von selbst den Fokus weg. */
+var RAHMEN=PARAM.get('rahmen')==='1',ORT=RAHMEN?'#'+(PARAM.get('ab')||'start'):null,beruehrt=!RAHMEN;
+if(RAHMEN){document.documentElement.classList.add('foto','rahmen');['pointerdown','keydown'].forEach(function(n){addEventListener(n,function(){beruehrt=true},true)})}
+function melde(o){if(RAHMEN&&parent!==window)try{o.askelDemo=1;parent.postMessage(o,location.origin)}catch(e){}}
 
 /* ---------------- Symbole (nur für Bedienelemente) ---------------- */
 var S={
@@ -620,7 +626,7 @@ function klappe(id,auf){var k=document.getElementById(id);if(!k)return;k.classLi
   if(auf){letzterKnopf=document.activeElement;setTimeout(function(){var f=$('.tafel button,.tafel a',k);if(f)f.focus()},60)}else if(letzterKnopf){letzterKnopf.focus();letzterKnopf=null}}
 $$('[aria-controls]').forEach(function(b){b.addEventListener('click',function(){klappe(b.getAttribute('aria-controls'),true)})});
 $$('.klappe').forEach(function(k){$$('[data-zu]',k).forEach(function(z){z.addEventListener('click',function(){klappe(k.id,false)})});$$('a',k).forEach(function(a){a.addEventListener('click',function(){klappe(k.id,false)})})});
-addEventListener('keydown',function(e){if(e.key==='Escape')$$('.klappe.auf').forEach(function(k){klappe(k.id,false)})});
+addEventListener('keydown',function(e){if(e.key==='Escape'){if(!$$('.klappe.auf').length)melde({raus:1});$$('.klappe.auf').forEach(function(k){klappe(k.id,false)})}});
 $$('[data-kipp]').forEach(function(b){var c=b.getAttribute('data-kipp');if(PARAM.get(c)==='1'){b.setAttribute('aria-checked','true');document.documentElement.classList.add(c)}
   b.addEventListener('click',function(){var an=b.getAttribute('aria-checked')!=='true';b.setAttribute('aria-checked',an?'true':'false');document.documentElement.classList.toggle(c,an)})});
 
@@ -635,7 +641,7 @@ function startseite(){
    +(nt?'<p class="naechster-frei">Nächster freier Termin: <b>'+wann(nt)+'</b></p>':'')+'</div>'
    +'<figure class="held-bild">'+bild('hero','(min-width:960px) 52vw, 100vw',true)+'<figcaption class="bildhinweis">Beispielfoto</figcaption></figure></section>'
    /* Das Wichtigste */
-   +'<section class="sofort" aria-label="Das Wichtigste auf einen Blick"><div class="innen">'
+   +'<section class="sofort" id="sofort" aria-label="Das Wichtigste auf einen Blick"><div class="innen">'
    +'<div><h2>Heute</h2><p>'+(heuteZ?zeitText(heuteZ):'geschlossen')+'</p><small><a class="textlink" href="#zeiten">Alle Sprechzeiten</a></small></div>'
    +'<div><h2>'+P.akut.t+'</h2><p>'+P.akut.kurz+'</p><small>'+P.akut.x+'</small></div>'
    +'<div><h2>Telefon</h2><p><a href="tel:+49123456789" data-toast="Demo: Hier würde das Handy die Praxis anrufen.">'+P.tel+'</a></p><small>'+P.adresse+'</small></div>'
@@ -686,7 +692,7 @@ function ablaufGeruest(titel){
    +'<aside class="uebersicht" aria-label="Ihre Auswahl"><div class="karte"><div class="praxis-mini"><div class="marke">'+marke()+'</div><p>'+P.adresse+'</p></div><h3 data-ueb-titel>Ihre Termindetails</h3><ul class="details" data-details></ul></div></aside></div></div></section>';
 }
 function zeichneSchritt(html,rueck){var s=$('[data-schritt]');s.classList.remove('rein','rueck');void s.offsetWidth;s.innerHTML=html;s.classList.add('rein');if(rueck)s.classList.add('rueck');
-  var h=$('h2',s);if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});ansage(h.textContent)}
+  var h=$('h2',s);if(h){h.setAttribute('tabindex','-1');if(beruehrt)h.focus({preventScroll:true});ansage(h.textContent)}
   var top=$('.ablauf').getBoundingClientRect().top+scrollY-90;if(scrollY>top)scrollTo({top:top,behavior:ruhig()?'instant':'smooth'})}
 function details(liste){var d=$('[data-details]');if(!d)return;d.innerHTML=liste.map(function(x){return '<li'+(x[1]?'':' class="offen"')+'>'+I(x[1]?'haken':'kreis',18,2.4)+'<span>'+(x[1]||x[0])+'</span></li>'}).join('');
   $('.uebersicht').classList.toggle('leer',!liste.some(function(x){return x[1]}))}
@@ -717,7 +723,7 @@ var T_SCHRITTE=['vers','neu','art','zeit','angaben','pruefen','fertig'];
 function terminDetails(){
   var a=T.art;details([['Versicherung',T.vers?(T.vers==='gkv'?'Gesetzlich versichert':'Privat versichert'):''],['Schon Patient/in?',T.neu===null?'':(T.neu?'Neu in der Praxis':'Bereits Patient/in')],['Terminart',a?a[0]:''],['Datum und Uhrzeit',T.zeit!==null?WK[T.tag.getDay()]+', '+datum(T.tag)+', '+hm(T.zeit)+' Uhr':'']])}
 function terminZeige(n,rueck){
-  T.schritt=n;var id=T_SCHRITTE[n],h='';fortschritt(Math.min(n,5),5);terminDetails();
+  T.schritt=n;var id=T_SCHRITTE[n],h='';fortschritt(Math.min(n,5),5);terminDetails();melde({termin:n});
   if(id==='vers'){h='<h2>Wie sind Sie versichert?</h2><p class="hilfe">Damit wir Ihnen die passenden Termine zeigen.</p><div class="wahl-kacheln">'
     +'<button type="button" data-v="gkv" aria-pressed="'+(T.vers==='gkv')+'">Gesetzlich versichert<small>Mit Versichertenkarte</small></button>'
     +'<button type="button" data-v="pkv" aria-pressed="'+(T.vers==='pkv')+'">Privat versichert<small>Oder Selbstzahler</small></button></div>'}
@@ -869,15 +875,16 @@ function bindeToast(b){b.addEventListener('click',function(e){e.preventDefault()
 function bindeToastText(b,t){b.addEventListener('click',function(e){e.preventDefault();toast(t)})}
 var beobachter=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('da');beobachter.unobserve(e.target)}})},{rootMargin:'0px 0px -12% 0px'}):null;
 var aktuell=null,erst=true;
+function zuAbschnitt(el,sanft){scrollTo({top:Math.max(0,el.getBoundingClientRect().top+scrollY-$('#kopf').offsetHeight-10),behavior:sanft?'smooth':'instant'})}
 function route(){
-  var h=(location.hash||'#start').slice(1),teile=h.split('/'),ziel=teile[0],m=$('#inhalt');
+  var h=((RAHMEN?ORT:location.hash)||'#start').slice(1),teile=h.split('/'),ziel=teile[0],m=$('#inhalt');
   var ablauf=ziel==='termin'||ziel==='anfrage';istStart=!ablauf;
   if(ablauf){
     if(aktuell!==h||!$('[data-schritt]')){
       m.innerHTML=ablaufGeruest(ziel==='termin'?'Termin online buchen':P.anfrageTitel);
       if(ziel==='termin'){$('[data-ueb-titel]').textContent='Ihre Termindetails';terminNeu();terminZeige(0)}
       else{$('[data-ueb-titel]').textContent='Ihre Anfrage';var art=teile[1]&&P.anliegen.some(function(x){return x[0]===teile[1]})?teile[1]:null;anfrageNeu(art);anfrageZeige(art?1:0)}
-      m.classList.remove('ansicht-rein');void m.offsetWidth;m.classList.add('ansicht-rein');scrollTo({top:0,behavior:'instant'});$('.ablauf h1').focus({preventScroll:true});
+      m.classList.remove('ansicht-rein');void m.offsetWidth;m.classList.add('ansicht-rein');scrollTo({top:0,behavior:'instant'});if(beruehrt)$('.ablauf h1').focus({preventScroll:true});
     }
   }else{
     if(aktuell===null||aktuell.split('/')[0]==='termin'||aktuell.split('/')[0]==='anfrage'||!$('#start')){
@@ -886,11 +893,27 @@ function route(){
       if(!erst){m.classList.remove('ansicht-rein');void m.offsetWidth;m.classList.add('ansicht-rein')}
     }
     var el=document.getElementById(ziel);
-    if(ziel==='start'||!el){if(!erst)scrollTo({top:0,behavior:'instant'})}else{el.scrollIntoView({behavior:erst||ruhig()?'instant':'smooth'})}
+    if(ziel==='start'||!el){if(!erst)scrollTo({top:0,behavior:'instant'})}else if(RAHMEN){zuAbschnitt(el,!(erst||ruhig()));if(erst){setTimeout(function(){if(!beruehrt)zuAbschnitt(el)},450);addEventListener('load',function(){if(!beruehrt)zuAbschnitt(el)})}}else{el.scrollIntoView({behavior:erst||ruhig()?'instant':'smooth'})}
   }
-  aktuell=h;erst=false;beimScrollen();
+  aktuell=h;erst=false;beimScrollen();melde({ort:h});
 }
 addEventListener('hashchange',route);
+if(RAHMEN){
+  document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href]'):null;if(!a||e.defaultPrevented)return;var hr=a.getAttribute('href');
+    if(hr.charAt(0)==='#'){e.preventDefault();ORT=hr;route()}else if(hr.charAt(0)==='/'){e.preventDefault();top.location.href=a.href}});
+  addEventListener('message',function(e){var d=e.data;if(e.origin!==location.origin||!d||!d.askelDemo)return;
+    if(d.aktiv)beruehrt=true;
+    if(d.setze)['gross','kontrast','ruhig'].forEach(function(c){if(c in d.setze){document.documentElement.classList.toggle(c,!!d.setze[c]);$$('[data-kipp="'+c+'"]').forEach(function(b){b.setAttribute('aria-checked',d.setze[c]?'true':'false')})}});
+    if(d.terminGruppe!=null)terminSprung(+d.terminGruppe)});
+}
+/* Von Leons Seite aus zu einem Abschnitt der Buchung springen; was noch fehlt, wird mit Beispielen gefüllt. */
+function terminSprung(g){var ziel=[0,3,4,6][g]||0;
+  if(aktuell!=='termin'||!$('[data-schritt]')){ORT='#termin';route()}
+  if(ziel>=1&&!T.vers)T.vers='gkv';if(ziel>=2&&T.neu===null)T.neu=false;
+  if(ziel>=3&&!T.art){var l=(T.neu?P.artenNeu:P.arten).filter(function(a){return !(a[3]&&T.neu)});T.art=l[1]||l[0]}
+  if(ziel>=4&&T.zeit===null){var nt=naechsterTermin(T.art[2]);T.tag=nt.tag;T.zeit=nt.zeit}
+  if(ziel>=5&&!T.daten.vorname){T.daten={};for(var k in BEISPIEL)T.daten[k]=BEISPIEL[k]}
+  var rueck=ziel<T.schritt;terminZeige(ziel,rueck);scrollTo({top:0,behavior:'instant'})}
 fuss();$$('[data-toast]').forEach(function(b){if(!b.closest('#inhalt'))bindeToast(b)});
 route();
 setInterval(function(){var e=$('[data-status]');if(!e)return;var st=statusText();e.className='auf-zu'+(st.zu?' zu':'');e.lastChild.textContent=st.t},60000);

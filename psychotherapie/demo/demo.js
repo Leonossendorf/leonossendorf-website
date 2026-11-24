@@ -4,8 +4,19 @@
   'use strict';
   var h = document.documentElement;
   var q = new URLSearchParams(location.search);
-  function lies(k) { try { return localStorage.getItem(k) === '1'; } catch (e) { return false; } }
-  function merke(k, v) { try { localStorage.setItem(k, v ? '1' : '0'); } catch (e) {} }
+  /* Einbett-Ansicht: Die Demo läuft in einem Handy-Rahmen auf Leons Seite. Dann ohne gespeicherte Einstellungen
+     (nur die aus der Adresse), ohne Demo-Leiste und ohne den Fokus der äußeren Seite an sich zu ziehen. */
+  var EIN = h.classList.contains('einbett'), beruehrt = !EIN;
+  if (EIN) ['pointerdown', 'keydown'].forEach(function (n) {
+    document.addEventListener(n, function () {
+      if (beruehrt) return;
+      beruehrt = true;
+      var d = document.getElementById('ablauf');   // ab der ersten Berührung ein richtiges Fenster (Fokus bleibt darin)
+      if (d && d.open && !d.matches(':modal')) { d.removeAttribute('open'); d.showModal(); }
+    }, true);
+  });
+  function lies(k) { if (EIN) return false; try { return localStorage.getItem(k) === '1'; } catch (e) { return false; } }
+  function merke(k, v) { if (EIN) return; try { localStorage.setItem(k, v ? '1' : '0'); } catch (e) {} }
   function $(s, w) { return (w || document).querySelector(s); }
   function $$(s, w) { return Array.prototype.slice.call((w || document).querySelectorAll(s)); }
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -16,9 +27,13 @@
   $$('[data-zurueck]').forEach(function (a) { a.href = von === 'entwurf' ? '/psychotherapie/entwurf/#demo' : '/psychotherapie/#demo'; });
   $$('[data-cta]').forEach(function (a) { a.href = von === 'entwurf' ? '/psychotherapie/entwurf/#entwurf' : '/psychotherapie/#anfrage'; });
 
+  if (EIN && location.search) $$('a[href^="/psychotherapie/demo/"]').forEach(function (a) {
+    var u = a.getAttribute('href').split('#'); if (u[0].indexOf('?') < 0) a.setAttribute('href', u[0] + location.search + (u[1] ? '#' + u[1] : ''));
+  });
+
   /* ---------- Barrierefreiheit ---------- */
   $$('.schalt').forEach(function (b) {
-    var k = 'demo-' + b.dataset.klasse, an = lies(k);
+    var k = 'demo-' + b.dataset.klasse, an = lies(k) || (EIN && q.get(b.dataset.klasse) === '1');
     h.classList.toggle(b.dataset.klasse, an); b.setAttribute('aria-checked', an ? 'true' : 'false');
     b.addEventListener('click', function () {
       var n = b.getAttribute('aria-checked') !== 'true';
@@ -43,7 +58,7 @@
   })();
 
   /* ---------- Demo-Schalter: keine freien Plätze ---------- */
-  h.classList.toggle('voll', q.get('plaetze') === 'voll' || (q.get('plaetze') !== 'frei' && lies('demo-voll')));
+  h.classList.toggle('voll', q.get('plaetze') === 'voll' || (EIN && q.get('voll') === '1') || (q.get('plaetze') !== 'frei' && lies('demo-voll')));
   function schalterText() { $$('[data-plaetze]').forEach(function (b) { b.textContent = h.classList.contains('voll') ? 'Ansicht: Plätze frei' : 'Ansicht: Keine Plätze frei'; }); }
   $$('[data-plaetze]').forEach(function (b) { b.addEventListener('click', function () { var v = !h.classList.contains('voll'); h.classList.toggle('voll', v); merke('demo-voll', v); schalterText(); naechsterTermin(); }); });
   schalterText();
@@ -266,7 +281,7 @@
         requestAnimationFrame(function () { requestAnimationFrame(function () { neu.classList.remove('von-rechts', 'von-links'); }); });
       }
       var fokus = neu.querySelector('h2');
-      if (fokus) { fokus.setAttribute('tabindex', '-1'); fokus.focus({ preventScroll: true }); }
+      if (fokus && beruehrt) { fokus.setAttribute('tabindex', '-1'); fokus.focus({ preventScroll: true }); }
     };
     if (alt && richtung && !ruhig()) {
       alt.classList.add(richtung > 0 ? 'von-links' : 'von-rechts');
@@ -283,7 +298,7 @@
     titel.textContent = lauf.titel; unter.textContent = lauf.unter;
     zuKlappen();
     if (!dlg.open) {
-      dlg.showModal();
+      if (EIN && !beruehrt) dlg.setAttribute('open', ''); else dlg.showModal();
       if (leiste) leiste.classList.add('weg');
       requestAnimationFrame(function () { requestAnimationFrame(function () { dlg.classList.add('auf'); }); });
     }

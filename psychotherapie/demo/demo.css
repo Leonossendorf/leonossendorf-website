@@ -43,6 +43,9 @@ p{margin:0 0 1rem}
 .demo-leiste .demo-cta{background:#fff;color:#111;border-radius:99px;padding:7px 14px}
 .demo-leiste .demo-zurueck{opacity:.85}
 
+/* Einbett-Ansicht (Handy-Rahmen auf leonossendorf.de): ohne Leons Leiste und ohne Demo-Schalter */
+html.einbett .demo-leiste,html.einbett .fuss-unten button{display:none!important}
+
 /* Kopf */
 .kopf{position:sticky;top:0;z-index:30;background:var(--weiss);transition:box-shadow .3s}
 .kopf.unten{box-shadow:0 1px 0 var(--linie),0 10px 30px -18px rgba(10,43,42,.35)}
@@ -266,6 +269,7 @@ html.js .zeige.da img{transform:none}
 /* ===== Ablauf-Fenster (Termin, Warteliste, Nachricht) ===== */
 .ablauf{position:fixed;inset:0;margin:auto;width:min(1000px,calc(100% - 2.5rem));max-width:none;height:auto;min-height:min(600px,calc(100% - 3rem));max-height:min(760px,calc(100% - 3rem));padding:0;border:0;border-radius:18px;background:var(--weiss);color:var(--text);box-shadow:0 50px 100px -30px rgba(5,25,24,.6);overflow:hidden;opacity:0;transform:translateY(18px) scale(.985);transition:opacity .35s var(--glatt),transform .45s var(--glatt),display .45s allow-discrete,overlay .45s allow-discrete}
 .ablauf[open]{display:flex;flex-direction:column}
+.ablauf[open]:not(:modal){z-index:50}
 .ablauf.auf{opacity:1;transform:none}
 .ablauf::backdrop{background:rgba(10,43,42,0);transition:background .35s}
 .ablauf.auf::backdrop{background:rgba(10,43,42,.55)}
