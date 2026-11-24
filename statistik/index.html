@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Besucherstatistik · leonossendorf.de</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+@font-face{font-family:"Inter";src:url(/assets/fonts/inter-var.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#f3f5f8;--ink:#10213a;--muted:#4f5e78;--line:#d3dae6;--soft:#e5eaf2;--accent:#d4380d;--navy:#142d49;--gut:#1c7a4a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{width:min(100% - 2rem,76rem);margin:0 auto;padding:1.6rem 0 5rem}
+h1{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;margin:0}
+h2{font-size:1.2rem;letter-spacing:-.01em;margin:0 0 .3rem}
+.sub{color:var(--muted);margin:.2rem 0 0;font-size:.95rem}
+.kopf{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;justify-content:space-between;margin-bottom:1.4rem}
+.wahl{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+button,input{font:inherit;color:inherit}
+.wahl button,.knopf{border:1.5px solid var(--line);background:#fff;border-radius:99rem;padding:.5rem .95rem;font-weight:600;font-size:.92rem;cursor:pointer}
+.wahl button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.wahl input{border:1.5px solid var(--line);background:#fff;border-radius:.6rem;padding:.42rem .6rem;font-size:.92rem}
+button:focus-visible,input:focus-visible,tr[tabindex]:focus-visible{outline:3px solid #ff8a5c;outline-offset:2px}
+.kacheln{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.8rem;margin-bottom:1rem}
+.kachel{background:#fff;border-radius:1rem;padding:1rem 1.1rem;box-shadow:0 0 0 1px rgba(16,33,58,.07)}
+.kachel b{display:block;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+.kachel span{color:var(--muted);font-size:.86rem}
+.kachel.wichtig b{color:var(--accent)}
+.feld{background:#fff;border-radius:1rem;padding:1.2rem 1.3rem;box-shadow:0 0 0 1px rgba(16,33,58,.07);margin-bottom:1rem}
+.tage{display:flex;align-items:flex-end;gap:3px;height:9rem;margin-top:1rem}
+.tage div{flex:1;min-width:3px;background:var(--navy);border-radius:3px 3px 0 0;position:relative}
+.tage div.leer{background:var(--soft)}
+.tage-zeile{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-top:.4rem}
+.rollen{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:right;padding:.55rem .6rem;border-bottom:1px solid var(--soft);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal;word-break:break-word}
+th{color:var(--muted);font-weight:600;font-size:.8rem;vertical-align:bottom}
+tbody tr.zeile{cursor:pointer}
+tbody tr.zeile:hover{background:#f7f9fc}
+tr.auf{background:#f1f4f9}
+td.null{color:#9aa5b8}
+td.treffer{color:var(--gut);font-weight:700}
+.pfad{font-weight:600}
+.pfad small{display:block;color:var(--muted);font-weight:400}
+.detail td{background:#f7f9fc;text-align:left;white-space:normal;padding:1rem .8rem 1.3rem}
+.spalten{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.2rem 2rem}
+.spalten h3{font-size:.95rem;margin:0 0 .5rem}
+.balken{display:grid;grid-template-columns:minmax(6rem,11rem) 1fr auto;gap:.3rem .6rem;align-items:center;font-size:.88rem}
+.balken i{display:block;height:.7rem;border-radius:99rem;background:var(--navy);min-width:2px}
+.balken i.hell{background:#8fa3c0}
+.balken span:nth-child(3n){color:var(--muted);font-variant-numeric:tabular-nums}
+.klein{color:var(--muted);font-size:.85rem;margin:.6rem 0 0}
+.anmeldung{max-width:30rem;margin:12vh auto 0}
+.anmeldung input{width:100%;border:1.5px solid var(--line);border-radius:.7rem;padding:.8rem .9rem;margin:.9rem 0;background:#fff}
+.knopf.voll{background:var(--accent);border-color:var(--accent);color:#fff;padding:.8rem 1.4rem;font-size:1rem}
+.fehler{color:#a82400;font-weight:600}
+.fuss{display:flex;flex-wrap:wrap;gap:.8rem 1.6rem;align-items:center;color:var(--muted);font-size:.9rem;margin-top:1.6rem}
+.fuss label{display:flex;gap:.5rem;align-items:center;cursor:pointer}
+[hidden]{display:none!important}
+@media (max-width:760px){.kacheln{grid-template-columns:repeat(2,minmax(0,1fr))}.kachel:first-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main>
+<section class="anmeldung feld" id="anmeldung" hidden>
+  <h1>Besucherstatistik</h1>
+  <p class="sub">Bitte den Zugangsschlüssel eintragen. Er bleibt danach auf diesem Gerät gespeichert.</p>
+  <form id="schluessel-form"><label for="schluessel" class="sub">Zugangsschlüssel</label><input id="schluessel" type="password" autocomplete="off" required>
+  <button class="knopf voll" type="submit">Anzeigen</button></form>
+  <p class="fehler" id="anmelde-fehler" role="alert"></p>
+</section>
+<div id="inhalt" hidden>
+  <div class="kopf">
+    <div><h1>Besucherstatistik</h1><p class="sub" id="stand">leonossendorf.de, gezählt ohne Cookies</p></div>
+    <div class="wahl" role="group" aria-label="Zeitraum">
+      <button type="button" data-z="heute">Heute</button><button type="button" data-z="gestern">Gestern</button>
+      <button type="button" data-z="7" aria-pressed="true">7 Tage</button><button type="button" data-z="30">30 Tage</button><button type="button" data-z="alles">Seit Start</button>
+      <input type="date" id="von" aria-label="Von"><input type="date" id="bis" aria-label="Bis">
+    </div>
+  </div>
+  <div class="kacheln" id="kacheln"></div>
+  <section class="feld"><h2>Besucher pro Tag</h2><p class="sub">Ein Besucher ist ein Gerät an einem Tag.</p><div class="tage" id="tage"></div><div class="tage-zeile" id="tage-zeile"></div></section>
+  <section class="feld"><h2>Seiten</h2><p class="sub">Eine Zeile antippen: Dann steht darunter, woher die Besucher kamen, mit welchem Gerät, wie weit sie gelesen haben und wo sie aufgehört haben.</p>
+    <div class="rollen"><table id="seiten"></table></div></section>
+  <section class="feld"><h2>Herkunft genau</h2><p class="sub">Woher die Besucher kamen, mit Kampagne, wenn eine mitgeschickt wurde.</p><div class="rollen"><table id="herkunft"></table></div></section>
+  <section class="feld"><h2>Letzte Seite vor dem Verlassen</h2><p class="sub">Auf dieser Seite endete der Besuch, ohne dass eine Anfrage abgeschickt wurde.</p><div id="ausstieg" class="balken"></div></section>
+  <div class="fuss">
+    <label><input type="checkbox" id="nicht-zaehlen"> Dieses Gerät nicht mitzählen (für deine eigenen Besuche)</label>
+    <button class="knopf" type="button" id="neu-laden">Neu laden</button>
+    <button class="knopf" type="button" id="abmelden">Zugangsschlüssel vergessen</button>
+  </div>
+  <p class="klein">Gezählt wird ohne Cookies. Besucher lassen sich nur innerhalb eines Tages wiedererkennen, nicht über mehrere Tage. „Gelesen bis“ heißt: so weit wurde die Seite nach unten bewegt. Aufrufe von Suchmaschinen-Robotern und von Geräten mit dem Haken „nicht mitzählen“ fehlen.</p>
+</div>
+</main>
+<script>
+(function () {
+  var Z = 'https://leonossendorf-zaehler.leon-ossendorf.workers.dev/bericht', START = '2026-11-24';
+  var $ = function (s) { return document.querySelector(s); };
+  var QUELLE = { anzeige: 'Google-Anzeige', direkt: 'Direkt (eingetippt, Brief oder QR ohne Kennzeichnung)', 'qr-brief': 'Brief oder QR-Code', whatsapp: 'WhatsApp', suche: 'Suchmaschine (ohne Anzeige)', sozial: 'Soziale Medien', andere: 'Andere Website', intern: 'Klick innerhalb der Website' };
+  var GERAET = { handy: 'Handy', tablet: 'Tablet', computer: 'Computer' };
+  var daten = null, offen = '', zeitraum = '7';
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function zahl(n) { return (n || 0).toLocaleString('de-DE'); }
+  function proz(a, b) { return b ? Math.round(a / b * 100) + ' %' : '–'; }
+  function tag(d) { return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(d); }
+  function minuten(s) { s = s || 0; return s < 60 ? s + ' s' : Math.floor(s / 60) + ' min ' + (s % 60 < 10 ? '0' : '') + (s % 60) + ' s'; }
+  function schoen(t) { var p = t.split('-'); return p[2] + '.' + p[1] + '.'; }
+  function schluessel() { try { return localStorage.getItem('stat-key') || ''; } catch (e) { return ''; } }
+  function grenzen() {
+    var heute = tag(new Date()), vor = function (n) { return tag(new Date(Date.now() - n * 864e5)); };
+    if (zeitraum === 'heute') return [heute, heute];
+    if (zeitraum === 'gestern') return [vor(1), vor(1)];
+    if (zeitraum === '30') return [vor(29), heute];
+    if (zeitraum === 'alles') return [START, heute];
+    if (zeitraum === 'frei') return [$('#von').value || heute, $('#bis').value || heute];
+    return [vor(6), heute];
+  }
+  function zelle(n, treffer) { return '<td class="' + (!n ? 'null' : treffer ? 'treffer' : '') + '">' + zahl(n) + '</td>'; }
+  function balken(zeilen, max, hell) {
+    return zeilen.map(function (z) { return '<span>' + esc(z[0]) + '</span><i' + (hell ? ' class="hell"' : '') + ' style="width:' + (max ? Math.max(1, Math.round(z[1] / max * 100)) : 0) + '%"></i><span>' + esc(z[2] == null ? zahl(z[1]) : z[2]) + '</span>'; }).join('');
+  }
+  function teilTabelle(zeilen, name) {
+    return '<table><thead><tr><th>' + name + '</th><th>Aufrufe</th><th>bis zur Hälfte gelesen</th><th>Formular begonnen</th><th>Anfrage</th><th>Kontaktklick</th></tr></thead><tbody>'
+      + zeilen.map(function (z) { return '<tr><td>' + esc(z.name) + '</td>' + zelle(z.aufrufe) + '<td>' + proz(z.t50, z.aufrufe) + '</td>' + zelle(z.form_start) + zelle(z.form_ab, true) + zelle(z.kontakt, true) + '</tr>'; }).join('') + '</tbody></table>';
+  }
+  function detail(s) {
+    var her = daten.herkunft.filter(function (x) { return x.pfad === s.pfad; }).map(function (x) { x.name = QUELLE[x.quelle] || x.quelle; return x; });
+    var ger = daten.geraete.filter(function (x) { return x.pfad === s.pfad; }).map(function (x) { x.name = GERAET[x.geraet] || x.geraet; return x; });
+    var ab = daten.abschnitte.filter(function (x) { return x.pfad === s.pfad; });
+    var abMax = ab.reduce(function (m, x) { return Math.max(m, x.aufrufe); }, 0);
+    return '<div class="spalten"><div><h3>Woher sie kamen</h3>' + teilTabelle(her, 'Herkunft') + '</div>'
+      + '<div><h3>Mit welchem Gerät</h3>' + teilTabelle(ger, 'Gerät') + '</div>'
+      + '<div><h3>Wie weit gelesen wurde</h3><div class="balken">' + balken([['Seite geöffnet', s.aufrufe], ['ein Viertel', s.t25, zahl(s.t25) + ' · ' + proz(s.t25, s.aufrufe)], ['die Hälfte', s.t50, zahl(s.t50) + ' · ' + proz(s.t50, s.aufrufe)], ['drei Viertel', s.t75, zahl(s.t75) + ' · ' + proz(s.t75, s.aufrufe)], ['bis zum Ende', s.t100, zahl(s.t100) + ' · ' + proz(s.t100, s.aufrufe)]], s.aufrufe) + '</div></div>'
+      + '<div><h3>Hier haben Besucher aufgehört</h3><div class="balken">' + (ab.length ? balken(ab.map(function (x) { return [x.abschnitt || '(ganz oben, nichts gelesen)', x.aufrufe]; }), abMax, true) : '<span>Noch keine Daten</span>') + '</div><p class="klein">Letzter Abschnitt, den jemand erreicht hat, bevor er ohne Anfrage gegangen ist.</p></div></div>';
+  }
+  function zeichne() {
+    var g = daten.gesamt || {};
+    $('#kacheln').innerHTML = [['Besucher', g.besucher], ['Seitenaufrufe', g.aufrufe], ['Formular begonnen', g.form_start], ['Anfragen abgeschickt', g.form_ab, 1], ['Klicks auf Telefon, WhatsApp, E-Mail', g.kontakt, 1]]
+      .map(function (k) { return '<div class="kachel' + (k[2] ? ' wichtig' : '') + '"><b>' + zahl(k[1]) + '</b><span>' + k[0] + '</span></div>'; }).join('');
+    var tage = {}, liste = [], d = new Date(daten.von + 'T12:00:00Z'), ende = new Date(daten.bis + 'T12:00:00Z');
+    daten.tage.forEach(function (t) { tage[t.tag] = t; });
+    for (; d <= ende && liste.length < 400; d = new Date(d.getTime() + 864e5)) { var k = d.toISOString().slice(0, 10); liste.push(tage[k] || { tag: k, besucher: 0 }); }
+    var max = liste.reduce(function (m, t) { return Math.max(m, t.besucher); }, 0);
+    $('#tage').innerHTML = liste.map(function (t) { return '<div class="' + (t.besucher ? '' : 'leer') + '" style="height:' + (max ? Math.max(2, Math.round(t.besucher / max * 100)) : 2) + '%" title="' + schoen(t.tag) + ': ' + zahl(t.besucher) + ' Besucher"></div>'; }).join('');
+    $('#tage-zeile').innerHTML = '<span>' + schoen(daten.von) + '</span><span>höchster Tag: ' + zahl(max) + ' Besucher</span><span>' + schoen(daten.bis) + '</span>';
+    $('#seiten').innerHTML = '<thead><tr><th>Seite</th><th>Besucher</th><th>Aufrufe</th><th>bis zur Hälfte<br>gelesen</th><th>bis zum Ende<br>gelesen</th><th>Zeit im<br>Schnitt</th><th>Formular<br>begonnen</th><th>Anfrage<br>abgeschickt</th><th>Kontakt-<br>klick</th></tr></thead><tbody>'
+      + (daten.seiten.length ? daten.seiten.map(function (s) {
+        var auf = offen === s.pfad;
+        return '<tr class="zeile' + (auf ? ' auf' : '') + '" tabindex="0" data-pfad="' + esc(s.pfad) + '" aria-expanded="' + auf + '"><td class="pfad">' + esc(s.pfad) + '</td>' + zelle(s.besucher) + zelle(s.aufrufe) + '<td>' + proz(s.t50, s.aufrufe) + '</td><td>' + proz(s.t100, s.aufrufe) + '</td><td>' + minuten(s.dauer_mittel) + '</td>' + zelle(s.form_start) + zelle(s.form_ab, true) + zelle(s.kontakt, true) + '</tr>'
+          + (auf ? '<tr class="detail"><td colspan="9">' + detail(s) + '</td></tr>' : '');
+      }).join('') : '<tr><td colspan="9">In diesem Zeitraum wurde noch nichts gezählt.</td></tr>') + '</tbody>';
+    $('#herkunft').innerHTML = '<thead><tr><th>Herkunft</th><th>Woher genau</th><th>Kampagne</th><th>Besucher</th><th>Aufrufe</th></tr></thead><tbody>'
+      + (daten.herkunft_genau.length ? daten.herkunft_genau.map(function (h) { return '<tr><td>' + esc(QUELLE[h.quelle] || h.quelle) + '</td><td>' + esc(h.woher || '–') + '</td><td>' + esc(h.kampagne || '–') + '</td>' + zelle(h.besucher) + zelle(h.aufrufe) + '</tr>'; }).join('') : '<tr><td colspan="5">Noch keine Daten.</td></tr>') + '</tbody>';
+    var aMax = daten.ausstieg.reduce(function (m, x) { return Math.max(m, x.besucher); }, 0);
+    $('#ausstieg').innerHTML = daten.ausstieg.length ? balken(daten.ausstieg.slice(0, 15).map(function (x) { return [x.pfad, x.besucher]; }), aMax) : '<span>Noch keine Daten</span>';
+    $('#stand').textContent = 'leonossendorf.de, gezählt ohne Cookies · ' + schoen(daten.von) + ' bis ' + schoen(daten.bis) + ' · Stand ' + new Date(daten.stand).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+  }
+  function laden() {
+    var k = schluessel(), g = grenzen();
+    if (!k) { $('#anmeldung').hidden = false; $('#inhalt').hidden = true; return; }
+    fetch(Z + '?von=' + g[0] + '&bis=' + g[1], { headers: { Authorization: 'Bearer ' + k }, cache: 'no-store' }).then(function (r) {
+      if (r.status === 401) { try { localStorage.removeItem('stat-key'); } catch (e) {} $('#anmelde-fehler').textContent = 'Der Zugangsschlüssel stimmt nicht.'; $('#anmeldung').hidden = false; $('#inhalt').hidden = true; return null; }
+      return r.json();
+    }).then(function (d) { if (!d) return; daten = d; $('#anmeldung').hidden = true; $('#inhalt').hidden = false; zeichne(); })
+      .catch(function () { $('#stand').textContent = 'Die Zahlen konnten gerade nicht geladen werden. Bitte gleich noch einmal versuchen.'; $('#inhalt').hidden = false; });
+  }
+  $('#schluessel-form').addEventListener('submit', function (e) { e.preventDefault(); try { localStorage.setItem('stat-key', $('#schluessel').value.trim()); } catch (e2) {} $('#schluessel').value = ''; $('#anmelde-fehler').textContent = ''; laden(); });
+  document.querySelectorAll('[data-z]').forEach(function (b) { b.addEventListener('click', function () {
+    zeitraum = b.getAttribute('data-z'); document.querySelectorAll('[data-z]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); laden(); }); });
+  ['#von', '#bis'].forEach(function (s) { $(s).addEventListener('change', function () { if ($('#von').value && $('#bis').value) { zeitraum = 'frei'; document.querySelectorAll('[data-z]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); laden(); } }); });
+  function auf(e) { var z = e.target.closest ? e.target.closest('tr.zeile') : null; if (!z) return; if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; e.preventDefault(); offen = offen === z.getAttribute('data-pfad') ? '' : z.getAttribute('data-pfad'); zeichne(); }
+  $('#seiten').addEventListener('click', auf); $('#seiten').addEventListener('keydown', auf);
+  $('#neu-laden').addEventListener('click', laden);
+  $('#abmelden').addEventListener('click', function () { try { localStorage.removeItem('stat-key'); } catch (e) {} laden(); });
+  var haken = $('#nicht-zaehlen');
+  try { haken.checked = !!localStorage.getItem('stat-aus'); } catch (e) {}
+  haken.addEventListener('change', function () { try { if (haken.checked) localStorage.setItem('stat-aus', '1'); else localStorage.removeItem('stat-aus'); } catch (e) {} });
+  laden();
+})();
+</script>
+</body>
+</html>

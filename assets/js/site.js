@@ -18,13 +18,18 @@
   if (!spur) {
     var q = new URLSearchParams(location.search), k = {};
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (n) { if (q.get(n)) k[n.replace('utm_', '')] = q.get(n).slice(0, 80); });
+    if (q.get('gad_campaignid')) k.gad_campaignid = q.get('gad_campaignid').slice(0, 40);
     var ref = document.referrer || '';
     if (ref.indexOf(location.origin) === 0) ref = '';
-    spur = { start: Date.now(), ref: ref.slice(0, 200), lande: location.pathname, anzeige: q.has('gclid') || q.has('gbraid') || q.has('wbraid'), k: k, seiten: [], dinge: [] };
+    spur = { start: Date.now(), ref: ref.slice(0, 200), lande: location.pathname, anzeige: q.has('gclid') || q.has('gbraid') || q.has('wbraid') || q.has('gad_source'), k: k, seiten: [], dinge: [] };
   }
+  var klickJetzt = '';
   (function () {
-    var q2 = new URLSearchParams(location.search), k2 = {}, da = q2.has('gclid') || q2.has('gbraid') || q2.has('wbraid');
+    var q2 = new URLSearchParams(location.search), k2 = {}, da = q2.has('gclid') || q2.has('gbraid') || q2.has('wbraid') || q2.has('gad_source');
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (n) { if (q2.get(n)) k2[n.replace('utm_', '')] = q2.get(n).slice(0, 80); });
+    if (q2.get('gad_campaignid')) k2.gad_campaignid = q2.get('gad_campaignid').slice(0, 40);
+    /* Klick-Kennung der Anzeige (gclid): steht in der Adresse. Über diese Seite hinaus gemerkt wird sie nur mit Zustimmung zur Google-Messung. */
+    ['gclid', 'gbraid', 'wbraid'].forEach(function (n) { if (!klickJetzt && q2.get(n)) klickJetzt = n + '=' + q2.get(n).slice(0, 150); });
     if (da || Object.keys(k2).length) { spur.anzeige = spur.anzeige || da; spur.k = k2; }
   })();
   var jetzt = { p: location.pathname, t: Date.now(), ab: [] };
@@ -42,6 +47,8 @@
     var kk = Object.keys(spur.k).map(function (n) { return n + '=' + spur.k[n]; }).join(', ');
     if (kk) her += ' (' + kk + ')';
     if (spur.anzeige && spur.ref) her += ', Verweis ' + spur.ref;
+    if (klickJetzt && mStand() === 'ja') spur.klick = klickJetzt;
+    if (spur.klick || klickJetzt) her += '\nKlick-Kennung der Anzeige: ' + (spur.klick || klickJetzt);
     z.push('Gekommen über: ' + her);
     z.push('Erste Seite: ' + spur.lande + ' · Besuch seit ' + dauer(Date.now() - spur.start));
     z.push('Weg: ' + spur.seiten.map(function (s) {
@@ -411,6 +418,7 @@
         .then(function (x) {
           if (!x.ok || x.b.state !== 'accepted') throw new Error('nicht bestätigt');
           /* Gezählt wird die Anfrage über den Aufruf der Danke-Seite (siehe Messung unten). */
+          if (window.lzZaehl) window.lzZaehl('ab');
           location.href = danke;
         }).catch(function () { laeuft = false; status.textContent = form.getAttribute('data-f-fehler'); });
     });
@@ -450,7 +458,7 @@
   }
   function mSetzen(w) {
     try { localStorage.setItem('messung', JSON.stringify({ w: w, t: Date.now() })); } catch (e) {}
-    if (w === 'ja') mLaden(); else mAus();
+    if (w === 'ja') { mLaden(); if (klickJetzt) { spur.klick = klickJetzt; sichern(); } } else { mAus(); delete spur.klick; sichern(); }
     if (mFrage) { mFrage.remove(); mFrage = null; }
   }
   function mFragen(zeigeStand) {
@@ -483,5 +491,82 @@
       window.gtag('event', 'conversion', { send_to: 'AW-18574688930/FB-iCNvYp7sdEKKFjZlF' });
     }
     else if (/^mailto:/.test(h)) window.gtag('event', 'mail_klick', { seite: location.pathname });
+  });
+})();
+
+/* ---------- Besucherzählung ohne Cookies (seit 24.11.2026) ----------
+   Zählt je Seitenaufruf: Seite, Herkunft, Gerät, wie weit gelesen wurde, letzter erreichter Abschnitt, ob das Formular begonnen
+   oder abgeschickt und ob Telefon, WhatsApp oder E-Mail angeklickt wurde. Formularinhalte werden nie übertragen.
+   Es wird dafür nichts auf dem Gerät gespeichert oder ausgelesen, außer dem Schalter „nicht mitzählen“ (stat-aus), den jemand selbst gesetzt hat.
+   Die Kennung eines Aufrufs entsteht bei jedem Laden neu und lebt nur im Arbeitsspeicher. Empfänger ist ein eigener Dienst bei Cloudflare
+   (tools/worker/zaehler.js), der die IP-Adresse nicht speichert. Auswertung: /statistik/. Das Google-Tag bleibt davon unberührt. */
+(function () {
+  var Z = 'https://leonossendorf-zaehler.leon-ossendorf.workers.dev/z';
+  /* Widerspruch gegen die Zählung (Knopf in der Datenschutzerklärung) */
+  var wKnopf = document.querySelector('[data-zaehlung]');
+  if (wKnopf) {
+    var wAus = function () { try { return !!localStorage.getItem('stat-aus'); } catch (e) { return false; } };
+    var wText = function () { wKnopf.textContent = wAus() ? 'Zählung auf diesem Gerät wieder erlauben' : 'Auf diesem Gerät nicht mitzählen'; wKnopf.setAttribute('aria-pressed', wAus() ? 'true' : 'false'); };
+    wKnopf.addEventListener('click', function () { try { if (wAus()) localStorage.removeItem('stat-aus'); else localStorage.setItem('stat-aus', '1'); } catch (e) {} wText(); });
+    wText();
+  }
+  if (['leonossendorf.de', 'www.leonossendorf.de'].indexOf(location.hostname) < 0) return;
+  if (navigator.webdriver || window.top !== window.self || /^\/statistik\//.test(location.pathname)) return;
+  try { if (localStorage.getItem('stat-aus')) return; } catch (e) {}
+  var id = '';
+  try { var z = new Uint8Array(12); crypto.getRandomValues(z); for (var i = 0; i < z.length; i++) id += (z[i] < 16 ? '0' : '') + z[i].toString(16); }
+  catch (e) { id = (Math.random().toString(36) + Math.random().toString(36)).replace(/[^a-z0-9]/g, '').slice(0, 24); }
+  if (id.length < 16) return;
+  function schick(o) {
+    o.i = id;
+    var t = JSON.stringify(o);
+    try { fetch(Z, { method: 'POST', body: t, keepalive: true, credentials: 'omit', headers: { 'Content-Type': 'text/plain' } }).catch(function () {}); }
+    catch (e) { try { navigator.sendBeacon(Z, t); } catch (e2) {} }
+  }
+  var q = new URLSearchParams(location.search), ref = '';
+  try { if (document.referrer) ref = new URL(document.referrer).hostname; } catch (e) {}
+  schick({ e: 'auf', p: location.pathname, r: ref, a: q.has('gclid') || q.has('gbraid') || q.has('wbraid') || q.has('gad_source') ? 1 : 0,
+    us: (q.get('utm_source') || '').slice(0, 60), um: (q.get('utm_medium') || '').slice(0, 60), uc: (q.get('utm_campaign') || q.get('gad_campaignid') || '').slice(0, 80) });
+
+  /* Lesetiefe, letzter erreichter Abschnitt und sichtbare Zeit */
+  var tief = 0, gemeldet = -1, abNr = -1, abName = '', zeit = 0, seit = document.hidden ? 0 : Date.now(), letzte = 0, warte = null;
+  function sekunden() { return Math.round((zeit + (seit ? Date.now() - seit : 0)) / 1000); }
+  function stufe(p) { return p >= 98 ? 100 : p >= 75 ? 75 : p >= 50 ? 50 : p >= 25 ? 25 : 0; }
+  function messen() {
+    var h = document.documentElement, voll = h.scrollHeight - window.innerHeight;
+    var p = voll < 40 ? 100 : Math.round((window.scrollY || h.scrollTop) / voll * 100);
+    if (p > tief) tief = Math.min(100, p);
+    var ab = document.querySelectorAll('[data-ab]');
+    for (var n = 0; n < ab.length; n++) {
+      if (n > abNr && ab[n].offsetParent !== null && ab[n].getBoundingClientRect().top < window.innerHeight * .6) { abNr = n; abName = (ab[n].getAttribute('data-ab') || '').slice(0, 60); }
+    }
+  }
+  function melden(immer) {
+    messen();
+    var s = stufe(tief), d = sekunden();
+    if (!immer && s === gemeldet) return;
+    if (immer && s === gemeldet && d - letzte < 3) return;
+    gemeldet = s; letzte = d;
+    schick({ e: 'stand', t: s, s: abName, d: d });
+  }
+  window.addEventListener('scroll', function () { if (warte) return; warte = setTimeout(function () { warte = null; melden(false); }, 400); }, { passive: true });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { if (seit) { zeit += Date.now() - seit; seit = 0; } melden(true); } else if (!seit) seit = Date.now();
+  });
+  window.addEventListener('pagehide', function () { melden(true); });
+  setTimeout(function () { melden(false); }, 1500);
+
+  /* Formular begonnen (erstes Feld berührt), abgeschickt (ruft das Formular oben auf), Kontaktklicks */
+  var begonnen = false, geklickt = {};
+  document.addEventListener('focusin', function (e) {
+    var f = e.target && e.target.form;
+    if (begonnen || !f || !f.elements || !f.elements.name || !f.elements.email || e.target.name === 'company' || !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    begonnen = true; schick({ e: 'form' });
+  });
+  window.lzZaehl = function (was) { if (was === 'ab') schick({ e: 'ab' }); };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null, h = a ? a.getAttribute('href') : '';
+    var k = /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(h) ? 'whatsapp' : /^tel:/.test(h) ? 'telefon' : /^mailto:/.test(h) ? 'mail' : '';
+    if (k && !geklickt[k]) { geklickt[k] = 1; schick({ e: 'kontakt', k: k }); }
   });
 })();
