@@ -1061,15 +1061,34 @@ html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bez
   .psy-kasten .kasten-feld .kasten-text{order:-1}
   .psy-demo{flex-direction:column;align-items:stretch;padding:1.2rem}
   .psy-demo .knopf{justify-content:center}
-  /* Sprechstunde buchen: die vier Schritte stehen über dem Handy, damit man sieht, wie das Bild wechselt (wie bei Askel) */
-  .psy-kasten .schritt-liste{order:-1;grid-template-columns:1fr 1fr;gap:.4rem;width:100%}
-  .psy-kasten .schritt-liste button{font-size:.95rem;padding:.55rem .6rem;gap:.55rem;line-height:1.2}
-  .psy-kasten .schritt-liste b{width:1.9rem;height:1.9rem;font-size:.85rem}
 }
 @media (max-width:600px){
   /* Das Computer-Bild ist am Handy nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
   .psy-kasten .geraete .laptop{display:none}
 }
+/* Handy-Rahmen mit der echten Demo-Praxis (iframe). Das Skript dazu steht in seiten_psychotherapie.py (PSY_LIVE_JS).
+   Der Rahmen ist erst nach einem Tipp bedienbar, damit Scrollen über dem Handy die Seite weiterbewegt. */
+/* Der Rahmen passt immer ganz ins Bild (zwischen Kopfleiste und fester Leiste unten), sonst käme man am Handy nicht an sein unteres Ende */
+.psy-kasten .handy.live:not(.vorn){max-height:calc(100svh - 9.5rem)}
+@media (max-width:860px){.psy-kasten .handy.live.vorn{max-height:calc(100svh - 9.5rem)}}
+.psy-kasten .handy.live img{object-position:top}
+.psy-kasten .live-rahmen{position:absolute;inset:0;padding:inherit;border-radius:inherit}
+.psy-kasten .live-glas{position:relative;width:100%;height:100%;overflow:hidden;border-radius:1.9rem;background:#fff}
+.psy-kasten .live-glas iframe{display:block;border:0;transform-origin:0 0;background:#fff;opacity:0;transition:opacity .4s}
+.psy-kasten .handy.live.geladen iframe{opacity:1}
+.psy-kasten .live-start{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:28% .6rem 0;border:0;cursor:pointer;background:rgba(15,36,64,.1);font:inherit;-webkit-tap-highlight-color:transparent}
+.psy-kasten .live-start>span{background:#fff;color:var(--ink);font:650 .95rem/1.2 var(--sans);border-radius:99rem;padding:.75em 1.25em;box-shadow:0 .6rem 1.6rem -.5rem rgba(15,36,64,.6);transition:transform .25s}
+.psy-kasten .live-start:hover>span{transform:translateY(-2px)}
+.psy-kasten .live-start:focus-visible{outline:3px solid var(--accent);outline-offset:-3px;border-radius:1.9rem}
+.psy-kasten .live-start .nur-finger{display:none}
+@media (hover:none){.psy-kasten .live-start .nur-finger{display:inline}.psy-kasten .live-start .nur-maus{display:none}}
+.psy-kasten .handy.live.aktiv .live-start{display:none}
+.psy-kasten .handy.live.aktiv{box-shadow:0 0 0 3px var(--accent),0 2.5rem 4rem -2rem rgba(15,36,64,.55)}
+.psy-kasten .live-ende{display:none;position:absolute;left:50%;top:0;transform:translate(-50%,-55%);z-index:2;background:var(--accent);color:#fff;border:0;border-radius:99rem;padding:.5em 1.1em;font:650 .88rem/1.2 var(--sans);white-space:nowrap;cursor:pointer;box-shadow:0 .4rem 1rem -.3rem rgba(15,36,64,.5)}
+.psy-kasten .handy.live.aktiv .live-ende{display:block}
+/* Kleines Handy vor dem Computer-Bild: der Hinweis muss in den schmalen Rahmen passen */
+.psy-kasten .handy.live.vorn .live-start>span{font-size:.72rem;padding:.6em .8em}
+html.ruhig .psy-kasten .live-glas iframe,html.ruhig .psy-kasten .live-start>span{transition:none}
 /* Knopf zur klickbaren Demo-Praxis unter der Einleitung der Leistungsbeispiele */
 .px-kasten .px-probe{margin:0}
 @media (min-width:861px){.px-kasten .px-probe{grid-column:2}}
@@ -1084,3 +1103,17 @@ html.js:not(.ruhig) .kasten-feld:not([hidden]){animation:feld-rein .5s cubic-bez
 
 /* Danke-Seiten: kein schwebender Anfrage-Knopf mehr (Hinweis von Askel, 22.11.) */
 body:has(.danke) .schnell-knopf{display:none}
+
+/* ===== Lumen 24.11.: „Kostenlos“ und „Unverbindlich“ groß und farbig über dem Knopf ===== */
+.frei-zeile{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;margin:1.7rem 0 -.6rem}
+.frei-zeile span{display:inline-flex;align-items:center;gap:.5rem;font:800 clamp(1.3rem,2vw,1.75rem)/1.1 var(--sans);color:var(--accent);letter-spacing:-.01em}
+.frei-zeile span:before{content:"";width:1.05em;height:1.05em;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 12.5 5.2 5.2L20 6.8'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 12.5 5.2 5.2L20 6.8'/%3E%3C/svg%3E") center/contain no-repeat}
+html.kontrast .frei-zeile span{color:#000}
+
+/* ===== Lumen 24.11.: Hero-Foto ohne eigenen Hintergrund (durchsichtig), die Seite legt den Verlauf dahinter ===== */
+.held-bild img{-webkit-mask-image:none;mask-image:none}
+html.gross-schrift .held-bild{background:linear-gradient(90deg,#c9ccd2,#bccbdd 55%,#a6bcd8)}
+.held:before{content:"";position:absolute;inset:0;background:radial-gradient(60vmax 60vmax at 74% 38%,rgba(255,255,255,.22),transparent 62%);pointer-events:none}
+@media (max-width:860px){.held:before{display:none}}
+html.gross-schrift .held:before{display:none}
+@media (min-width:861px){html.gross-schrift .held-bild img{object-position:62% 5%}}
