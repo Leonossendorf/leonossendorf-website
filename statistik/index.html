@@ -35,7 +35,7 @@ button:focus-visible,input:focus-visible,tr[tabindex]:focus-visible{outline:3px 
 .rollen{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.92rem}
 th,td{text-align:right;padding:.55rem .6rem;border-bottom:1px solid var(--soft);white-space:nowrap}
-th:first-child,td:first-child{text-align:left;white-space:normal;word-break:break-word}
+th:first-child,td:first-child{text-align:left;white-space:normal;min-width:9rem;overflow-wrap:anywhere}
 th{color:var(--muted);font-weight:600;font-size:.8rem;vertical-align:bottom}
 tbody tr.zeile{cursor:pointer}
 tbody tr.zeile:hover{background:#f7f9fc}
@@ -51,6 +51,7 @@ td.treffer{color:var(--gut);font-weight:700}
 .detail table th:first-child,.detail table td:first-child{word-break:normal;min-width:9.5rem}
 .detail table td{background:none;padding:.45rem .5rem;text-align:right;white-space:nowrap}
 .detail table td:first-child{text-align:left;white-space:normal}
+.spalten{position:sticky;left:0;max-width:min(100%,calc(100vw - 6.6rem))}
 .spalten h3{font-size:.95rem;margin:0 0 .5rem}
 .balken{display:grid;grid-template-columns:minmax(6rem,11rem) 1fr auto;gap:.3rem .6rem;align-items:center;font-size:.88rem}
 .balken i{display:block;height:.7rem;border-radius:99rem;background:var(--navy);min-width:2px}
@@ -64,7 +65,7 @@ td.treffer{color:var(--gut);font-weight:700}
 .fuss{display:flex;flex-wrap:wrap;gap:.8rem 1.6rem;align-items:center;color:var(--muted);font-size:.9rem;margin-top:1.6rem}
 .fuss label{display:flex;gap:.5rem;align-items:center;cursor:pointer}
 [hidden]{display:none!important}
-@media (max-width:760px){.kacheln{grid-template-columns:repeat(2,minmax(0,1fr))}.kachel:first-child{grid-column:1/-1}}
+@media (max-width:760px){.balken{grid-template-columns:minmax(4.5rem,8rem) 1fr auto}.kacheln{grid-template-columns:repeat(2,minmax(0,1fr))}.kachel:first-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
