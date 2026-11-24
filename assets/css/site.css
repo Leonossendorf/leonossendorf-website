@@ -1209,4 +1209,10 @@ html.gross-schrift .bestell.eins{grid-template-columns:1fr}
 }
 .angebot-bild{background:#d9e0e7}
 .angebot-bild img{object-position:50% 12%}
-@media (min-width:861px) and (max-width:1180px){html:root:not(.gross-schrift) .held-bild{left:34%;width:66%}html:root:not(.gross-schrift) .held-bild img{object-position:62% 30%;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 14%);mask-image:linear-gradient(to right,transparent 0,#000 14%)}}
+/* ===== Lumen 24.11. (4): Porträt am Computer kleiner (Leon: zu nah, zu groß, leicht verpixelt) – nie über Originalgröße, Ränder weich ===== */
+@media (min-width:861px){
+  html:root:not(.gross-schrift) .held{background:linear-gradient(90deg,#dde2e9 0,#e0e6ee 45%,#cdd8e3 100%)}
+  html:root:not(.gross-schrift) .held-bild{inset:auto 0 0 auto;width:auto;height:min(74%,1000px);aspect-ratio:1920/1080;max-width:none}
+  html:root:not(.gross-schrift) .held-bild img{object-fit:cover;object-position:50% 50%;-webkit-mask-image:linear-gradient(to right,transparent 0,transparent 22%,#000 40%),radial-gradient(ellipse 50% 106% at 64% 100%,#000 86%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0,transparent 22%,#000 40%),radial-gradient(ellipse 50% 106% at 64% 100%,#000 86%,transparent 100%);mask-composite:intersect}
+}
+@media (min-width:861px) and (max-width:1180px){html:root:not(.gross-schrift) .held-bild{height:min(62%,640px);right:-6%}}
