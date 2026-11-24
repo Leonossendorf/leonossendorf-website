@@ -32,7 +32,12 @@
 
     var leiste = document.createElement('div');
     leiste.className = 'px-leiste';
-    leiste.innerHTML = '<span>Echte Demo: einfach ausprobieren</span><button type="button">Von vorn</button>'
+    /* Kleiner Hinweis über dem Rahmen, kein Knopf: die Demo ist sofort bedienbar */
+    var oben = document.createElement('p');
+    oben.className = 'px-oben';
+    oben.textContent = 'Echte Demo: einfach ausprobieren';
+    fig.insertBefore(oben, sprung);
+    leiste.innerHTML = '<button type="button">Von vorn</button>'
       + (fig.getAttribute('data-gross') ? '<a href="' + fig.getAttribute('data-gross') + '">Groß öffnen</a>' : '');
     fig.appendChild(leiste);
     var vonVorn = leiste.querySelector('button');

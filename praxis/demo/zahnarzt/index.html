@@ -57,7 +57,7 @@ h1:focus,h2:focus{outline:none}
 .demo-text{flex:1;min-width:0}.demo-text b{color:#fff}
 .demo-cta{background:#fff;color:#0f1c2e!important;border-radius:99px;padding:7px 13px}
 @media (max-width:560px){.demo .lang{display:none}}
-html.foto .demo{display:none}
+html.fotomodus .demo,html.rahmen .demo{display:none}
 html.rahmen{scrollbar-width:none}html.rahmen::-webkit-scrollbar{display:none}html.rahmen:not(.frei){overflow:hidden}
 
 /* ---------- Knöpfe ---------- */
@@ -460,7 +460,7 @@ var $=function(s,e){return (e||document).querySelector(s)},$$=function(s,e){retu
 var WT=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],WK=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 var PARAM=new URLSearchParams(location.search);
-if(PARAM.get('foto')==='1')document.documentElement.classList.add('foto');
+if(PARAM.get('foto')==='1')document.documentElement.classList.add('fotomodus');   /* nicht „foto“: so heißen die Bildrahmen */
 /* Einbett-Ansicht (?rahmen=1&ab=termin): die Demo läuft im Handy-Rahmen auf Leons Seiten. Ohne Leons Leiste, ohne Adresswechsel
    (sonst zieht der Browser die Seite drumherum mit), und sie nimmt der Seite drumherum nicht von selbst den Fokus weg.
    Sie ist sofort bedienbar. Solange noch niemand hineingetippt hat, scrollt sie aber nicht selbst (html ohne Klasse „frei“):
@@ -469,7 +469,7 @@ if(PARAM.get('foto')==='1')document.documentElement.classList.add('foto');
 var RAHMEN=PARAM.get('rahmen')==='1',ORT=RAHMEN?'#'+(PARAM.get('ab')||'start'):null,beruehrt=!RAHMEN;
 function melde(o){if(RAHMEN&&parent!==window)try{o.askelDemo=1;parent.postMessage(o,location.origin)}catch(e){}}
 function frei(an){var h=document.documentElement;if(h.classList.contains('frei')===an)return;h.classList.toggle('frei',an);melde({frei:an?1:0})}
-if(RAHMEN){document.documentElement.classList.add('foto','rahmen');['click','keydown'].forEach(function(n){addEventListener(n,function(){beruehrt=true;frei(true)},true)})}
+if(RAHMEN){document.documentElement.classList.add('rahmen');['click','keydown','pointerup'].forEach(function(n){addEventListener(n,function(){beruehrt=true;frei(true)},true)})   /* pointerup: ein Tipp; beim Wischen kommt stattdessen pointercancel */}
 
 /* ---------------- Symbole (nur für Bedienelemente) ---------------- */
 var S={
