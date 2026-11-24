@@ -126,8 +126,15 @@
     if (!z) return;
     if (d.raus) z.aus(true);
     if (d.termin != null) z.schritt(d.termin < 3 ? 0 : d.termin === 3 ? 1 : d.termin < 6 ? 2 : 3);
+    if (d.ort && d.ort.indexOf('termin') !== 0) z.schritt(-1);
   });
 
   /* Schalter auf Leons Seite gelten auch in den Rahmen */
-  new MutationObserver(function () { alle.forEach(function (z) { if (z.frame) z.post({ setze: z.stand() }); }); }).observe(html, { attributes: true, attributeFilter: ['class'] });
+  var zuletzt = JSON.stringify(seite());
+  new MutationObserver(function () {
+    var jetzt = JSON.stringify(seite());
+    if (jetzt === zuletzt) return;
+    zuletzt = jetzt;
+    alle.forEach(function (z) { if (z.frame) z.post({ setze: z.stand() }); });
+  }).observe(html, { attributes: true, attributeFilter: ['class'] });
 })();

@@ -1100,6 +1100,57 @@ html.ruhig .psy-kasten .live-glas iframe,html.ruhig .psy-kasten .live-start>span
   html:not(.gross-schrift) .px-liste b{grid-column:2;font-size:1.3rem;margin:0 0 .25rem}
   html:not(.gross-schrift) .px-liste span{grid-column:2;font-size:.98rem;line-height:1.45}
 }
+/* --- Askel 24.11.: Handy-Rahmen, in denen die echte Demo-Praxis läuft (assets/js/px-live.js). Ohne JavaScript bleibt das Bildschirmfoto. --- */
+.handy.px-live{max-height:max(27rem,calc(100svh - 7.5rem));margin-bottom:3.2rem}
+.px-schirm{position:absolute;inset:.55rem;border-radius:1.9rem;overflow:hidden;overflow:clip;background:#fff;isolation:isolate}
+.px-kasten .kasten-buehne{overflow:clip}
+.px-kasten .handy .px-schirm img{position:static;inset:auto;width:100%;height:100%;opacity:1;border-radius:0}
+.px-schirm iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff;opacity:0;transition:opacity .35s;pointer-events:none}
+.px-da .px-schirm iframe{opacity:1}
+.px-aktiv .px-schirm iframe{pointer-events:auto}
+/* Die Demo reagiert erst nach einem Tipp: bis dahin liegt dieser Knopf über dem Bildschirm, und die Seite scrollt normal darüber hinweg */
+.px-start{position:absolute;inset:0;z-index:2;display:flex;align-items:flex-end;justify-content:center;padding:6rem .8rem 2.4rem;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.px-start[hidden]{display:none}
+/* Der Hinweis bleibt am unteren Bildschirmrand kleben, solange das Handy unten noch aus dem Bild ragt */
+.px-tipp{position:sticky;bottom:5.6rem;display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.2rem;border-radius:99rem;background:var(--ink);color:#fff;font:650 1rem/1.15 var(--sans);box-shadow:0 0 0 3px rgba(255,255,255,.9),0 1rem 2rem -.5rem rgba(15,36,64,.65);transition:transform .25s,background .25s}
+.px-tipp svg{flex:none}
+.px-start:hover .px-tipp{background:var(--accent);transform:translateY(-2px)}
+.px-start:focus-visible{outline:0}
+.px-start:focus-visible .px-tipp{background:var(--accent);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent)}
+.px-t-klick{display:none}
+@media (hover:hover) and (pointer:fine){.px-t-tipp{display:none}.px-t-klick{display:inline}}
+.handy.px-aktiv{box-shadow:0 0 0 1px #2c313b,0 0 0 5px color-mix(in srgb,var(--accent) 60%,transparent),0 2.5rem 4rem -2rem rgba(15,36,64,.55)}
+.px-leiste{position:absolute;left:0;right:0;top:calc(100% + .7rem);display:flex;flex-wrap:wrap;justify-content:center;gap:.2rem 1.5rem;font:600 .95rem/1.2 var(--sans)}
+.px-leiste :is(button,a){background:none;border:0;padding:.4rem .2rem;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
+.px-leiste :is(button,a):focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:.3rem}
+html.ruhig :is(.px-schirm iframe,.px-tipp){transition:none}
+html.kontrast .px-tipp{background:#000}
+/* Barrierefrei: Schalter über dem Handy stellen nur die Demo um */
+.px-schalter{display:grid;justify-items:center;gap:1.1rem;width:100%}
+.px-wahl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.5rem}
+.px-wahl[hidden]{display:none}
+.px-wahl span{flex-basis:100%;text-align:center;font:600 .95rem/1.2 var(--sans);color:var(--muted)}
+.px-wahl .pille{padding:.62em 1.05em;font-size:.98rem;background:#fff}
+.px-wahl .pille[aria-pressed="true"]{background:var(--ink);color:#fff}
+.px-wahl .pille:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* Startseite: Computer-Bild und daneben das Handy zum Antippen (vorher lag das Handy klein vor dem Computer) */
+@media (min-width:861px){
+  .px-kasten .kasten-feld.breit .geraete{grid-template-columns:minmax(0,1fr) 21rem;align-items:start;justify-items:stretch;gap:clamp(1.5rem,3.5vw,3.5rem)}
+  .px-kasten .kasten-feld.breit .geraete .laptop{width:100%}
+  .px-kasten .kasten-feld.breit .schrittfolge{align-items:start}
+  .px-kasten .kasten-feld.breit .schritt-liste{margin-top:2.5rem}
+}
+@media (max-width:860px){
+  .px-kasten .kasten-feld .px-schirm{inset:.4rem;border-radius:1.85rem}
+  .px-kasten .geraete .handy{order:-1}
+  .handy.px-live{max-height:max(25rem,calc(100svh - 12rem))}
+}
+/* Wegweiser in der Zeile über der Überschrift: Zahnarztpraxen zur eigenen Seite, Arztpraxen zurück */
+.ober:has(.px-weiser){display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1.2rem}
+.px-weiser{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1rem;border:1.5px solid var(--line);border-radius:99rem;background:var(--soft);color:var(--accent);font:600 .95rem/1.2 var(--sans);letter-spacing:0;text-transform:none;text-decoration:none;transition:border-color .2s}
+.px-weiser:hover{border-color:var(--accent)}
+.px-weiser:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+html.kontrast .px-weiser{border-color:#000;color:#000;background:#fff;text-decoration:underline}
 
 /* Danke-Seiten: kein schwebender Anfrage-Knopf mehr (Hinweis von Askel, 22.11.) */
 body:has(.danke) .schnell-knopf{display:none}
