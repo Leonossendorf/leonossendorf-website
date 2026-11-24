@@ -1223,3 +1223,27 @@ html.gross-schrift .bestell.eins{grid-template-columns:1fr}
   html:root:not(.gross-schrift) .held-bild img{object-fit:cover;object-position:66% 42%;-webkit-mask-image:none;mask-image:none}
 }
 @media (min-width:861px) and (max-width:1180px){html:root:not(.gross-schrift) .held-bild{height:100%;right:0}html:root:not(.gross-schrift) .held-bild img{object-position:80% 42%}}
+
+/* ===== Lumen 24.11.: Psychotherapie-Landingpage für Google-Anzeigen (mit Sirius abgestimmt) =====
+   Erster Bildschirm am Handy: Überschrift, ein Satz, Knopf. Darunter die Demo-Vorschau als Beweis, dann die Haken. */
+html[data-kampagne="psychotherapie"] .praxis-auftakt .ober{margin-bottom:.8rem}
+html[data-kampagne="psychotherapie"] .psy-beweis{display:grid;grid-template-columns:auto 1fr;gap:1.1rem;align-items:center;max-width:33rem;margin-top:1.7rem;padding:.85rem 1.2rem .85rem .9rem;border-radius:1.1rem;background:var(--soft);box-shadow:0 0 0 1px var(--line);color:var(--ink);text-decoration:none;transition:box-shadow .2s,transform .2s}
+html[data-kampagne="psychotherapie"] .psy-beweis:hover{box-shadow:0 0 0 2px var(--accent);transform:translateY(-2px)}
+.psy-beweis-bild{position:relative;display:block;width:10.5rem;padding:0 .9rem .45rem 0}
+.psy-beweis-bild img{display:block;width:100%;height:auto;border-radius:.4rem;box-shadow:0 .6rem 1.3rem -.6rem rgba(15,36,64,.5),0 0 0 1px rgba(15,36,64,.1)}
+.psy-beweis-bild img.fon{position:absolute;right:0;bottom:0;width:27%;aspect-ratio:390/700;object-fit:cover;object-position:top;border-radius:.35rem;box-shadow:0 0 0 2px #0f2440,0 .5rem 1rem -.4rem rgba(15,36,64,.6)}
+.psy-beweis-text{display:grid;gap:.2rem}
+.psy-beweis-text small{font:600 .72rem/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.psy-beweis-text b{font:650 1.08rem/1.25 var(--sans);letter-spacing:-.01em}
+.psy-beweis-text i{font-style:normal;font-weight:600;font-size:.96rem;color:var(--accent)}
+html[data-kampagne="psychotherapie"] .praxis-auftakt .haken{margin-top:1.5rem}
+.psy-beispiel{display:inline-block;margin:0 0 1.1rem;padding:.45rem .9rem;border-radius:99rem;background:var(--soft);box-shadow:0 0 0 1px var(--line);font:600 .88rem/1.35 var(--sans);color:var(--ink)}
+@media (max-width:860px){
+  html[data-kampagne="psychotherapie"] .praxis-auftakt .unter{margin-top:.9rem}
+  html[data-kampagne="psychotherapie"] .praxis-auftakt .knopfzeile.nur-schmal{margin-top:1.3rem}
+  html[data-kampagne="psychotherapie"] .praxis-auftakt .knopfzeile.nur-schmal .knopf{width:100%;justify-content:center}
+  html[data-kampagne="psychotherapie"] .psy-beweis{margin-top:1.3rem;gap:.9rem;padding:.75rem .9rem .75rem .75rem}
+  .psy-beweis-bild{width:7.2rem;padding:0 .6rem .35rem 0}
+  .psy-beispiel{border-radius:.9rem}
+}
+html.kontrast .psy-beweis-text i{color:#000;text-decoration:underline}
