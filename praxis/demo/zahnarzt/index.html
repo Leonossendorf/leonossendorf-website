@@ -58,7 +58,7 @@ h1:focus,h2:focus{outline:none}
 .demo-cta{background:#fff;color:#0f1c2e!important;border-radius:99px;padding:7px 13px}
 @media (max-width:560px){.demo .lang{display:none}}
 html.foto .demo{display:none}
-html.rahmen{scrollbar-width:none}html.rahmen::-webkit-scrollbar{display:none}
+html.rahmen{scrollbar-width:none}html.rahmen::-webkit-scrollbar{display:none}html.rahmen:not(.frei){overflow:hidden}
 
 /* ---------- Knöpfe ---------- */
 .knopf{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:3.5rem;padding:.85rem 1.7rem;border-radius:999px;border:2px solid var(--cta);background:var(--cta);color:var(--tanne);font:650 1.06rem/1.2 var(--text);text-decoration:none;white-space:nowrap;transition:background .25s,border-color .25s,transform .25s var(--ease),box-shadow .25s}
@@ -462,10 +462,14 @@ var MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','Septem
 var PARAM=new URLSearchParams(location.search);
 if(PARAM.get('foto')==='1')document.documentElement.classList.add('foto');
 /* Einbett-Ansicht (?rahmen=1&ab=termin): die Demo läuft im Handy-Rahmen auf Leons Seiten. Ohne Leons Leiste, ohne Adresswechsel
-   (sonst zieht der Browser die Seite drumherum mit), und sie nimmt der Seite drumherum nicht von selbst den Fokus weg. */
+   (sonst zieht der Browser die Seite drumherum mit), und sie nimmt der Seite drumherum nicht von selbst den Fokus weg.
+   Sie ist sofort bedienbar. Solange noch niemand hineingetippt hat, scrollt sie aber nicht selbst (html ohne Klasse „frei“):
+   Wischen oder Mausrad über dem Rahmen bewegt dann die Seite drumherum, die Seite bleibt also nie am Rahmen hängen.
+   Nach dem ersten Tipp scrollt die Demo selbst; an ihrem Ende scrollt die Seite weiter. */
 var RAHMEN=PARAM.get('rahmen')==='1',ORT=RAHMEN?'#'+(PARAM.get('ab')||'start'):null,beruehrt=!RAHMEN;
-if(RAHMEN){document.documentElement.classList.add('foto','rahmen');['pointerdown','keydown'].forEach(function(n){addEventListener(n,function(){beruehrt=true},true)})}
 function melde(o){if(RAHMEN&&parent!==window)try{o.askelDemo=1;parent.postMessage(o,location.origin)}catch(e){}}
+function frei(an){var h=document.documentElement;if(h.classList.contains('frei')===an)return;h.classList.toggle('frei',an);melde({frei:an?1:0})}
+if(RAHMEN){document.documentElement.classList.add('foto','rahmen');['click','keydown'].forEach(function(n){addEventListener(n,function(){beruehrt=true;frei(true)},true)})}
 
 /* ---------------- Symbole (nur für Bedienelemente) ---------------- */
 var S={
@@ -903,7 +907,7 @@ if(RAHMEN){
   document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href]'):null;if(!a||e.defaultPrevented)return;var hr=a.getAttribute('href');
     if(hr.charAt(0)==='#'){e.preventDefault();ORT=hr;route()}else if(hr.charAt(0)==='/'){e.preventDefault();top.location.href=a.href}});
   addEventListener('message',function(e){var d=e.data;if(e.origin!==location.origin||!d||!d.askelDemo)return;
-    if(d.aktiv)beruehrt=true;
+    if(d.ruhe)frei(false);
     if(d.setze)['gross','kontrast','ruhig'].forEach(function(c){if(c in d.setze){document.documentElement.classList.toggle(c,!!d.setze[c]);$$('[data-kipp="'+c+'"]').forEach(function(b){b.setAttribute('aria-checked',d.setze[c]?'true':'false')})}});
     if(d.terminGruppe!=null)terminSprung(+d.terminGruppe)});
 }

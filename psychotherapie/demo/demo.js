@@ -300,6 +300,7 @@
     if (!dlg.open) {
       if (EIN && !beruehrt) dlg.setAttribute('open', ''); else dlg.showModal();
       if (leiste) leiste.classList.add('weg');
+      h.classList.add('ablauf-offen');
       requestAnimationFrame(function () { requestAnimationFrame(function () { dlg.classList.add('auf'); }); });
     }
     zeige(0, 0);
@@ -307,6 +308,7 @@
   }
   function schliesse() {
     dlg.classList.remove('auf');
+    h.classList.remove('ablauf-offen');
     if (leiste) leiste.classList.remove('weg');
     setTimeout(function () { if (dlg.open) dlg.close(); }, ruhig() ? 0 : 320);
     if (/^#(termin|warteliste|nachricht)$/.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);

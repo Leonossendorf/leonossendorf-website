@@ -45,6 +45,10 @@ p{margin:0 0 1rem}
 
 /* Einbett-Ansicht (Handy-Rahmen auf leonossendorf.de): ohne Leons Leiste und ohne Demo-Schalter */
 html.einbett .demo-leiste,html.einbett .fuss-unten button{display:none!important}
+/* Am Ende eines Ablaufs oder der Seite scrollt die äußere Seite weiter */
+html.einbett .ablauf-buehne{overscroll-behavior:auto}
+/* Ist im Rahmen ein Ablauf offen, scrollt die Demo-Seite dahinter nicht mit: die äußere Seite bewegt sich sofort weiter */
+html.einbett.ablauf-offen,html.einbett.ablauf-offen body{overflow:hidden}
 
 /* Kopf */
 .kopf{position:sticky;top:0;z-index:30;background:var(--weiss);transition:box-shadow .3s}
