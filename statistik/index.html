@@ -45,7 +45,12 @@ td.treffer{color:var(--gut);font-weight:700}
 .pfad{font-weight:600}
 .pfad small{display:block;color:var(--muted);font-weight:400}
 .detail td{background:#f7f9fc;text-align:left;white-space:normal;padding:1rem .8rem 1.3rem}
-.spalten{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.2rem 2rem}
+.spalten{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,30rem),1fr));gap:1.6rem 2.4rem}
+.detail table{font-size:.86rem}
+.detail table th{white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none;padding:.45rem .5rem}
+.detail table th:first-child,.detail table td:first-child{word-break:normal;min-width:9.5rem}
+.detail table td{background:none;padding:.45rem .5rem;text-align:right;white-space:nowrap}
+.detail table td:first-child{text-align:left;white-space:normal}
 .spalten h3{font-size:.95rem;margin:0 0 .5rem}
 .balken{display:grid;grid-template-columns:minmax(6rem,11rem) 1fr auto;gap:.3rem .6rem;align-items:center;font-size:.88rem}
 .balken i{display:block;height:.7rem;border-radius:99rem;background:var(--navy);min-width:2px}
@@ -91,14 +96,14 @@ td.treffer{color:var(--gut);font-weight:700}
     <button class="knopf" type="button" id="neu-laden">Neu laden</button>
     <button class="knopf" type="button" id="abmelden">Zugangsschlüssel vergessen</button>
   </div>
-  <p class="klein">Gezählt wird ohne Cookies. Besucher lassen sich nur innerhalb eines Tages wiedererkennen, nicht über mehrere Tage. „Gelesen bis“ heißt: so weit wurde die Seite nach unten bewegt. Aufrufe von Suchmaschinen-Robotern und von Geräten mit dem Haken „nicht mitzählen“ fehlen.</p>
+  <p class="klein">Gezählt wird ohne Cookies. Besucher lassen sich nur innerhalb eines Tages wiedererkennen, nicht über mehrere Tage. „Gelesen bis“ heißt: so weit wurde die Seite nach unten bewegt. „Direkt aufgerufen“ heißt: Adresse eingetippt, Lesezeichen oder ein Link aus Brief, QR-Code oder Mail ohne Kennzeichnung. Aufrufe von Suchmaschinen-Robotern und von Geräten mit dem Haken „nicht mitzählen“ fehlen.</p>
 </div>
 </main>
 <script>
 (function () {
   var Z = 'https://leonossendorf-zaehler.leon-ossendorf.workers.dev/bericht', START = '2026-11-24';
   var $ = function (s) { return document.querySelector(s); };
-  var QUELLE = { anzeige: 'Google-Anzeige', direkt: 'Direkt (eingetippt, Brief oder QR ohne Kennzeichnung)', 'qr-brief': 'Brief oder QR-Code', whatsapp: 'WhatsApp', suche: 'Suchmaschine (ohne Anzeige)', sozial: 'Soziale Medien', andere: 'Andere Website', intern: 'Klick innerhalb der Website' };
+  var QUELLE = { anzeige: 'Google-Anzeige', direkt: 'Direkt aufgerufen', 'qr-brief': 'Brief oder QR-Code', whatsapp: 'WhatsApp', suche: 'Suchmaschine (ohne Anzeige)', sozial: 'Soziale Medien', andere: 'Andere Website', intern: 'Klick innerhalb der Website' };
   var GERAET = { handy: 'Handy', tablet: 'Tablet', computer: 'Computer' };
   var daten = null, offen = '', zeitraum = '7';
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -122,8 +127,8 @@ td.treffer{color:var(--gut);font-weight:700}
     return zeilen.map(function (z) { return '<span>' + esc(z[0]) + '</span><i' + (hell ? ' class="hell"' : '') + ' style="width:' + (max ? Math.max(1, Math.round(z[1] / max * 100)) : 0) + '%"></i><span>' + esc(z[2] == null ? zahl(z[1]) : z[2]) + '</span>'; }).join('');
   }
   function teilTabelle(zeilen, name) {
-    return '<table><thead><tr><th>' + name + '</th><th>Aufrufe</th><th>bis zur Hälfte gelesen</th><th>Formular begonnen</th><th>Anfrage</th><th>Kontaktklick</th></tr></thead><tbody>'
-      + zeilen.map(function (z) { return '<tr><td>' + esc(z.name) + '</td>' + zelle(z.aufrufe) + '<td>' + proz(z.t50, z.aufrufe) + '</td>' + zelle(z.form_start) + zelle(z.form_ab, true) + zelle(z.kontakt, true) + '</tr>'; }).join('') + '</tbody></table>';
+    return '<div class="rollen"><table><thead><tr><th>' + name + '</th><th>Aufrufe</th><th>bis zur Hälfte gelesen</th><th>Formular begonnen</th><th>Anfrage</th><th>Kontaktklick</th></tr></thead><tbody>'
+      + zeilen.map(function (z) { return '<tr><td>' + esc(z.name) + '</td>' + zelle(z.aufrufe) + '<td>' + proz(z.t50, z.aufrufe) + '</td>' + zelle(z.form_start) + zelle(z.form_ab, true) + zelle(z.kontakt, true) + '</tr>'; }).join('') + '</tbody></table></div>';
   }
   function detail(s) {
     var her = daten.herkunft.filter(function (x) { return x.pfad === s.pfad; }).map(function (x) { x.name = QUELLE[x.quelle] || x.quelle; return x; });
