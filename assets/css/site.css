@@ -1247,3 +1247,34 @@ html[data-kampagne="psychotherapie"] .praxis-auftakt .haken{margin-top:1.5rem}
   .psy-beispiel{border-radius:.9rem}
 }
 html.kontrast .psy-beweis-text i{color:#000;text-decoration:underline}
+
+/* ===== Chiron: Physiotherapie-Seite /physiotherapie/ (Physiotherapie und ähnliche Therapiepraxen) =====
+   Alle Regeln hängen an eigenen Klassen (phy-…). Die Handy-Rahmen zeigen die echte Demo-Praxis /physiotherapie/demo/ (Skript PHY_LIVE_JS in tools/seiten_physio.py). */
+.phy-demo{display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;margin-top:1.6rem;padding:1.4rem 1.6rem;border:1px solid var(--line);border-radius:1.4rem;background:var(--soft)}
+.phy-demo b{display:block;font:var(--kopf-fett) clamp(1.25rem,1.8vw,1.55rem)/1.2 var(--kopf);letter-spacing:var(--kopf-sperre);margin-bottom:.35rem}
+.phy-demo div>span{display:block;color:var(--muted);max-width:40rem}
+.phy-demo .knopf{flex:none}
+.drin.phy-vier b{font-size:clamp(1.35rem,1.7vw,1.6rem);line-height:1.15}
+@media (max-width:860px){
+  /* Handy: in jedem Reiter erst Überschrift und Text, dann das Bild */
+  .phy-kasten .kasten-feld{grid-template-columns:1fr}
+  .phy-kasten .kasten-feld .kasten-text{order:-1}
+  .phy-demo{flex-direction:column;align-items:stretch;padding:1.2rem}
+  .phy-demo .knopf{justify-content:center}
+}
+@media (max-width:600px){
+  /* Das Computer-Bild ist am Handy nicht lesbar; das Handy-Bild zeigt dieselbe Startseite */
+  .phy-kasten .geraete .laptop{display:none}
+}
+/* Der Rahmen passt immer ganz ins Bild (zwischen Kopfleiste und fester Leiste unten), sonst käme man am Handy nicht an sein unteres Ende */
+.phy-kasten .handy.live:not(.vorn){max-height:calc(100svh - 9.5rem)}
+@media (max-width:860px){.phy-kasten .handy.live.vorn{max-height:calc(100svh - 9.5rem)}}
+.phy-kasten .handy.live img{object-position:top}
+.phy-kasten .live-rahmen{position:absolute;inset:0;padding:inherit;border-radius:inherit}
+.phy-kasten .live-glas{position:relative;width:100%;height:100%;overflow:hidden;border-radius:1.9rem;background:#fff}
+.phy-kasten .live-glas iframe{display:block;border:0;transform-origin:0 0;background:#fff;opacity:0;transition:opacity .4s}
+.phy-kasten .handy.live.geladen iframe{opacity:1}
+/* Sofort bedienbar, ohne Start-Klick. Ein kleines Schild am oberen Rand sagt nur, dass es die Demo zum Ausprobieren ist. */
+.phy-kasten .live-schild{position:absolute;left:50%;top:0;transform:translate(-50%,-55%);z-index:2;background:var(--accent);color:#fff;border-radius:99rem;padding:.45em 1em;font:650 .82rem/1.2 var(--sans);white-space:nowrap;box-shadow:0 .4rem 1rem -.3rem rgba(15,36,64,.5);pointer-events:none}
+.phy-kasten .handy.live.vorn .live-schild{font-size:.68rem;padding:.4em .75em}
+html.ruhig .phy-kasten .live-glas iframe{transition:none}
