@@ -1278,3 +1278,6 @@ html.kontrast .psy-beweis-text i{color:#000;text-decoration:underline}
 .phy-kasten .live-schild{position:absolute;left:50%;top:0;transform:translate(-50%,-55%);z-index:2;background:var(--accent);color:#fff;border-radius:99rem;padding:.45em 1em;font:650 .82rem/1.2 var(--sans);white-space:nowrap;box-shadow:0 .4rem 1rem -.3rem rgba(15,36,64,.5);pointer-events:none}
 .phy-kasten .handy.live.vorn .live-schild{font-size:.68rem;padding:.4em .75em}
 html.ruhig .phy-kasten .live-glas iframe{transition:none}
+
+/* ===== Lumen 26.11.: Physio-Seite auf der Startseite verlinkt (Farbe der Zeile beim Überfahren) ===== */
+.weg-physiotherapie{--wf:#0f5c66}
