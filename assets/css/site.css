@@ -1383,15 +1383,20 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 .rf-schieber{position:relative;margin-top:clamp(2rem,4vw,3.2rem);width:100%;aspect-ratio:1600/1059;max-height:84svh;border-radius:1.1rem;overflow:hidden;background:#0a0b0c;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;touch-action:pan-y}
 .rf-schieber img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .rf-schieber img{object-fit:cover}
-.rf-s-vor{position:absolute;inset:0;background:#0a0b0c;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.rf-s-vor{position:absolute;inset:0;overflow:hidden;transform:translateX(calc(var(--pos) - 100%));will-change:transform}
+.rf-s-innen{position:absolute;inset:0;transform:translateX(calc(100% - var(--pos)));will-change:transform}
 .rf-s-wort{position:absolute;top:clamp(.9rem,3vw,2.6rem);font:400 clamp(1.3rem,3.6vw,3.4rem)/1 var(--sans);letter-spacing:-.02em;color:#fff;pointer-events:none;text-shadow:0 0 1.4rem rgba(0,0,0,.55)}
-.rf-s-wort.links{left:clamp(.9rem,3vw,2.6rem);clip-path:inset(0 calc(100% - (var(--pos) - 3%) * 3.2) 0 0)}
-.rf-s-wort.rechts{right:clamp(.9rem,3vw,2.6rem);clip-path:inset(0 0 0 calc(100% - (97% - var(--pos)) * 3.2))}
-.rf-s-griff{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:#fff;pointer-events:none}
-.rf-s-griff i{position:absolute;top:50%;left:50%;width:3.2rem;height:3.2rem;margin:-1.6rem 0 0 -1.6rem;border-radius:50%;background:var(--accent);box-shadow:0 .6rem 1.6rem rgba(0,0,0,.6)}
+.rf-s-wort.links{left:clamp(.9rem,3vw,2.6rem)}
+.rf-s-wort.rechts{right:clamp(.9rem,3vw,2.6rem)}
+.rf-s-griff{position:absolute;inset:0;transform:translateX(calc(var(--pos) - 100%));will-change:transform;pointer-events:none}
+.rf-s-griff:before{content:"";position:absolute;top:0;bottom:0;right:-1px;width:2px;background:#fff}
+.rf-s-griff i{position:absolute;top:50%;left:100%;width:3.2rem;height:3.2rem;margin:-1.6rem 0 0 -1.6rem;border-radius:50%;background:var(--accent);box-shadow:0 .6rem 1.6rem rgba(0,0,0,.6)}
 .rf-s-griff i:before,.rf-s-griff i:after{content:"";position:absolute;top:50%;width:.55rem;height:.55rem;border:solid var(--on-accent);border-width:2px 2px 0 0;margin-top:-.3rem}
 .rf-s-griff i:before{left:.75rem;transform:rotate(-135deg)}.rf-s-griff i:after{right:.75rem;transform:rotate(45deg)}
-.rf-schieber input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
+.rf-schieber{cursor:ew-resize;user-select:none;-webkit-user-select:none}
+.rf-schieber img{-webkit-user-drag:none;pointer-events:none}
+.rf-schieber input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none;-webkit-appearance:none;appearance:none}
+.rf-schieber.zieht .rf-s-griff i{transform:scale(1.08)}
 .rf-schieber:has(input:focus-visible) .rf-s-griff i{outline:3px solid #fff;outline-offset:3px}
 /* Firmengeschichte */
 .rf-zeit{margin-top:clamp(5rem,10vw,9rem)}
@@ -1625,3 +1630,30 @@ html[data-stil="pizzeria"],html[data-stil="pizzeria"] body.dunkel{--bg:#14100d;-
   .pz-torte{--skal:1}.pz-t-marke b{font-size:1.7rem}
 }
 .pz-band-innen{padding-bottom:clamp(2.5rem,6vw,5rem)}.pz-band-innen .pz-band-satz{padding-bottom:0}.pz-band-knopf{margin-top:1.8rem}
+/* ===== Lumen 27.11. (3): Live-Vorschau Engelshove (echte Website zum Scrollen), kleiner Weg zu den Referenzen ===== */
+.rf-live .rf-fenster,.rf-live:hover .rf-fenster{transform:none}
+.rf-leiste-neu{margin-left:auto;font:600 .78rem/1 var(--sans);color:#d9d7d1;text-decoration:none;padding:.35rem .2rem}
+.rf-leiste-neu:hover{color:#fff;text-decoration:underline}
+.rf-schirm{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#000}
+.rf-schirm .rf-film{position:absolute;inset:0;aspect-ratio:auto}
+.rf-schirm iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform:scale(var(--s,.86));transform-origin:0 0;opacity:0;transition:opacity .7s;background:#000}
+.rf-live.live .rf-schirm iframe{opacity:1}
+.rf-live-tipp{display:none}
+.rf-live.maus .rf-live-tipp{position:absolute;right:clamp(.9rem,2.4vw,2.2rem);bottom:clamp(.9rem,2.4vw,2.2rem);z-index:2;display:flex;align-items:center;gap:.75rem;margin:0;background:rgba(13,14,16,.84);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border-radius:99rem;padding:.7rem 1.2rem .7rem .85rem;font:600 .98rem/1.2 var(--sans);pointer-events:none;box-shadow:0 1rem 2.4rem -.8rem #000;transition:opacity .5s}
+.rf-live.live .rf-live-tipp{opacity:0;transition-delay:2.4s}
+.rf-maus{position:relative;flex:none;width:1.15rem;height:1.8rem;border:2px solid currentColor;border-radius:.7rem}
+.rf-maus i{position:absolute;left:50%;top:.3rem;width:3px;height:.42rem;margin-left:-1.5px;border-radius:2px;background:currentColor;animation:rf-rad 1.6s ease-in-out infinite}
+@keyframes rf-rad{0%{transform:translateY(0);opacity:1}70%{transform:translateY(.5rem);opacity:0}100%{opacity:0}}
+.rf-live.laedt .rf-maus i{animation-duration:.8s}
+.rf-live.maus .rf-los{position:static;margin-top:1.4rem}
+.nur-maus{display:none}
+@media (hover:hover) and (pointer:fine) and (min-width:900px){.nur-maus{display:inline}}
+:is(html.ruhig,html.gross-schrift) .rf-maus i{animation:none}
+/* Kleiner Weg zu den Referenzen (Startseite, Handwerk) */
+.zg-klein{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr) auto;margin-top:clamp(2.5rem,5vw,4rem);padding:clamp(1.2rem,2.4vw,2rem) clamp(1.4rem,3vw,2.6rem);border-radius:1.6rem}
+.zg-klein .zg-szene{max-width:14rem}
+.zg-klein .zg-text b{font-size:clamp(2rem,3.4vw,3rem)}
+.zg-klein .zg-satz{font-size:1rem;margin-top:.5rem}
+.zg-klein .zg-los{padding:.85em 1.4em}
+@media (max-width:860px){.zg-klein{grid-template-columns:1fr}.zg-klein .zg-szene{max-width:11rem}}
+.rf-live .rf-los{text-decoration:none}
