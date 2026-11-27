@@ -1371,33 +1371,28 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 }
 
 /* ===== Lumen 27.11. (2): Referenzen zum Anfassen statt Textlisten (Leon) ===== */
-.rf-film img{animation-duration:11s}
-.rf-film img:nth-child(2){animation-delay:2.2s}.rf-film img:nth-child(3){animation-delay:4.4s}.rf-film img:nth-child(4){animation-delay:6.6s}.rf-film img:nth-child(5){animation-delay:8.8s}
-@keyframes rf-film{0%{opacity:0}5%{opacity:1}20%{opacity:1}27%{opacity:0}100%{opacity:0}}
+/* Film: vier Bilder (Strich, Stein, Licht, Zuhause), je 1,7 s */
+.rf-film img{animation-duration:6.8s}
+.rf-film img:nth-child(2){animation-delay:1.7s}.rf-film img:nth-child(3){animation-delay:3.4s}.rf-film img:nth-child(4){animation-delay:5.1s}
+@keyframes rf-film{0%{opacity:0}6%{opacity:1}25%{opacity:1}32%{opacity:0}100%{opacity:0}}
 .rf-zeile{margin-top:clamp(1.6rem,3vw,2.4rem);color:var(--muted);font-size:.98rem;max-width:60rem}
 .rf-akt{margin-top:clamp(5rem,10vw,9rem)}
 .rf-fall h3{font:400 clamp(2rem,4.2vw,3.8rem)/1.02 var(--serif);letter-spacing:-.015em;max-width:18ch}
 .rf-fall h3 em{font-style:italic}
 /* Schieber */
-.rf-schieber{position:relative;margin-top:clamp(2rem,4vw,3.2rem);aspect-ratio:1600/1013;border-radius:1.1rem;overflow:hidden;background:#0a0b0c;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;touch-action:pan-y}
+.rf-schieber{position:relative;margin-top:clamp(2rem,4vw,3.2rem);aspect-ratio:1600/1059;max-height:84svh;border-radius:1.1rem;overflow:hidden;background:#0a0b0c;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;touch-action:pan-y}
 .rf-schieber img{position:absolute;inset:0;width:100%;height:100%;display:block}
-.rf-s-nach{object-fit:cover}
-.rf-s-abend{opacity:0;transition:opacity 1.1s}
-.rf-schieber.abend .rf-s-abend{opacity:1}
+.rf-schieber img{object-fit:cover}
 .rf-s-vor{position:absolute;inset:0;background:#0a0b0c;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
 .rf-s-wort{position:absolute;top:clamp(.9rem,3vw,2.6rem);font:400 clamp(1.3rem,3.6vw,3.4rem)/1 var(--sans);letter-spacing:-.02em;color:#fff;pointer-events:none;text-shadow:0 0 1.4rem rgba(0,0,0,.55)}
 .rf-s-wort.links{left:clamp(.9rem,3vw,2.6rem);clip-path:inset(0 calc(100% - (var(--pos) - 3%) * 3.2) 0 0)}
-.rf-s-wort.rechts{right:clamp(.9rem,3vw,2.6rem)}
-.rf-s-wort .abend,.rf-schieber.abend .rf-s-wort .tag{display:none}
-.rf-schieber.abend .rf-s-wort .abend{display:inline}
+.rf-s-wort.rechts{right:clamp(.9rem,3vw,2.6rem);clip-path:inset(0 0 0 calc(100% - (97% - var(--pos)) * 3.2))}
 .rf-s-griff{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:#fff;pointer-events:none}
 .rf-s-griff i{position:absolute;top:50%;left:50%;width:3.2rem;height:3.2rem;margin:-1.6rem 0 0 -1.6rem;border-radius:50%;background:var(--accent);box-shadow:0 .6rem 1.6rem rgba(0,0,0,.6)}
 .rf-s-griff i:before,.rf-s-griff i:after{content:"";position:absolute;top:50%;width:.55rem;height:.55rem;border:solid var(--on-accent);border-width:2px 2px 0 0;margin-top:-.3rem}
 .rf-s-griff i:before{left:.75rem;transform:rotate(-135deg)}.rf-s-griff i:after{right:.75rem;transform:rotate(45deg)}
 .rf-schieber input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
 .rf-schieber:has(input:focus-visible) .rf-s-griff i{outline:3px solid #fff;outline-offset:3px}
-.rf-s-zeile{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.4rem;margin-top:1.4rem;color:var(--muted)}
-.rf-s-zeile .knopf{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 /* Firmengeschichte */
 .rf-zeit{margin-top:clamp(5rem,10vw,9rem)}
 .rf-zeit-innen{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(2rem,5vw,5rem);align-items:center}
@@ -1411,8 +1406,6 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 .rf-zeit-text p{grid-area:1/1;opacity:0;transition:opacity .5s;font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.45;max-width:26rem}
 .rf-zeit-text p.an{opacity:1}
 .rf-zeit-text b{font-weight:600;color:var(--accent);margin-right:.3em}
-.rf-zeit--lauf{height:340vh}
-.rf-zeit--lauf .rf-zeit-fest{position:sticky;top:0;height:100vh;height:100svh;display:grid;align-items:center}
 .rf-gross>.rf-zur{margin-top:clamp(3rem,6vw,5rem)}
 /* Golfclub: Greenkeeper-App */
 .rf-gk{display:grid;grid-template-columns:minmax(15rem,19rem) minmax(0,1fr);gap:clamp(1.6rem,4vw,4rem);align-items:center;margin-top:clamp(2.5rem,5vw,4.5rem)}
@@ -1450,7 +1443,5 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 @media (max-width:760px){
   .rf-gk{grid-template-columns:1fr}.rf-gk-app{max-width:20rem}
   .rf-s-griff i{width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem}
-  .rf-zeit--lauf{height:300vh}
   .rf-zeit-kopf .rf-lead{font-size:1rem;margin-top:.8rem}.rf-zeit-jahre{margin-top:1.2rem}
 }
-:is(html.ruhig,html.gross-schrift) .rf-zeit--lauf{height:auto}

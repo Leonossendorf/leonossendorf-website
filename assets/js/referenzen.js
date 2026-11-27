@@ -1,30 +1,24 @@
-/* Referenzen-Seite: Schieber vom Strich zum Haus, Firmengeschichte zum Durchscrollen, Greenkeeper-App zum Ausprobieren.
+/* Referenzen-Seite: Umbau-Schieber vorher/nachher, Firmengeschichte mit Jahren zum Antippen, Greenkeeper-App zum Ausprobieren.
    Ohne JavaScript bleibt alles lesbar: Der Schieber steht in der Mitte, die Firmengeschichte zeigt das Familienbild, die App zeigt ihren Startzustand. */
 (function () {
   'use strict';
   var html = document.documentElement;
   function ruhig() { return html.classList.contains('ruhig') || html.classList.contains('gross-schrift') || (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches); }
 
-  /* ---------- Schieber ---------- */
+  /* ---------- Umbau-Schieber: vorher / nachher ---------- */
   [].slice.call(document.querySelectorAll('[data-schieber]')).forEach(function (s) {
-    var regler = s.querySelector('input[type=range]'), licht = document.querySelector('[data-licht]'), gezeigt = false;
+    var regler = s.querySelector('input[type=range]'), gezeigt = false;
     function setze(v) { s.style.setProperty('--pos', v + '%'); }
     regler.addEventListener('input', function () { gezeigt = true; setze(regler.value); });
-    if (licht) licht.addEventListener('click', function () {
-      var an = licht.getAttribute('aria-pressed') !== 'true';
-      licht.setAttribute('aria-pressed', an ? 'true' : 'false'); licht.textContent = an ? 'Licht aus' : 'Licht an';
-      s.classList.toggle('abend', an);
-      if (an && +regler.value > 40) { regler.value = 22; setze(22); }
-    });
-    /* Einmal vorführen, sobald der Schieber ins Bild kommt: von ganz Zeichnung zum Haus */
+    /* Einmal vorführen, sobald der Schieber ins Bild kommt: von ganz vorher nach nachher */
     if ('IntersectionObserver' in window && !ruhig()) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
           if (!e.isIntersecting || gezeigt) return;
           gezeigt = true; io.disconnect();
-          var start = performance.now(), von = 96, bis = 42;
+          var start = performance.now(), von = 96, bis = 38;
           (function schritt(t) {
-            var p = Math.min(1, (t - start) / 1900), w = 1 - Math.pow(1 - p, 3), v = Math.round(von + (bis - von) * w);
+            var p = Math.min(1, (t - start) / 1600), w = 1 - Math.pow(1 - p, 3), v = Math.round(von + (bis - von) * w);
             regler.value = v; setze(v);
             if (p < 1) requestAnimationFrame(schritt);
           })(start);
@@ -34,29 +28,24 @@
     }
   });
 
-  /* ---------- Firmengeschichte: läuft mit dem Scrollen ---------- */
+  /* ---------- Firmengeschichte: Jahre zum Antippen, läuft einmal von selbst bis zum Familienbild ---------- */
   [].slice.call(document.querySelectorAll('[data-zeit]')).forEach(function (z) {
     var bilder = [].slice.call(z.querySelectorAll('.rf-zeit-buehne img')), knoepfe = [].slice.call(z.querySelectorAll('[data-jahr]')), texte = [].slice.call(z.querySelectorAll('.rf-zeit-text p'));
-    var n = bilder.length, aktiv = -1;
+    var n = bilder.length, lauf = 0;
     function zeige(i) {
-      if (i === aktiv) return; aktiv = i;
       [bilder, knoepfe, texte].forEach(function (l) { l.forEach(function (el, k) { el.classList.toggle('an', k === i); }); });
     }
-    if (ruhig()) { knoepfe.forEach(function (b, i) { b.addEventListener('click', function () { zeige(i); }); }); return; }
-    z.classList.add('rf-zeit--lauf');
-    function mass() {
-      var r = z.getBoundingClientRect(), weg = r.height - window.innerHeight;
-      var p = weg > 0 ? Math.max(0, Math.min(.999, -r.top / weg)) : 0;
-      zeige(Math.floor(p * n));
-    }
-    knoepfe.forEach(function (b, i) {
-      b.addEventListener('click', function () {
-        var r = z.getBoundingClientRect(), weg = r.height - window.innerHeight;
-        window.scrollTo({ top: window.scrollY + r.top + weg * ((i + .5) / n), behavior: 'smooth' });
+    knoepfe.forEach(function (b, i) { b.addEventListener('click', function () { clearInterval(lauf); lauf = -1; zeige(i); }); });
+    if (!('IntersectionObserver' in window) || ruhig()) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting || lauf) return;
+        io.disconnect();
+        var i = 0; zeige(0);
+        lauf = setInterval(function () { i++; zeige(i); if (i >= n - 1) { clearInterval(lauf); lauf = -1; } }, 1500);
       });
-    });
-    window.addEventListener('scroll', mass, { passive: true }); window.addEventListener('resize', mass);
-    zeige(0); mass();
+    }, { threshold: .5 });
+    io.observe(z.querySelector('.rf-zeit-buehne'));
   });
 
   /* ---------- Greenkeeper-App ---------- */
