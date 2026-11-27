@@ -1281,3 +1281,91 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 
 /* ===== Lumen 26.11.: Physio-Seite auf der Startseite verlinkt (Farbe der Zeile beim Überfahren) ===== */
 .weg-physiotherapie{--wf:#0f5c66}
+
+/* ===== Lumen 27.11.: Referenzen (/referenzen/), Verweis auf Engelshove, Seite „Etwas anderes“ ===== */
+.rf-auftakt{padding:clamp(8rem,16vw,13rem) 0 clamp(2.5rem,5vw,4rem)}
+.rf-auftakt h1{font-size:clamp(3rem,8.6vw,8.8rem);max-width:12ch}
+.rf-lead{font-size:clamp(1.15rem,1.7vw,1.5rem);line-height:1.5;color:var(--muted);max-width:44rem;margin-top:1.6rem}
+.rf-sprung{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.4rem}
+.rf-sprung a{border:1.5px solid var(--line);border-radius:99rem;padding:.7em 1.2em;text-decoration:none;color:var(--ink);font-weight:600;font-size:.98rem;transition:background-color .2s,color .2s}
+.rf-sprung a:hover{background:var(--ink);color:var(--bg)}
+.rf-fall{padding:clamp(4rem,9vw,8rem) 0;scroll-margin-top:1rem}
+.rf-nr{font:600 .8rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem}
+.rf-fall h2{font-size:clamp(2.3rem,5.4vw,5.2rem);max-width:17ch}
+.rf-raus{display:inline-block;margin-left:.15em}
+.rf-buehne{position:relative;display:block;width:min(100% - 2*var(--rand),88rem);margin:clamp(2.5rem,5vw,4.5rem) auto 0;color:inherit;text-decoration:none}
+.rf-fenster{display:block;border-radius:1.1rem;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.rf-buehne:hover .rf-fenster{transform:translateY(-.4rem)}
+.rf-leiste{display:flex;align-items:center;gap:.4rem;padding:.6rem .9rem;background:#1b1d21}
+.rf-leiste i{width:.6rem;height:.6rem;border-radius:50%;background:#3a3d44}
+.rf-leiste b{margin-left:.7rem;font:500 .78rem/1 var(--sans);color:#a3a29d;background:#0d0e10;border-radius:99rem;padding:.4rem .9rem}
+.rf-film{position:relative;display:block;aspect-ratio:16/10;background:#000}
+.rf-film img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:rf-film 20s infinite}
+.rf-film img:nth-child(2){animation-delay:4s}.rf-film img:nth-child(3){animation-delay:8s}.rf-film img:nth-child(4){animation-delay:12s}.rf-film img:nth-child(5){animation-delay:16s}
+@keyframes rf-film{0%{opacity:0}5%{opacity:1}20%{opacity:1}25%{opacity:0}100%{opacity:0}}
+.rf-handy{position:absolute;right:clamp(.8rem,5vw,5rem);bottom:-2.6rem;width:clamp(6rem,13vw,12.5rem);aspect-ratio:540/1169;border-radius:clamp(.9rem,1.8vw,1.7rem);overflow:hidden;border:.32rem solid #24272c;background:#000;box-shadow:0 2rem 4rem -1rem #000}
+.rf-handy img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.rf-los{position:absolute;left:clamp(.9rem,2.4vw,2.2rem);bottom:clamp(.9rem,2.4vw,2.2rem);display:inline-flex;align-items:center;gap:.5em;background:var(--accent);color:var(--on-accent);border-radius:99rem;padding:.9em 1.5em;font:600 clamp(.92rem,1.3vw,1.1rem)/1.15 var(--sans);box-shadow:0 1rem 2.4rem -.8rem #000}
+.rf-daten{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4rem clamp(1.5rem,3vw,3rem);margin:clamp(5rem,8vw,7rem) 0 0}
+.rf-daten dt{font:600 .74rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.rf-daten dd{margin:0;font-size:1.05rem;line-height:1.4}
+.rf-kann{list-style:none;margin:clamp(3rem,5vw,4.5rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(1.5rem,4vw,4rem)}
+.rf-kann li{border-top:1px solid var(--line);padding:1.3rem 0 2rem}
+.rf-kann b{display:block;font:600 1.18rem/1.25 var(--sans);letter-spacing:-.01em;margin-bottom:.45rem}
+.rf-kann span{color:var(--muted)}
+.rf-streifen{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(.6rem,1.4vw,1.2rem);margin-top:clamp(2rem,4vw,3.5rem);align-items:stretch}
+.rf-streifen img{display:block;width:100%;height:100%;object-fit:cover;border-radius:.8rem;aspect-ratio:16/10}
+.rf-zur{margin-top:clamp(2.2rem,4vw,3.4rem)}
+.rf-golf .rf-nr{color:#a9d65c}
+.rf-zwei{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.rf-zwei .rf-buehne{width:100%;margin:0}
+.rf-zwei .rf-daten{grid-template-columns:1fr;margin-top:2.6rem;gap:1.3rem}
+.rf-zwei .rf-handy{right:auto;left:-1.6rem;bottom:-2rem;width:clamp(5.5rem,9.5vw,9rem)}
+.rf-lang{display:block;aspect-ratio:16/11;overflow:hidden;background:#12232c}
+.rf-lang img{display:block;width:100%;height:auto;animation:rf-roll 46s ease-in-out infinite alternate}
+@keyframes rf-roll{0%,6%{transform:translateY(0)}94%,100%{transform:translateY(-86.5%)}}
+.rf-golf .rf-kann{margin-top:clamp(4.5rem,7vw,6rem)}
+.rf-karten{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.2rem,2.6vw,2.4rem);margin-top:clamp(2.5rem,5vw,4rem)}
+.rf-karte{display:block;color:inherit;text-decoration:none}
+.rf-karte-bild{display:block;aspect-ratio:4/3;overflow:hidden;border-radius:1rem;background:#17191c;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.rf-karte-bild img{display:block;width:100%;height:auto;transition:transform 3.5s cubic-bezier(.3,0,.2,1)}
+.rf-karte:hover .rf-karte-bild img{transform:translateY(-18%)}
+.rf-karte-text{display:grid;gap:.25rem;padding-top:1.1rem}
+.rf-karte-text b{font:400 1.9rem/1.05 var(--serif)}
+.rf-karte-text small{font:600 .74rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.rf-karte-text span{color:var(--muted);margin-top:.35rem}
+.rf-karte-text i{font-style:normal;font-weight:600;color:var(--accent);margin-top:.5rem}
+.rf-karte-text i .rf-raus{color:inherit}
+.rf-mehr{margin-top:2.6rem;color:var(--muted)}
+:is(html.ruhig,html.gross-schrift) :is(.rf-film img,.rf-lang img){animation:none}
+:is(html.ruhig,html.gross-schrift) .rf-film img:nth-child(4){opacity:1}
+@media (prefers-reduced-motion:reduce){.rf-film img,.rf-lang img{animation:none}.rf-film img:nth-child(4){opacity:1}}
+/* Verweis auf den hellen Seiten (Startseite, Handwerk) */
+.rf-teaser{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.rf-teaser-bild{position:relative;display:block;border-radius:1.4rem;overflow:hidden;background:#0d0e10;box-shadow:0 2.6rem 5rem -2.4rem rgba(16,33,58,.7);color:#fff;text-decoration:none}
+.rf-teaser-bild img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.rf-teaser-bild:hover img{transform:scale(1.03)}
+.rf-teaser-bild span{display:block;padding:.95rem 1.3rem 1rem;font:600 .78rem/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:#0d0e10}
+.rf-teaser-text h2{font-size:clamp(2.1rem,4vw,3.8rem)}
+.rf-teaser-text>p{margin-top:1.3rem;font-size:1.12rem;max-width:30rem}
+.rf-teaser-text>p:last-child{margin-top:2rem}
+/* Seite „Etwas anderes“ */
+.so .kap-p .knopf{margin-top:.6rem}
+.so-stufen{list-style:none;margin:clamp(2.5rem,5vw,4rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(1.5rem,4vw,4rem)}
+.so-stufen li{border-top:1px solid var(--line);padding:1.4rem 0 2.2rem}
+.so-art{font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.so-preis{font:400 clamp(2.5rem,4.6vw,4.2rem)/1 var(--serif);letter-spacing:-.02em;margin:.7rem 0 .9rem;white-space:nowrap}
+.so-was{color:var(--muted);margin-bottom:1rem}
+.so-fuss{margin-top:1.4rem;color:var(--muted);max-width:46rem}
+@media (max-width:1000px){.rf-kann{grid-template-columns:1fr 1fr}.rf-daten{grid-template-columns:1fr 1fr}.rf-zwei{grid-template-columns:1fr}.rf-zwei .rf-handy{left:auto;right:1rem}.rf-golf .rf-buehne{margin-top:1rem}}
+@media (max-width:760px){
+  .rf-kann,.rf-karten,.so-stufen{grid-template-columns:1fr}
+  .rf-streifen{grid-template-columns:1fr 1fr}.rf-streifen img:first-child{grid-column:1/-1}
+  .rf-buehne{width:calc(100% - 1.6rem)}.rf-zwei .rf-buehne{width:100%}
+  .rf-leiste{padding:.45rem .7rem}.rf-leiste b{font-size:.68rem;padding:.3rem .7rem}
+  .rf-handy,.rf-zwei .rf-handy{left:auto;right:.6rem;bottom:.6rem;width:4.6rem;border-width:.2rem;border-radius:.7rem}
+  .rf-los{position:static;margin-top:1.2rem;justify-content:center;display:flex}
+  .rf-daten{margin-top:2.6rem}
+  .rf-teaser{grid-template-columns:1fr}
+  .rf-karte-bild{aspect-ratio:16/10}
+}

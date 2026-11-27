@@ -42,6 +42,16 @@
   }
   nullForm();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(nullForm);
+  /* Für die Seite „Etwas anderes“: Fragezeichen und Herz */
+  function frageForm() {
+    formen.frage = punkte(function (g) { g.font = '400 300px "Instrument Serif", Georgia, serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 150, 165); });
+  }
+  frageForm();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(frageForm);
+  formen.herz = punkte(function (g) {
+    g.beginPath(); g.moveTo(150, 262); g.bezierCurveTo(20, 170, 22, 78, 92, 62); g.bezierCurveTo(124, 55, 144, 76, 150, 100);
+    g.bezierCurveTo(156, 76, 176, 55, 208, 62); g.bezierCurveTo(278, 78, 280, 170, 150, 262); g.fill();
+  });
   formen.logo = formen.haken;
   var bild = new Image();
   bild.onload = function () {
