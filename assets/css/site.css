@@ -1445,3 +1445,183 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
   .rf-s-griff i{width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem}
   .rf-zeit-kopf .rf-lead{font-size:1rem;margin-top:.8rem}.rf-zeit-jahre{margin-top:1.2rem}
 }
+/* ===== Lumen 27.11.: Pizzeria (/pizzeria/ und /pizzeria/entwurf/). Leitmotiv: Website bestellen wie eine Pizza ===== */
+html[data-stil="pizzeria"],html[data-stil="pizzeria"] body.dunkel{--bg:#14100d;--ink:#f6eedf;--muted:#bcae97;--line:#3b3027;--soft:#1f1914;--accent:#ff5a2e;--on-accent:#150c06;
+  --kopf:var(--sans);--kopf-fett:850;--kopf-sperre:-.045em;--kopf-hoehe:.96;--h1:clamp(2.6rem,7vw,6.6rem);--h2:clamp(2.1rem,5vw,4.6rem)}
+.pz :is(h1,h2){text-transform:uppercase;text-wrap:balance}
+.pz-nr{font:700 .8rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:1.1rem}
+.pz-lead{font-size:clamp(1.1rem,1.5vw,1.35rem);line-height:1.45;color:var(--muted);max-width:40rem;margin-top:1.3rem}
+.pz-klein{font-size:.9rem;line-height:1.5;color:var(--muted);max-width:46rem;margin-top:1.8rem}
+.pz-klein a{color:var(--ink)}
+.pz-ab{padding-block:clamp(4.5rem,10vw,9rem)}
+/* Auftakt */
+.pz-held{position:relative;min-height:100svh;display:grid;align-items:end;overflow:hidden;isolation:isolate}
+.pz-held-bild{position:absolute;inset:0;z-index:-1}
+.pz-held-bild img{width:100%;height:100%;object-fit:cover}
+.pz-held:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(14,9,6,.9) 0%,rgba(14,9,6,.62) 46%,rgba(14,9,6,.08) 78%),linear-gradient(0deg,rgba(14,9,6,.85) 0%,rgba(14,9,6,0) 42%),linear-gradient(180deg,rgba(14,9,6,.6) 0%,rgba(14,9,6,0) 18%)}
+.pz-held-text{padding:8rem 0 clamp(2.5rem,6vw,5rem)}
+.pz-held h1{max-width:13ch}
+.pz-held .ober{color:#f6eedf;opacity:.85}
+.pz-unter{font-size:clamp(1.15rem,1.7vw,1.5rem);line-height:1.4;max-width:34rem;margin-top:1.5rem}
+.pz-held .knopf.leer{border-color:#f6eedf;color:#f6eedf}
+.pz-held .knopf.leer:hover{background:#f6eedf;color:#150c06}
+.pz-zettel{list-style:none;display:flex;flex-wrap:wrap;gap:1rem clamp(1.5rem,4vw,3.5rem);margin:clamp(2.2rem,4vw,3.4rem) 0 0;padding:1.4rem 0 0;border-top:2px dashed rgba(246,238,223,.4);font-size:.98rem;color:#e6dcc9}
+.pz-zettel b{display:block;font:850 clamp(1.5rem,2.4vw,2.2rem)/1 var(--sans);letter-spacing:-.04em;text-transform:uppercase;color:#fff;margin-bottom:.3rem}
+/* Werbeseite: Text links, Formular rechts */
+.pz-werbe{align-items:center}
+.pz-werbe-raster{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:2rem clamp(2rem,5vw,5rem);align-items:center;padding:6.5rem 0 3.5rem}
+.pz-werbe .pz-held-text{padding:0}
+.pz-werbe h1{font-size:clamp(2.3rem,4.6vw,4.4rem);max-width:none}
+.pz-werbe h1 strong{display:block;font-weight:900;font-size:2.4em;line-height:.9;letter-spacing:-.05em;color:var(--accent);margin-top:.08em}
+.pz-werbe .haken,.pz-werbe .wer,.pz-werbe .kontaktwege{color:#f6eedf}
+.pz-werbe .gastro-form h2{text-transform:none;letter-spacing:-.03em;font-weight:800}
+.pz-werbe .gastro-form{--accent:#c8401a;--on-accent:#fff;--soft:#efe9dc}
+/* Die Karte: gedruckt auf Pizzakarton */
+.pz-karte{--bg:#c9a271;--ink:#26160c;--muted:#553a26;--line:#8f6d47;--accent:#a8261a;--on-accent:#fff;background:var(--bg);color:var(--ink);padding-block:clamp(4.5rem,10vw,9rem);
+  background-image:repeating-linear-gradient(92deg,rgba(60,35,15,.05) 0 1px,transparent 1px 5px),repeating-linear-gradient(178deg,rgba(255,240,215,.07) 0 2px,transparent 2px 9px),linear-gradient(180deg,rgba(255,235,200,.14),rgba(70,40,15,.12))}
+.pz-karte-innen{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(2rem,6vw,6rem);align-items:start}
+.pz-karte-kopf{position:sticky;top:6rem}
+.pz-karte .pz-nr{color:var(--accent)}
+.pz-karte .pz-lead{color:var(--muted)}
+.pz-stempel{width:clamp(8.5rem,14vw,12.5rem);height:auto;color:var(--accent);transform:rotate(-11deg);margin-top:clamp(2rem,4vw,3.5rem);opacity:.88;font-family:var(--sans)}
+.pz-gericht{padding:1.5rem 0;border-top:2px solid var(--ink)}
+.pz-g-kopf{display:flex;align-items:baseline;gap:.8rem;font:850 clamp(1.25rem,2vw,1.7rem)/1.1 var(--sans);letter-spacing:-.03em;text-transform:uppercase}
+.pz-g-kopf i{flex:1;min-width:1.5rem;border-bottom:3px dotted currentColor;opacity:.55;transform:translateY(-.25em)}
+.pz-g-kopf strong{font-weight:850;white-space:nowrap;color:var(--accent)}
+.pz-g-kopf small{font:650 .55em/1 var(--sans);letter-spacing:0;text-transform:none}
+.pz-g-kopf s{font-size:.6em;color:var(--muted);text-decoration-thickness:.09em;margin-right:.3em}
+.pz-g-unter{margin-top:.5rem;max-width:38rem;color:var(--muted);font-weight:500;line-height:1.45}
+.pz-gericht.gross .pz-g-kopf{font-size:clamp(1.7rem,3.6vw,3.2rem)}
+.pz-aktion{color:var(--accent);font-weight:700}
+.pz-aktion .zeit{color:var(--accent)}
+.pz-zutaten{list-style:none;margin:1.6rem 0 .4rem;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.9rem 2.2rem}
+.pz-zutaten li{display:flex;gap:.8rem;line-height:1.4}
+.pz-zutaten li>b{font:800 .86rem/1.7 var(--sans);font-variant-numeric:tabular-nums;color:var(--accent)}
+.pz-zutaten span{font-weight:450;letter-spacing:0;text-transform:none}
+.pz-zutaten strong{display:block;font-weight:800}
+.pz-extra{font:800 .8rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:2.2rem 0 .8rem}
+.pz-blatt-fuss{font-size:.86rem;color:var(--muted);border-top:2px solid var(--ink);padding-top:1rem}
+.pz-zeile{margin-top:2rem}
+.pz-karte .knopf{background:var(--ink);border-color:var(--ink);color:#f6eedf}
+/* Bestell-Demo */
+.pz-demo-raster{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.pz-spiel{display:grid;grid-template-columns:minmax(16rem,21rem) minmax(13rem,20rem);gap:clamp(1.5rem,3vw,3rem);align-items:start;justify-content:end}
+.pz-handy{border-radius:2.3rem;border:.5rem solid #2e2620;background:#fbf6ec;color:#1d1812;padding:1.3rem 1rem 1.1rem;box-shadow:0 3rem 6rem -2rem #000,0 0 0 1px rgba(255,255,255,.08)}
+.pz-h-kopf{padding:0 .3rem 1rem}
+.pz-h-kopf b{display:block;font:850 1.5rem/1.1 var(--sans);letter-spacing:-.04em;text-transform:uppercase}
+.pz-h-kopf small{display:flex;align-items:center;gap:.45rem;font:600 .8rem/1.2 var(--sans);color:#3d6b1f;margin-top:.4rem}
+.pz-h-offen{width:.55rem;height:.55rem;border-radius:50%;background:#58a52b}
+.pz-h-karte{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.pz-h-karte button{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:.7rem;width:100%;text-align:left;font:inherit;color:inherit;background:#fff;border:0;border-radius:1rem;padding:.7rem .7rem .7rem .8rem;cursor:pointer;box-shadow:0 0 0 1px rgba(29,24,18,.1);transition:box-shadow .2s,transform .15s}
+.pz-h-karte button:active{transform:scale(.98)}
+.pz-h-karte button.drin{box-shadow:0 0 0 2px #c8401a}
+.pz-a-nr{font:700 .78rem/1 var(--sans);color:#8a7c68;font-variant-numeric:tabular-nums}
+.pz-a-text b{display:block;font:700 1rem/1.2 var(--sans)}
+.pz-a-text small{display:block;font:400 .76rem/1.3 var(--sans);color:#62594c;margin-top:.12rem}
+.pz-a-preis{font:650 .9rem/1 var(--sans);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pz-h-karte i{display:grid;place-items:center;min-width:2rem;height:2rem;padding:0 .3rem;border-radius:99rem;background:#1d1812;color:#fff;font:700 .95rem/1 var(--sans);font-style:normal}
+.pz-h-karte button.drin i{background:#c8401a}
+.pz-h-karte button:focus-visible,.pz-h-los:focus-visible,.pz-h-leer:focus-visible{outline:3px solid #c8401a;outline-offset:2px}
+.pz-h-korb{margin-top:.9rem;padding:.9rem .3rem 0;border-top:2px dashed #cfc6b4}
+.pz-h-korb p{display:flex;justify-content:space-between;gap:1rem;font:650 1rem/1.3 var(--sans);font-variant-numeric:tabular-nums}
+.pz-h-los{width:100%;margin-top:.8rem;font:700 1.02rem/1.1 var(--sans);color:#fff;background:#c8401a;border:0;border-radius:99rem;padding:1em 1.2em;cursor:pointer}
+.pz-h-los:disabled{background:#cfc6b4;color:#6d6355;cursor:not-allowed}
+.pz-h-leer[hidden]{display:none}
+.pz-h-leer{display:block;margin:.7rem auto 0;font:500 .86rem/1.2 var(--sans);color:#62594c;background:none;border:0;text-decoration:underline;cursor:pointer}
+.pz-h-status{font:600 .86rem/1.35 var(--sans);color:#3d6b1f;padding:0 .3rem;margin-top:.7rem;min-height:1.2em}
+.pz-kueche{max-width:26rem}
+.pz-k-titel{font:700 .8rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.pz-drucker{position:relative;height:5.2rem;border-radius:1rem 1rem .5rem .5rem;background:linear-gradient(180deg,#34302c,#1c1917 70%,#0f0d0c);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1.5rem 3rem -1.2rem #000;z-index:2}
+.pz-d-licht{position:absolute;right:1.2rem;top:1.1rem;width:.5rem;height:.5rem;border-radius:50%;background:#5fbf37;box-shadow:0 0 .6rem #5fbf37}
+.pz-spiel.gedruckt .pz-d-licht{animation:pz-blink 1.6s steps(2) 1}
+@keyframes pz-blink{50%{opacity:.2}}
+.pz-d-schlitz{position:absolute;left:8%;right:8%;bottom:.55rem;height:.4rem;border-radius:.2rem;background:#000;box-shadow:inset 0 1px 2px rgba(255,255,255,.12)}
+.pz-d-bahn{position:relative;margin:-.75rem 11% 0;min-height:15rem;overflow:hidden;padding-bottom:1.5rem}
+.pz-d-leer{padding-top:2.2rem;font-size:.95rem;color:var(--muted);text-align:center}
+.pz-bon{background:#fffdf8;color:#1d1812;padding:1.6rem 1.2rem 1.5rem;font:500 .95rem/1.35 ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
+  --zacke:.5rem;-webkit-mask:conic-gradient(from -45deg at bottom,#000 90deg,transparent 0) 50% 100%/calc(2*var(--zacke)) var(--zacke) repeat-x,linear-gradient(#000 0 0) 0 0/100% calc(100% - var(--zacke)) no-repeat;
+  mask:conic-gradient(from -45deg at bottom,#000 90deg,transparent 0) 50% 100%/calc(2*var(--zacke)) var(--zacke) repeat-x,linear-gradient(#000 0 0) 0 0/100% calc(100% - var(--zacke)) no-repeat}
+.pz-bon.druck{animation:pz-druck 1.5s steps(16) both}
+@keyframes pz-druck{from{transform:translateY(-100%)}to{transform:none}}
+.pz-b-kopf{text-align:center;font-weight:700;font-size:1.1rem;text-transform:uppercase;letter-spacing:.06em;padding-bottom:.8rem;border-bottom:1px dashed #9b917f}
+.pz-b-kopf small{display:block;font-weight:500;font-size:.78rem;letter-spacing:0;text-transform:none;margin-top:.3rem}
+.pz-bon ul{list-style:none;margin:0;padding:.7rem 0;border-bottom:1px dashed #9b917f}
+.pz-bon li{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0;font-weight:700;font-size:1.02rem}
+.pz-bon li b{font-weight:500;white-space:nowrap}
+.pz-b-summe{display:flex;justify-content:space-between;padding-top:.7rem;font-weight:700}
+.pz-b-fuss{margin-top:.8rem;font-size:.82rem;text-align:center}
+/* Provision: ein Stück rückt aus der Pizza */
+.pz-anteil{background:radial-gradient(60rem 40rem at 22% 50%,#2a1c12 0%,transparent 70%)}
+.pz-anteil-raster{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,6vw,6rem);align-items:center}
+.pz-torte{position:relative;aspect-ratio:1;width:min(100%,36rem);justify-self:center;--anteil:13;--dx:2.78%;--dy:-6.42%;--mx:75%;--my:-5%}
+.pz-torte img{position:absolute;inset:6%;width:88%;height:88%;border-radius:50%;filter:drop-shadow(0 2rem 2.2rem rgba(0,0,0,.6))}
+.pz-t-rest{-webkit-mask:conic-gradient(transparent 0 calc(var(--anteil)*1%),#000 0);mask:conic-gradient(transparent 0 calc(var(--anteil)*1%),#000 0)}
+.pz-t-stueck{-webkit-mask:conic-gradient(#000 0 calc(var(--anteil)*1%),transparent 0);mask:conic-gradient(#000 0 calc(var(--anteil)*1%),transparent 0);transform:translate(var(--dx),var(--dy));transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.pz-t-marke{position:absolute;right:0;top:-3%;font:600 .82rem/1.2 var(--sans);color:var(--ink);text-align:right;white-space:nowrap}
+.pz-t-marke b{display:block;font:900 clamp(1.8rem,3.4vw,2.8rem)/1 var(--sans);letter-spacing:-.05em;color:var(--accent)}
+.pz-regler{margin-top:2.2rem;max-width:34rem}
+.pz-regler fieldset{border:0;margin:0 0 1.6rem;padding:0}
+.pz-regler legend,.pz-regler label{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;width:100%;font:600 1rem/1.3 var(--sans);padding:0;margin-bottom:.7rem}
+.pz-regler output{font:850 1.5rem/1 var(--sans);letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pz-wahl{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.pz-wahl button{font:750 1.05rem/1.2 var(--sans);text-align:left;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:1rem;padding:.9rem 1rem;cursor:pointer;transition:border-color .2s,background-color .2s}
+.pz-wahl button small{display:block;font:500 .84rem/1.3 var(--sans);color:var(--muted);margin-top:.2rem}
+.pz-wahl button[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,90,46,.12)}
+.pz-regler input[type=range]{width:100%;margin:0 0 1.7rem;accent-color:var(--accent);height:2rem;cursor:pointer}
+.pz-ergebnis{display:flex;align-items:baseline;flex-wrap:wrap;gap:.3rem 1rem;padding-top:1.4rem;border-top:2px dashed var(--line)}
+.pz-ergebnis b{font:900 clamp(3.2rem,7vw,6rem)/.9 var(--sans);letter-spacing:-.05em;color:var(--accent);font-variant-numeric:tabular-nums}
+.pz-ergebnis span{font:650 1.1rem/1.2 var(--sans)}
+.pz-vergleich{margin-top:1rem;font-size:1.08rem;line-height:1.4}
+.pz-vergleich b{font-weight:800;white-space:nowrap}
+/* Bild mit Satz */
+.pz-band{position:relative;min-height:min(86svh,46rem);display:grid;align-items:end;overflow:hidden;isolation:isolate}
+.pz-band>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.pz-band:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(14,9,6,.88) 0%,rgba(14,9,6,.15) 60%)}
+.pz-band-satz{font:850 clamp(2.3rem,6.4vw,6rem)/.96 var(--sans);letter-spacing:-.045em;text-transform:uppercase;color:#fff;padding:0 0 clamp(2.5rem,6vw,5rem)}
+/* Bestellstatus */
+.pz-status{position:relative;overflow:hidden}
+.pz-spur{list-style:none;margin:clamp(3rem,6vw,5rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem clamp(1.2rem,3vw,2.8rem);position:relative}
+.pz-spur:before,.pz-spur:after{content:"";position:absolute;left:.7rem;right:12%;top:.62rem;height:4px;border-radius:2px;background:var(--line)}
+.pz-spur:after{background:var(--accent);transform-origin:left;transform:scaleX(0);transition:transform 2.4s cubic-bezier(.3,.6,.3,1)}
+.pz-spur.an:after{transform:none}
+.pz-spur li{position:relative;padding-top:2.6rem}
+.pz-punkt{position:absolute;left:0;top:0;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--bg);border:4px solid var(--line);z-index:1;transition:border-color .3s,background-color .3s;transition-delay:calc(var(--i)*.75s)}
+.pz-spur.an .pz-punkt{border-color:var(--accent);background:var(--accent)}
+.pz-s-nr{font:850 clamp(1.5rem,2.4vw,2.1rem)/1 var(--sans);letter-spacing:-.04em;color:var(--accent);text-transform:uppercase}
+.pz-spur h3{font:850 clamp(1.3rem,2vw,1.7rem)/1.1 var(--sans);letter-spacing:-.03em;text-transform:uppercase;margin:.5rem 0 .6rem}
+.pz-spur li>p:last-child{color:var(--muted);line-height:1.5;max-width:22rem}
+.pz-karton{margin:clamp(3rem,7vw,6rem) auto 0;width:min(100% - 2*var(--rand),82rem)}
+.pz-karton img{width:100%;height:clamp(16rem,38vw,30rem);object-fit:cover;border-radius:1.2rem}
+/* Referenzen auf hellem Papier */
+.pz-hell{--bg:#f4efe6;--ink:#1d1812;--muted:#62594c;--line:#dcd4c4;--soft:#e9e2d3;--accent:#c8401a;--on-accent:#fff;background:var(--bg);color:var(--ink)}
+.pz-hell h2{text-transform:uppercase}
+.pz .finale{margin-top:0}
+.pz .finale.dunkel{--bg:#0e0a07;--soft:#1f1914;--line:#3b3027}
+.pz .finale h2{font-family:var(--sans);font-weight:850;letter-spacing:-.045em;line-height:.96}
+:is(html.ruhig,html.gross-schrift) .pz-bon.druck{animation:none}
+:is(html.ruhig,html.gross-schrift) :is(.pz-spur:after,.pz-punkt,.pz-t-stueck,.pz-t-marke){transition:none}
+@media (max-width:1000px){
+  .pz-karte-innen{grid-template-columns:1fr}.pz-karte-kopf{position:static;display:grid;grid-template-columns:1fr auto;column-gap:1.5rem;align-items:end}
+  .pz-karte-kopf>:not(.pz-stempel){grid-column:1}.pz-stempel{grid-column:2;grid-row:1/span 3;margin:0}
+  .pz-anteil-raster{grid-template-columns:1fr}.pz-torte{width:min(100%,26rem)}
+  .pz-demo-raster{grid-template-columns:1fr}.pz-spiel{justify-content:start;margin-top:1rem}
+  .pz-werbe-raster{grid-template-columns:1fr;padding-top:6rem}
+  .pz-spur{grid-template-columns:1fr;gap:2rem}
+  .pz-spur:before,.pz-spur:after{left:.62rem;right:auto;top:.7rem;bottom:3rem;width:4px;height:auto}
+  .pz-spur:after{transform-origin:top;transform:scaleY(0)}
+  .pz-spur li{padding:0 0 0 2.8rem}
+}
+@media (max-width:760px){
+  .pz-held:after{background:linear-gradient(0deg,rgba(14,9,6,.96) 0%,rgba(14,9,6,.86) 34%,rgba(14,9,6,.25) 62%,rgba(14,9,6,0) 80%),linear-gradient(180deg,rgba(14,9,6,.6) 0%,rgba(14,9,6,0) 16%)}
+  .pz-held h1,.pz-held .ober{text-shadow:0 0 1.6rem rgba(14,9,6,.8)}
+  .pz-werbe:after{background:linear-gradient(0deg,rgba(14,9,6,.96) 0%,rgba(14,9,6,.86) 60%,rgba(14,9,6,.5) 100%)}
+  .pz-held:not(.pz-werbe) .knopf.leer{display:none}
+  .pz-zettel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;font-size:.8rem;line-height:1.3;margin-top:1.7rem;padding-top:1.1rem}.pz-zettel b{font-size:1.25rem}
+  .pz-held-text{padding-top:6rem}.pz-werbe .knopfzeile{margin-top:1.4rem}
+  .pz-spiel{grid-template-columns:1fr;justify-content:stretch}.pz-handy{max-width:23rem;justify-self:center;width:100%}.pz-kueche{justify-self:center;width:min(100%,23rem)}
+  .pz-zutaten{grid-template-columns:1fr}
+  .pz-karte-kopf{display:block}.pz-stempel{width:7.5rem;margin-top:1.5rem}
+  .pz-g-kopf{flex-wrap:wrap}.pz-gericht.gross .pz-g-kopf i{display:none}.pz-gericht.gross .pz-g-kopf strong{flex-basis:100%}
+  .pz-torte{--skal:1}.pz-t-marke b{font-size:1.7rem}
+}
+.pz-band-innen{padding-bottom:clamp(2.5rem,6vw,5rem)}.pz-band-innen .pz-band-satz{padding-bottom:0}.pz-band-knopf{margin-top:1.8rem}
