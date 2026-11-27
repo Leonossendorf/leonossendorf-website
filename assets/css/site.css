@@ -1380,7 +1380,7 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 .rf-fall h3{font:400 clamp(2rem,4.2vw,3.8rem)/1.02 var(--serif);letter-spacing:-.015em;max-width:18ch}
 .rf-fall h3 em{font-style:italic}
 /* Schieber */
-.rf-schieber{position:relative;margin-top:clamp(2rem,4vw,3.2rem);aspect-ratio:1600/1059;max-height:84svh;border-radius:1.1rem;overflow:hidden;background:#0a0b0c;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;touch-action:pan-y}
+.rf-schieber{position:relative;margin-top:clamp(2rem,4vw,3.2rem);width:100%;aspect-ratio:1600/1059;max-height:84svh;border-radius:1.1rem;overflow:hidden;background:#0a0b0c;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 4rem 8rem -3rem #000;touch-action:pan-y}
 .rf-schieber img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .rf-schieber img{object-fit:cover}
 .rf-s-vor{position:absolute;inset:0;background:#0a0b0c;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
