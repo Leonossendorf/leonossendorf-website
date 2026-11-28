@@ -1357,6 +1357,11 @@ html.ruhig .phy-kasten .live-glas iframe{transition:none}
 .so-preis{font:400 clamp(2.5rem,4.6vw,4.2rem)/1 var(--serif);letter-spacing:-.02em;margin:.7rem 0 .9rem;white-space:nowrap}
 .so-was{color:var(--muted);margin-bottom:1rem}
 .so-fuss{margin-top:1.4rem;color:var(--muted);max-width:46rem}
+/* Lumen 28.11.: große, internationale Projekte auf Anfrage */
+.so-gross{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem clamp(1.5rem,4vw,4rem);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2rem 0 2.4rem;margin-top:.6rem}
+.so-gross-titel{font:400 clamp(2rem,3.6vw,3.4rem)/1.05 var(--serif);letter-spacing:-.02em;margin:.7rem 0 0}
+.so-gross .knopf{margin-top:.4rem}
+@media (max-width:860px){.so-gross{grid-template-columns:1fr}}
 @media (max-width:1000px){.rf-kann{grid-template-columns:1fr 1fr}.rf-daten{grid-template-columns:1fr 1fr}.rf-zwei{grid-template-columns:1fr}.rf-zwei .rf-handy{left:auto;right:1rem}.rf-golf .rf-buehne{margin-top:1rem}}
 @media (max-width:760px){
   .rf-kann,.rf-karten,.so-stufen{grid-template-columns:1fr}
