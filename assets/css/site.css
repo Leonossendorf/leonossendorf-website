@@ -1666,8 +1666,7 @@ html[data-stil="pizzeria"],html[data-stil="pizzeria"] body.dunkel{--bg:#14100d;-
 /* ============ Lumen 28.11. (2): Pünktchen-Konzepte A, B, C (Testseiten /entwurf-punkte-…/, Skript punkte-lab.js) ============ */
 .pk-wahl{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:60;display:flex;gap:.15rem;padding:.3rem;border-radius:99rem;background:#10213a;box-shadow:0 .6rem 2rem -.6rem rgba(0,0,0,.55)}
 .pk-wahl a{color:#f3f5f8;text-decoration:none;font:600 .85rem/1 var(--sans);padding:.65rem 1rem;border-radius:99rem;white-space:nowrap}
-.pk-wahl a[aria-current]{background:#ff5a2e;color:#111}
-.dunkel .pk-wahl{background:#f2f0eb}.dunkel .pk-wahl a{color:#111}
+.pk-wahl a[aria-current]{background:#f3f5f8;color:#10213a}
 .pk .unter{font-size:1.15rem;margin-top:1.4rem;max-width:34rem}
 /* Übersicht */
 .pk-ueber{padding:clamp(8rem,14vw,11rem) 0 8rem}
@@ -1677,55 +1676,77 @@ html[data-stil="pizzeria"],html[data-stil="pizzeria"] body.dunkel{--bg:#14100d;-
 .pk-karte-bild{font:italic 400 1.35rem/1.25 var(--serif);color:var(--muted)}
 .pk-karte .knopf{align-self:flex-start;margin-top:auto}
 @media (max-width:860px){.pk-karten{grid-template-columns:1fr}.pk-karte{border-bottom:1px solid var(--line)}}
-/* A: Schlusspunkt, Logo, Unterschrift */
-.pk-punkt{display:inline-block;width:.15em;height:.15em;border-radius:50%;background:currentColor;margin-left:.04em}
-html.js:not(.ruhig) .pk-a .pk-punkt{opacity:0}
-html.js:not(.ruhig) .pk-a h1 .pk-punkt{animation:pk-fall .95s 1.9s cubic-bezier(.3,.9,.4,1) forwards}
-html.js:not(.ruhig) .pk-a .ein.da .pk-punkt{animation:pk-fall .95s .75s cubic-bezier(.3,.9,.4,1) forwards}
-@keyframes pk-fall{0%{opacity:0;transform:translateY(-1.7em)}50%{opacity:1;transform:translateY(0)}68%{transform:translateY(-.24em)}84%{transform:translateY(0)}92%{transform:translateY(-.06em)}100%{opacity:1;transform:none}}
+/* Gemeinsam: Tinte über der Seite, Logo im Kopf, Namenslinie, Platz für den Pfeil */
+#pk-tinte{position:fixed;inset:0;width:100%;height:100%;z-index:25;pointer-events:none}
 .pk-logo{position:absolute;pointer-events:none}
-.pk-sign{padding-block:clamp(4rem,9vw,8rem) clamp(8rem,14vw,11rem)}
-.pk-sign h2{max-width:19ch}
-.pk-sign-feld{position:relative;width:min(100%,27rem);aspect-ratio:199/172;margin:2rem 0 0 -1rem}
-.pk-sign-feld canvas{position:absolute;inset:0;width:100%;height:100%}
-.pk-sign-feld img{display:none;width:72%;height:auto;margin:9% 0 0 9%}
-html.ruhig .pk-sign-feld img,html.gross-schrift .pk-sign-feld img,html:not(.js) .pk-sign-feld img{display:block}
-html.ruhig .pk-sign-feld canvas,html.gross-schrift .pk-sign-feld canvas{display:none}
 .pk-sign-name{display:inline-block;min-width:min(100%,24rem);border-top:1px solid var(--ink);padding-top:.75rem;font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.pk-sign .knopfzeile{margin-top:2.6rem}
-/* B: Stift */
-#pk-stift{position:fixed;inset:0;width:100%;height:100%;z-index:25;pointer-events:none}
-.pk-notiz{display:block;width:min(100%,22rem);margin-top:1.8rem}
+.pk-ziel{padding-top:2.6rem}
+@media (max-width:860px){.pk-ziel{padding-top:6rem}}
+/* A und B: das Finale mit der Unterschrift */
+.pk-fin{position:relative;min-height:100svh;display:grid;align-items:center;text-align:center;padding-block:clamp(3rem,5vw,4.5rem) clamp(6rem,9vw,7.5rem)}
+.pk-fin h2{max-width:30ch;margin-inline:auto}
+.pk-fin-hell h2{font-size:clamp(1.9rem,3.4vw,3.1rem)}
+.pk-fin .unter{margin-inline:auto}
+.pk-fin .pk-ziel{display:flex;justify-content:center}
+.pk-sign-gross{position:relative;width:min(100%,56rem,calc(50svh*199/150));aspect-ratio:199/150;margin:1rem auto 0}
+.pk-sign-gross canvas{position:absolute;inset:0;width:100%;height:100%}
+.pk-sign-gross img{display:none;width:70%;height:auto;margin:8% auto 0}
+html.ruhig .pk-sign-gross img,html.gross-schrift .pk-sign-gross img,html:not(.js) .pk-sign-gross img{display:block}
+html.ruhig .pk-sign-gross canvas,html.gross-schrift .pk-sign-gross canvas,html.ruhig .pk-fin-lo,html.gross-schrift .pk-fin-lo{display:none}
+.pk-fin-nacht{background:var(--bg);color:var(--ink);overflow:hidden}
+.pk-fin-lo{position:absolute;inset:0;margin:auto;width:min(100%,80rem);height:100%;z-index:0}
+.pk-fin-text{position:relative;z-index:1}
+/* B: Liste zum Abhaken */
 .pk-liste{list-style:none;margin:0;padding:0;display:grid;gap:1.7rem}
 .pk-liste li{padding-left:3.6rem}
 .pk-liste b{display:block;font:400 clamp(1.5rem,2.4vw,2.1rem)/1.15 var(--serif)}
 .pk-liste span{color:var(--muted)}
-.pk-ziel{padding-top:3rem}
-html.ruhig .pk-b .pk-sign-feld,html.gross-schrift .pk-b .pk-sign-feld{background:url(/assets/img/lo-navy.webp) 12% 50%/70% auto no-repeat}
 html.ruhig .pk-b [data-stift="unter"]{text-decoration:underline;text-decoration-thickness:.06em;text-underline-offset:.12em}
-@media (max-width:860px){.pk-ziel{padding-top:6rem}}
-/* C: Baustoff */
-#pk-stoff{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.pk-c h1{font-size:clamp(2.6rem,5.2vw,5.2rem)}
-.pk-sz{position:relative;z-index:1;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem clamp(2rem,5vw,5rem);align-items:center;width:min(100% - 2*var(--rand),82rem);margin-inline:auto;padding-block:6.5rem 5rem}
+/* C: Hero bleibt stehen, die dunkle Bühne schiebt sich darüber */
+.pk-c .held{position:sticky;top:0;z-index:0}
+.pk-c .held::after{content:"";position:absolute;inset:0;background:#0d0e10;opacity:var(--zu,0);pointer-events:none;z-index:6}
+.pk-nacht{position:relative;z-index:2;background:var(--bg);color:var(--ink);border-radius:clamp(1.4rem,3vw,2.6rem) clamp(1.4rem,3vw,2.6rem) 0 0;box-shadow:0 -1.5rem 4rem rgba(0,0,0,.3)}
+#pk-stoff{position:sticky;top:0;display:block;width:100%;height:100svh;margin-bottom:-100svh;z-index:0;pointer-events:none}
+.pk-sz{position:relative;z-index:1;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem clamp(2rem,5vw,5rem);align-items:center;width:min(100% - 2*var(--rand),82rem);margin-inline:auto;padding-block:6rem 5rem}
 .pk-sz.rechts .pk-sz-text{order:2}
 .pk-platz{height:min(62vh,34rem)}
-.pk-sz .hervor{color:var(--ink)}
-.pk-tipp{margin-top:2rem;font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pk-lang{height:300svh}
+.pk-fest{position:sticky;top:0;height:100svh;min-height:0;padding-block:4.5rem 3rem}
+.pk-schritte{list-style:none;margin:2.2rem 0 0;padding:0;display:grid;gap:1.2rem;counter-reset:s}
+.pk-schritte li{counter-increment:s;display:grid;grid-template-columns:2.4rem 1fr;column-gap:.6rem;opacity:.3;transition:opacity .5s}
+.pk-schritte li::before{content:"0" counter(s);grid-row:1/3;font:600 .78rem/2.1 var(--sans);letter-spacing:.1em;color:var(--muted)}
+.pk-schritte li.an{opacity:1}
+.pk-schritte b{font:400 clamp(1.3rem,2.1vw,1.9rem)/1.15 var(--serif)}
+.pk-schritte span{color:var(--muted)}
+.pk-posten{list-style:none;margin:1.8rem 0 0;padding:0;border-top:1px solid var(--ink);max-width:30rem}
+.pk-posten li{display:flex;justify-content:space-between;gap:1.5rem;padding:.7rem 0;border-bottom:1px solid var(--line);font:400 clamp(1.25rem,2vw,1.7rem)/1.2 var(--serif)}
+.pk-posten b{font-weight:400;white-space:nowrap}
 .pk-arten{display:grid;margin-top:2rem;border-top:1px solid var(--line)}
-.pk-arten button{appearance:none;background:none;border:0;border-bottom:1px solid var(--line);display:flex;gap:1.2rem;align-items:baseline;padding:.85rem .2rem;text-align:left;cursor:pointer;color:var(--muted);font:inherit;transition:color .3s,padding .3s}
-.pk-arten button b{font:400 clamp(1.45rem,2.5vw,2.3rem)/1.1 var(--serif)}
-.pk-arten button small{font:600 .78rem/1 var(--sans);letter-spacing:.1em}
-.pk-arten button[aria-pressed="true"]{color:var(--ink);padding-left:.9rem}
-.pk-arten button[aria-pressed="true"] small{color:var(--accent)}
-.pk-sz[data-szene="frei"]{grid-template-columns:1fr;align-content:center;gap:1.6rem}
-.pk-feld{position:relative;height:min(54svh,30rem);border:1px dashed color-mix(in srgb,var(--ink) 35%,transparent);border-radius:var(--rund);touch-action:none;cursor:crosshair;user-select:none;-webkit-user-select:none}
-.pk-neu{position:absolute;right:1rem;bottom:1rem;appearance:none;background:none;border:1px solid var(--line);border-radius:99rem;color:var(--ink);font:600 .85rem/1 var(--sans);padding:.6rem 1rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
-.pk-feld.benutzt .pk-neu{opacity:1;pointer-events:auto}
-.pk-sz.ende{padding-bottom:9rem}
+.pk-arten a{display:flex;gap:1.2rem;align-items:baseline;padding:.85rem .2rem;border-bottom:1px solid var(--line);text-decoration:none;color:var(--muted);transition:color .3s,padding .3s}
+.pk-arten a b{flex:1;font:400 clamp(1.45rem,2.5vw,2.3rem)/1.1 var(--serif)}
+.pk-arten a small{font:600 .78rem/1 var(--sans);letter-spacing:.1em}
+.pk-arten a i{font-style:normal;opacity:0;transition:opacity .3s}
+.pk-arten a.an{color:var(--ink);padding-left:.9rem}
+.pk-arten a.an i{opacity:1}
+.pk-eingabe{display:block;margin-top:1.8rem;max-width:30rem}
+.pk-eingabe span{display:block;font:600 .78rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.pk-eingabe input{width:100%;background:transparent;border:0;border-bottom:2px solid var(--ink);border-radius:0;color:var(--ink);font:400 clamp(1.5rem,2.6vw,2.2rem)/1.2 var(--serif);padding:.4rem 0 .6rem;outline:0}
+.pk-eingabe input::placeholder{color:var(--muted);opacity:.55}
+.pk-eingabe input:focus-visible{border-bottom-color:#fff;box-shadow:0 2px 0 #fff}
+.pk-klein{margin-top:.9rem;font-size:.9rem;color:var(--muted)}
+.pk-ende{padding-bottom:9rem}
+.pk-portrait{margin:0;justify-self:center;width:min(100%,27rem);aspect-ratio:4/5;max-height:76svh;border-radius:var(--rund);overflow:hidden;background:#cddbee}
+.pk-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.pk-platz-sign{height:min(36vh,20rem);max-width:28rem;margin-top:.6rem}
+.pk-ende .pk-sign-name{min-width:min(100%,28rem)}
+@media (min-width:861px){.pk-ende .pk-ziel{padding-top:2rem}}
 @media (max-width:860px){
-  .pk-sz{grid-template-columns:1fr;align-content:center;padding-block:5.5rem 3rem;gap:1.2rem}
-  .pk-platz{height:34svh;order:-1}
+  .pk-sz{grid-template-columns:1fr;align-content:center;padding-block:5rem 3rem;gap:1.2rem}
+  .pk-platz{height:32svh;order:-1}
   .pk-sz.rechts .pk-sz-text{order:0}
-  .pk-feld{height:46svh}
+  .pk-fest{padding-block:4.5rem 1.5rem;gap:.6rem}
+  .pk-fest .ober{display:none}
+  .pk-schritte{margin-top:1.2rem;gap:.8rem}
+  .pk-portrait{width:min(70%,17rem);max-height:40svh;justify-self:start}
+  .pk-platz-sign{height:24svh;order:0}
 }
